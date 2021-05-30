@@ -1,0 +1,239 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:knowledge_book",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Recipes:[\"minecraft:flint_and_steel\"]}"
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "player": {
+                  "recipes": {
+                    "minecraft:flint_and_steel": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:knowledge_book",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Recipes:[\"minecraft:bread\"]}"
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "player": {
+                  "recipes": {
+                    "minecraft:bread": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:knowledge_book",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Recipes:[\"minecraft:jukebox\"]}"
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "player": {
+                  "recipes": {
+                    "minecraft:jukebox": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:knowledge_book",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Recipes:[\"minecraft:clock\"]}"
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "player": {
+                  "recipes": {
+                    "minecraft:clock": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:knowledge_book",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Recipes:[\"minecraft:compass\"]}"
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "player": {
+                  "recipes": {
+                    "minecraft:compass": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:knowledge_book",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Recipes:[\"minecraft:stone_shovel\"]}"
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "player": {
+                  "recipes": {
+                    "minecraft:stone_shovel": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:knowledge_book",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Recipes:[\"minecraft:stone_hoe\"]}"
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "player": {
+                  "recipes": {
+                    "minecraft:stone_hoe": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:knowledge_book",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Recipes:[\"minecraft:stone_axe\"]}"
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "player": {
+                  "recipes": {
+                    "minecraft:stone_axe": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:knowledge_book",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Recipes:[\"minecraft:stone_sword\"]}"
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "player": {
+                  "recipes": {
+                    "minecraft:stone_sword": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:knowledge_book",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Recipes:[\"minecraft:stone_pickaxe\"]}"
+            }
+          ],
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "player": {
+                  "recipes": {
+                    "minecraft:stone_pickaxe": false
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

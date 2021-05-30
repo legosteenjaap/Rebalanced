@@ -1,0 +1,40 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "nl.tettelaar.rebalanced.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BedBlockMixin",
+  	"GolemProtectChestMixin",
+    "DisableLakeMixin",
+    "DisableSpringMixin",
+    "FireBlockMixin",
+    "KnowledgeBookItemMixin",
+    "LocalDifficultyMixin",
+    "StructureConfigMixin",
+    "LargerBiomeMixin",
+    "LargerBiomeMixin",
+    "WoodedBadlandsSurfaceBuilderMixin",
+    "WrittenBookMixin",
+    "VillagerEntityMixin",
+    "DefaultBiomeInvoker",
+    "AttackGoalMixin",
+    "LongerDayCycleServerMixin",
+    "SleepMechanicMixin",
+    "GameRulesMixin",
+    "BooleanRuleAccessor",
+    "IntRuleAccessor",
+    "GameRuleTypeAccessor",
+    "FireworkItemMixin",
+    "MoreRabbitMixin",
+    "ElytraMixin",
+    "RiverReduxMixin",
+    "EscapeDangerGoalMixin"
+  ],
+  "client": [
+	"LongerDayCycleClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
