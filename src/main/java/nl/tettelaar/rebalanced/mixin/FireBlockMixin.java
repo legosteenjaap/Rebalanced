@@ -28,11 +28,11 @@ public class FireBlockMixin {
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockHitResult hit) {
 		ItemStack itemStack = player.getStackInHand(hand);
-		if (method_30366(world) && itemStack.getItem() == Items.NETHER_STAR) {
-			Optional<AreaHelper> optional = AreaHelper.method_30485(world, pos, Direction.Axis.X);
+		if (isOverworldOrNether(world) && itemStack.getItem() == Items.NETHER_STAR) {
+			Optional<AreaHelper> optional = AreaHelper.getNewPortal(world, pos, Direction.Axis.X);
 			if (optional.isPresent()) {
 				((AreaHelper) optional.get()).createPortal();
-				if (!player.abilities.creativeMode) {	
+				if (!player.getAbilities().creativeMode) {	
 				itemStack.decrement(1);
 				}
 				if (!world.isClient) {
@@ -56,8 +56,8 @@ public class FireBlockMixin {
 		ci.cancel();
 	}
 
-	@Invoker("method_30366")
-	private static boolean method_30366(World world) {
+	@Invoker("isOverworldOrNether")
+	private static boolean isOverworldOrNether(World world) {
 		throw new AssertionError();
 	}
 }

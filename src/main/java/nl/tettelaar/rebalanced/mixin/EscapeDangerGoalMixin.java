@@ -12,13 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.TargetFinder;
+import net.minecraft.entity.ai.NoPenaltyTargeting;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
@@ -80,7 +79,7 @@ public abstract class EscapeDangerGoalMixin extends Goal {
 	
 	@Inject(method = "findTarget", at = @At("HEAD"), cancellable = true)
 	protected void findTarget(CallbackInfoReturnable<Boolean> cir) {
-		Vec3d vec3d = TargetFinder.findTarget(this.mob, 100, 8);
+		Vec3d vec3d = NoPenaltyTargeting.find(this.mob, 100, 8);
 
 		if (vec3d == null) {
 			cir.setReturnValue(false);

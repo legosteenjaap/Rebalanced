@@ -17,15 +17,19 @@ public class SavannaBeachSurfaceBuilder extends SurfaceBuilder<TernarySurfaceCon
 		super(codec);
 	}
 
-	public void generate(Random random, Chunk chunk, Biome biome, int i, int j, int k, double d, BlockState blockState,
-			BlockState blockState2, int l, long m, TernarySurfaceConfig ternarySurfaceConfig) {
-		
-			if (d > 2.5D) {
-				SurfaceBuilder.DEFAULT.generate(random, chunk, biome, i, j, k, d, blockState, blockState2, l, m,
-						SurfaceBuilder.GRASS_CONFIG);
-			} else {
-				SurfaceBuilder.DEFAULT.generate(random, chunk, biome, i, j, k, d, blockState, blockState2, l, m,
-						SurfaceBuilder.SAND_CONFIG);
-			}
+
+
+	@Override
+	public void generate(Random random, Chunk chunk, Biome biome, int x, int z, int height, double noise,
+			BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int i, long l,
+			TernarySurfaceConfig surfaceConfig) {
+		// TODO Auto-generated method stub
+		if (noise > 2.5D) {
+			SurfaceBuilder.DEFAULT.generate(random, chunk, biome, x, z, height, noise, defaultBlock, defaultFluid, seaLevel, i, l,
+					SurfaceBuilder.GRASS_CONFIG);
+		} else {
+			SurfaceBuilder.DEFAULT.generate(random, chunk, biome, x, z, height, noise, defaultBlock, defaultFluid, seaLevel, i, l,
+					SurfaceBuilder.SAND_CONFIG);
+		}
 	}
 }

@@ -14,8 +14,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.KnowledgeBookItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -39,10 +39,10 @@ public class KnowledgeBookItemMixin extends Item {
 	public void useHead(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult> cir) {
 		ItemStack itemStack = user.getStackInHand(hand);
 
-		CompoundTag compoundTag = itemStack.getTag();
+		NbtCompound compoundTag = itemStack.getTag();
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
 			if (!world.isClient) {
-				ListTag listTag = compoundTag.getList("Recipes", 8);
+				NbtList listTag = compoundTag.getList("Recipes", 8);
 				List<Recipe<?>> list = Lists.newArrayList();
 				RecipeManager recipeManager = world.getServer().getRecipeManager();
 

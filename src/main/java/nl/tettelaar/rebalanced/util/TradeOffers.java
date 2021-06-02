@@ -35,9 +35,9 @@ import net.minecraft.item.Items;
 import net.minecraft.item.SuspiciousStewItem;
 import net.minecraft.item.map.MapIcon;
 import net.minecraft.item.map.MapState;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.recipe.BrewingRecipeRegistry;
@@ -605,7 +605,7 @@ public class TradeOffers {
 					ItemStack itemStack = FilledMapItem.createMap(serverWorld, blockPos.getX(), blockPos.getZ(),
 							(byte) 2, true, true);
 					FilledMapItem.fillExplorationMap(serverWorld, itemStack);
-					MapState.addDecorationsTag(itemStack, blockPos, "+", this.iconType);
+					MapState.addDecorationsNbt(itemStack, blockPos, "+", this.iconType);
 					itemStack.setCustomName(
 							new TranslatableText("filled_map." + this.structure.getName().toLowerCase(Locale.ROOT)));
 					return new TradeOffer(new ItemStack(Items.EMERALD, this.price), new ItemStack(Items.COMPASS),
@@ -896,9 +896,9 @@ public class TradeOffers {
 		}
 
 		public TradeOffer create(Entity entity, Random random) {
-			ListTag listTag = new ListTag();
-			listTag.add(0, StringTag.of(recipe.toString()));
-			CompoundTag tag = (CompoundTag) new CompoundTag().put("Recipes", listTag);
+			NbtList listTag = new NbtList();
+			listTag.add(0, NbtString.of(recipe.toString()));
+			NbtCompound tag = (NbtCompound) new NbtCompound().put("Recipes", listTag);
 			ItemStack itemStack = new ItemStack(Items.KNOWLEDGE_BOOK.asItem());
 			itemStack.getOrCreateTag().put("Recipes", listTag);
 			return new TradeOffer(new ItemStack(Items.EMERALD), itemStack, 1, this.experience,

@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "nl.tettelaar.rebalanced.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "mixins": [
     "BedBlockMixin",
   	"GolemProtectChestMixin",
@@ -12,8 +12,6 @@
     "KnowledgeBookItemMixin",
     "LocalDifficultyMixin",
     "StructureConfigMixin",
-    "LargerBiomeMixin",
-    "LargerBiomeMixin",
     "WoodedBadlandsSurfaceBuilderMixin",
     "WrittenBookMixin",
     "VillagerEntityMixin",
@@ -29,7 +27,11 @@
     "MoreRabbitMixin",
     "ElytraMixin",
     "RiverReduxMixin",
-    "EscapeDangerGoalMixin"
+    "EscapeDangerGoalMixin",
+    "MixinChunkGenerator",
+    "MixinHorizontalVoronoiBiomeAccessType",
+    "MixinVanillaLayeredBiomeSource",
+    "DisableWaterLakeFeatureMixin"
   ],
   "client": [
 	"LongerDayCycleClientMixin"

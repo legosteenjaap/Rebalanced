@@ -24,11 +24,13 @@ public class HeightDependSurfaceBuilder extends SurfaceBuilder<TernarySurfaceCon
 
 	@Override
 	public void generate(Random random, Chunk chunk, Biome biome, int x, int z, int height, double noise,
-			BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed,
-			TernarySurfaceConfig surfaceBlocks) {
+			BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int i, long l,
+			TernarySurfaceConfig surfaceConfig) {
+		// TODO Auto-generated method stub
 		if (height > this.minHeight) {
 			chunk.setBlockState(new BlockPos(x, height, z), Blocks.GRASS_BLOCK.getDefaultState(), false);
 		}
+		
 	}
 
 }

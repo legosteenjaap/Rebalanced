@@ -17,11 +17,14 @@ public class GravellySurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig>
 		super(codec);
 	}
 
-	public void generate(Random random, Chunk chunk, Biome biome, int i, int j, int k, double d, BlockState blockState,
-			BlockState blockState2, int l, long m, TernarySurfaceConfig ternarySurfaceConfig) {
-
-		SurfaceBuilder.DEFAULT.generate(random, chunk, biome, i, j, k, d, blockState, blockState2, l, m,
+	@Override
+	public void generate(Random random, Chunk chunk, Biome biome, int x, int z, int height, double noise,
+			BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int i, long l,
+			TernarySurfaceConfig surfaceConfig) {
+		
+		SurfaceBuilder.DEFAULT.generate(random, chunk, biome, x, z, height, noise, defaultBlock, defaultFluid, seaLevel, i, l,
 				SurfaceBuilder.GRAVEL_CONFIG);
-
+		// TODO Auto-generated method stub
+		
 	}
 }

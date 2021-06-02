@@ -12,10 +12,8 @@ import net.minecraft.world.gen.surfacebuilder.WoodedBadlandsSurfaceBuilder;
 
 @Mixin(WoodedBadlandsSurfaceBuilder.class)
 public abstract class WoodedBadlandsSurfaceBuilderMixin {
-
 	@ModifyConstant(constant = @Constant(intValue = 86), method = "generate")
 	private static int generate(int original) {
 		return 193;
 	}
-
 }

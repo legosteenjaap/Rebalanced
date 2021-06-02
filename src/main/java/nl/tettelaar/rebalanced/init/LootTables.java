@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
-import net.minecraft.loot.ConstantLootTableRange;
 import net.minecraft.loot.entry.LootTableEntry;
+import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.util.Identifier;
 
 public class LootTables {
@@ -31,7 +31,7 @@ public class LootTables {
 		LootTableLoadingCallback.EVENT.register((((resourceManager, lootManager, id, supplier, setter) -> {
 			if (lootTableList.contains(id)) {
 				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
-						.rolls(ConstantLootTableRange.create(1))
+						.rolls(ConstantLootNumberProvider.create(1))
 						.withEntry(LootTableEntry.builder(new Identifier("rebalanced", "basicbooks")).build());
 				supplier.pool(poolBuilder);
 				System.out.println(id);

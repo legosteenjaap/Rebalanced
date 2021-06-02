@@ -282,7 +282,7 @@ public class RebalancedWorldGen {
 					s.setDepth(-1.5F);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.FREEZE_TOP_LAYER);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
-					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_WATER);
+					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PROTOTYPE_SPRING_WATER);
 					s.getWeather().setPrecipitation(Biome.Precipitation.RAIN);
 				});
 
@@ -291,7 +291,7 @@ public class RebalancedWorldGen {
 					s.setDepth(-1.5F);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.FREEZE_TOP_LAYER);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
-					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_WATER);
+					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PROTOTYPE_SPRING_WATER);
 				});
 		
 		BiomeModifications.create(new Identifier(modid, "river_gen")).add(ModificationPhase.POST_PROCESSING,
