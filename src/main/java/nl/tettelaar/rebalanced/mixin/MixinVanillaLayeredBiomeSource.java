@@ -54,7 +54,8 @@ public class MixinVanillaLayeredBiomeSource {
 		
 		
 		Biome surfaceBiome = this.biomeSamp.sample(this.biomeRegistry, biomeX, biomeZ);
-		if (biomeY < 14) {
+		cir.setReturnValue(surfaceBiome);
+		/*if (biomeY < 14) {
 			double noise = this.caveBiomeNoise.sample(biomeX / 200.0, 0, biomeZ / 200.0) ;
 			if (noise > 0.07 && !((surfaceBiome.getCategory() == Biome.Category.SWAMP) || (surfaceBiome.getCategory() == Biome.Category.OCEAN))) {
 				cir.setReturnValue(this.biomeRegistry.get(BiomeKeys.LUSH_CAVES));
@@ -64,6 +65,6 @@ public class MixinVanillaLayeredBiomeSource {
 		} 
 		if (cir.getReturnValue() == null) {
 			cir.setReturnValue(surfaceBiome);
-		}
+		}*/
 	}
 }

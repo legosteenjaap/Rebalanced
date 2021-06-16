@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.biome.v1.OverworldBiomes;
 import net.fabricmc.fabric.api.biome.v1.OverworldClimate;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
@@ -20,10 +21,8 @@ import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
-import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import nl.tettelaar.rebalanced.Rebalanced;
 import nl.tettelaar.rebalanced.gen.BiomeCreator;
-import nl.tettelaar.rebalanced.gen.surfacebuilders.HeightDependSurfaceBuilder;
 import nl.tettelaar.rebalanced.mixin.DefaultBiomeInvoker;
 
 @SuppressWarnings("deprecation")
@@ -31,6 +30,8 @@ public class RebalancedWorldGen {
 
 	private final static String modid = Rebalanced.modid;
 
+	private final static boolean isSimplyImprovedTerrainLoaded = FabricLoader.getInstance().isModLoaded("simplyimprovedterrain");
+	
 	// PLATEAU STUFF
 	private static final Biome JUNGLE_PLATEAU = DefaultBiomeInvoker.invokeCreateJungle(4.5F, 0.25F, 10, 1, 1);
 	public static final RegistryKey<Biome> JUNGLE_PLATEAU_KEY = RegistryKey.of(Registry.BIOME_KEY,
@@ -40,13 +41,13 @@ public class RebalancedWorldGen {
 	public static final RegistryKey<Biome> BADLANDS_LOW_PLATEAU_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "badlands_low_plateau"));
 
-	private static final Biome EXTREME_HILLS_PLATEAU = DefaultBiomeCreator.createMountains(5.3f, 1.4f, ConfiguredSurfaceBuilders.GRASS, false);
+	private static final Biome EXTREME_HILLS_PLATEAU = DefaultBiomeCreator.createMountains(5.3f, isSimplyImprovedTerrainLoaded ? 1.4f : 0.8f, ConfiguredSurfaceBuilders.GRASS, false);
 	public static final RegistryKey<Biome> EXTREME_HILLS_PLATEAU_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "extreme_hills_plateau"));
 	
 	//HILLS STUFF
 	
-	private static final Biome SAVANNA_HILLS = DefaultBiomeCreator.createSavanna(0.11f, 1.2f, 1f, false, false);
+	private static final Biome SAVANNA_HILLS = DefaultBiomeCreator.createSavanna(0.11f, isSimplyImprovedTerrainLoaded ? 1.2f : 0.7f, 1f, false, false);
 	public static final RegistryKey<Biome> SAVANNA_HILLS_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "savanna_hills"));
 	
@@ -315,7 +316,11 @@ public class RebalancedWorldGen {
 		BiomeModifications.create(new Identifier(modid, "stone_shore")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.STONE_SHORE), (s) -> {
 					s.setDepth(5F);
-					s.setScale(0.55f);
+					if (isSimplyImprovedTerrainLoaded) {
+						s.setScale(0.55f);
+					} else {
+						s.setScale(0.25f);
+					}
 					s.getWeather().setTemperature(0.4f);
 					s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_NORMAL);
 					s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_FOREST);
@@ -471,13 +476,21 @@ public class RebalancedWorldGen {
 		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_FOREST);
 		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_TAIGA);
 		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_TALL_GRASS);
-		s.setScale(1.5f);
+		if (isSimplyImprovedTerrainLoaded) {
+			s.setScale(1.5f);
+		} else {
+			s.setScale(0.7f);
+		}
 		s.setDepth(-0.1f);
 	}
 	
 	public static void gravellyExtremeHills(BiomeModificationContext s) {
 		s.getWeather().setTemperature(0.3f);
-		s.setScale(1.5f);
+		if (isSimplyImprovedTerrainLoaded) {
+			s.setScale(1.5f);
+		} else {
+			s.setScale(0.7f);
+		}
 		s.setDepth(-0.1f);
 	}
 	
@@ -485,7 +498,11 @@ public class RebalancedWorldGen {
 		//s.setDepth(0.11F);
 		//s.setScale(0.8F);
 		s.setDepth(0.11F);
-		s.setScale(1.2F);
+		if (isSimplyImprovedTerrainLoaded) {
+			s.setScale(1.2f);
+		} else {
+			s.setScale(0.6f);
+		}
 	}
 
 }

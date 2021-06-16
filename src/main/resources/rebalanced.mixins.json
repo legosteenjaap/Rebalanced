@@ -29,9 +29,7 @@
     "RiverReduxMixin",
     "EscapeDangerGoalMixin",
     "MixinChunkGenerator",
-    "MixinHorizontalVoronoiBiomeAccessType",
-    "MixinVanillaLayeredBiomeSource",
-    "DisableWaterLakeFeatureMixin"
+    "MixinVanillaLayeredBiomeSource"
   ],
   "client": [
 	"LongerDayCycleClientMixin"
