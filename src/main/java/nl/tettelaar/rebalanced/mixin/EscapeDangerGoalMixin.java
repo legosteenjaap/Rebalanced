@@ -55,8 +55,6 @@ public abstract class EscapeDangerGoalMixin extends Goal {
 			this.findTarget();
 			this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed * 1.5);
 		}
-		System.out.println(this.mob.getAttacker());
-		System.out.println(timer);
 	}
 
 	@Inject(method = "stop", at = @At("HEAD"))
@@ -115,7 +113,7 @@ public abstract class EscapeDangerGoalMixin extends Goal {
 		} catch (ClassCastException e) {
 
 		}
-		this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed * 1.5);
+		this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed);
 		this.active = true;
 		ci.cancel();
 

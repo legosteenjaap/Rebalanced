@@ -1,6 +1,7 @@
 package nl.tettelaar.rebalanced.init;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModificationContext;
+import net.fabricmc.fabric.api.biome.v1.BiomeModificationContext.GenerationSettingsContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
@@ -16,6 +17,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.DefaultBiomeCreator;
+import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.gen.GenerationStep;
@@ -30,8 +32,9 @@ public class RebalancedWorldGen {
 
 	private final static String modid = Rebalanced.modid;
 
-	private final static boolean isSimplyImprovedTerrainLoaded = FabricLoader.getInstance().isModLoaded("simplyimprovedterrain");
-	
+	private final static boolean isSimplyImprovedTerrainLoaded = FabricLoader.getInstance()
+			.isModLoaded("simplyimprovedterrain");
+
 	// PLATEAU STUFF
 	private static final Biome JUNGLE_PLATEAU = DefaultBiomeInvoker.invokeCreateJungle(4.5F, 0.25F, 10, 1, 1);
 	public static final RegistryKey<Biome> JUNGLE_PLATEAU_KEY = RegistryKey.of(Registry.BIOME_KEY,
@@ -41,16 +44,18 @@ public class RebalancedWorldGen {
 	public static final RegistryKey<Biome> BADLANDS_LOW_PLATEAU_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "badlands_low_plateau"));
 
-	private static final Biome EXTREME_HILLS_PLATEAU = DefaultBiomeCreator.createMountains(5.3f, isSimplyImprovedTerrainLoaded ? 1.4f : 0.8f, ConfiguredSurfaceBuilders.GRASS, false);
+	private static final Biome EXTREME_HILLS_PLATEAU = DefaultBiomeCreator.createMountains(3.3f,
+			isSimplyImprovedTerrainLoaded ? 1.4f : 0.8f, ConfiguredSurfaceBuilders.GRASS, false);
 	public static final RegistryKey<Biome> EXTREME_HILLS_PLATEAU_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "extreme_hills_plateau"));
-	
-	//HILLS STUFF
-	
-	private static final Biome SAVANNA_HILLS = DefaultBiomeCreator.createSavanna(0.11f, isSimplyImprovedTerrainLoaded ? 1.2f : 0.7f, 1f, false, false);
+
+	// HILLS STUFF
+
+	private static final Biome SAVANNA_HILLS = DefaultBiomeCreator.createSavanna(0.11f,
+			isSimplyImprovedTerrainLoaded ? 1.2f : 0.7f, 1f, false, false);
 	public static final RegistryKey<Biome> SAVANNA_HILLS_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "savanna_hills"));
-	
+
 	// BEACH STUFF
 	private static final Biome SAVANNA_BEACH = BiomeCreator.createSavannaBeach(0.05f, 0.0001f, 1.2f, 0f, 4159204);
 	public static final RegistryKey<Biome> SAVANNA_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
@@ -60,25 +65,24 @@ public class RebalancedWorldGen {
 	public static final RegistryKey<Biome> GRAVELLY_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "gravelly_beach"));
 
-	//RIVER STUFF
+	// RIVER STUFF
 	private static final Biome DESERT_RIVER = BiomeCreator.createDesertRiver(-1.5f, 0.1f);
 	public static final RegistryKey<Biome> DESERT_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "desert_river"));
-	
-	private static final Biome BADLANDS_RIVER = DefaultBiomeInvoker.createBadlands(ConfiguredSurfaceBuilders.BADLANDS, -0.5f, 0.1f, false, false);
+
+	private static final Biome BADLANDS_RIVER = DefaultBiomeInvoker.createBadlands(ConfiguredSurfaceBuilders.BADLANDS,
+			-0.5f, 0.1f, false, false);
 	public static final RegistryKey<Biome> BADLANDS_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "badlands_river"));
-	
+
 	private static final Biome EXTREME_HILLS_RIVER = BiomeCreator.createExtremeHillsRiver();
 	public static final RegistryKey<Biome> EXTREME_HILLS_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "extreme_hills_river"));
-	
+
 	private static final Biome SAVANNA_RIVER = DefaultBiomeCreator.createSavanna(-1.5f, 0.1f, 1f, false, false);
 	public static final RegistryKey<Biome> SAVANNA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "savanna_river"));
-	
-	
-	
+
 	public static void init() {
 		doBiomeModifications();
 		registerFeatures();
@@ -107,14 +111,21 @@ public class RebalancedWorldGen {
 		Registry.register(Registry.SURFACE_BUILDER, new Identifier(modid, "savanna_beach"),
 				BiomeCreator.SAVANNA_BEACH_SURFACE);
 		Registry.register(Registry.SURFACE_BUILDER, new Identifier(modid, "gravelly"), BiomeCreator.GRAVELLY_SURFACE);
-		Registry.register(Registry.SURFACE_BUILDER, new Identifier(modid, "elevated_extreme_hills"), BiomeCreator.ELEVATED_EXTREME_HILLS_SURFACE);
-		Registry.register(Registry.SURFACE_BUILDER, new Identifier(modid, "stone_shore"), BiomeCreator.STONE_SHORE_SURFACE);
-		
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new Identifier(modid, "elevated_extreme_hills"), BiomeCreator.CONFIGURED_ELEVATED_EXTREME_HILLS_SURFACE);
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new Identifier(modid, "stone_shore"), BiomeCreator.CONFIGURED_STONE_SHORE_SURFACE);
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new Identifier(modid, "ocean"), BiomeCreator.CONFIGURED_OCEAN_SURFACE);
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new Identifier(modid, "frozen_ocean"), BiomeCreator.CONFIGURED_FROZEN_OCEAN_SURFACE);
-		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new Identifier(modid, "sand_ocean"), BiomeCreator.CONFIGURED_SAND_OCEAN_SURFACE);
+		Registry.register(Registry.SURFACE_BUILDER, new Identifier(modid, "elevated_extreme_hills"),
+				BiomeCreator.ELEVATED_EXTREME_HILLS_SURFACE);
+		Registry.register(Registry.SURFACE_BUILDER, new Identifier(modid, "stone_shore"),
+				BiomeCreator.STONE_SHORE_SURFACE);
+
+		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new Identifier(modid, "elevated_extreme_hills"),
+				BiomeCreator.CONFIGURED_ELEVATED_EXTREME_HILLS_SURFACE);
+		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new Identifier(modid, "stone_shore"),
+				BiomeCreator.CONFIGURED_STONE_SHORE_SURFACE);
+		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new Identifier(modid, "ocean"),
+				BiomeCreator.CONFIGURED_OCEAN_SURFACE);
+		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new Identifier(modid, "frozen_ocean"),
+				BiomeCreator.CONFIGURED_FROZEN_OCEAN_SURFACE);
+		Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new Identifier(modid, "sand_ocean"),
+				BiomeCreator.CONFIGURED_SAND_OCEAN_SURFACE);
 	}
 
 	public static void addBiomeVariants() {
@@ -135,17 +146,16 @@ public class RebalancedWorldGen {
 		OverworldBiomes.addShoreBiome(BiomeKeys.SHATTERED_SAVANNA, SAVANNA_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.SHATTERED_SAVANNA_PLATEAU, SAVANNA_BEACH_KEY, 1f);
 		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT, BiomeKeys.SAVANNA, 1f);
-		
+
 		OverworldBiomes.addHillsBiome(BiomeKeys.SAVANNA, SAVANNA_HILLS_KEY, 0.6f);
 		OverworldBiomes.addHillsBiome(BiomeKeys.PLAINS, BiomeKeys.WOODED_HILLS, 0.2f);
-		
+
 		OverworldBiomes.setRiverBiome(BiomeKeys.SAVANNA, SAVANNA_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(SAVANNA_HILLS_KEY, SAVANNA_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.SAVANNA_PLATEAU, SAVANNA_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.SHATTERED_SAVANNA, SAVANNA_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.SHATTERED_SAVANNA_PLATEAU, SAVANNA_RIVER_KEY);
-		
-		
+
 		OverworldBiomes.addBiomeVariant(BiomeKeys.FOREST, BiomeKeys.DESERT, 1, OverworldClimate.DRY);
 		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT, BiomeKeys.DESERT, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_HILLS, BiomeKeys.DESERT_HILLS, 1f);
@@ -153,27 +163,26 @@ public class RebalancedWorldGen {
 		OverworldBiomes.setRiverBiome(BiomeKeys.DESERT, DESERT_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_HILLS, DESERT_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_LAKES, DESERT_RIVER_KEY);
-		
+
 		OverworldBiomes.setRiverBiome(BiomeKeys.BADLANDS_PLATEAU, BADLANDS_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BADLANDS_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BADLANDS_LOW_PLATEAU_KEY, BADLANDS_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.BADLANDS, BADLANDS_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.ERODED_BADLANDS, BADLANDS_RIVER_KEY);
-		
+
 		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT, BiomeKeys.SAVANNA, 1f);
 		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT_HILLS, BiomeKeys.SAVANNA, 1f);
 		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT_LAKES, BiomeKeys.SAVANNA, 1f);
 		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT, BiomeKeys.SAVANNA, 1f);
 		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT, BiomeKeys.SAVANNA, 1f);
 
-		
 		OverworldBiomes.setRiverBiome(BiomeKeys.MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.WOODED_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.STONE_SHORE, EXTREME_HILLS_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.GRAVELLY_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.MODIFIED_GRAVELLY_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
 		OverworldBiomes.setRiverBiome(BiomeKeys.TAIGA_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
-		
+
 		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA, GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA_HILLS, GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_TREE_TAIGA, GRAVELLY_BEACH_KEY, 1f);
@@ -195,7 +204,7 @@ public class RebalancedWorldGen {
 
 		OverworldBiomes.setRiverBiome(BiomeKeys.SWAMP, BiomeKeys.SWAMP);
 		OverworldBiomes.setRiverBiome(BiomeKeys.SWAMP_HILLS, BiomeKeys.SWAMP_HILLS);
-		
+
 		OverworldBiomes.addBiomeVariant(BiomeKeys.FROZEN_OCEAN, BiomeKeys.OCEAN, 1f);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.DEEP_FROZEN_OCEAN, BiomeKeys.DEEP_OCEAN, 0.8f);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.MOUNTAINS, BiomeKeys.WOODED_MOUNTAINS, 0.2);
@@ -237,17 +246,17 @@ public class RebalancedWorldGen {
 				BiomeSelectors.includeByKey(BiomeKeys.TALL_BIRCH_HILLS), (s) -> {
 					hillsBiome(s);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "jungle_hills_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.JUNGLE_HILLS), (s) -> {
 					hillsBiome(s);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "dark_forest_hills_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.DARK_FOREST_HILLS), (s) -> {
 					hillsBiome(s);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "taiga_hills_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.TAIGA_HILLS), (s) -> {
 					hillsBiome(s);
@@ -257,27 +266,29 @@ public class RebalancedWorldGen {
 				BiomeSelectors.includeByKey(BiomeKeys.SNOWY_TAIGA_HILLS), (s) -> {
 					hillsBiome(s);
 				});
-		
-		BiomeModifications.create(new Identifier(modid, "giant_tree_taiga_hills_gen")).add(ModificationPhase.POST_PROCESSING,
-				BiomeSelectors.includeByKey(BiomeKeys.GIANT_TREE_TAIGA_HILLS), (s) -> {
+
+		BiomeModifications.create(new Identifier(modid, "giant_tree_taiga_hills_gen")).add(
+				ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.GIANT_TREE_TAIGA_HILLS),
+				(s) -> {
 					hillsBiome(s);
 				});
-		
-		BiomeModifications.create(new Identifier(modid, "giant_spruce_taiga_hills_gen")).add(ModificationPhase.POST_PROCESSING,
-				BiomeSelectors.includeByKey(BiomeKeys.GIANT_SPRUCE_TAIGA_HILLS), (s) -> {
+
+		BiomeModifications.create(new Identifier(modid, "giant_spruce_taiga_hills_gen")).add(
+				ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.GIANT_SPRUCE_TAIGA_HILLS),
+				(s) -> {
 					hillsBiome(s);
 				});
-		
-		BiomeModifications.create(new Identifier(modid, "bamboo_jungle_hills_gen")).add(ModificationPhase.POST_PROCESSING,
-				BiomeSelectors.includeByKey(BiomeKeys.BAMBOO_JUNGLE_HILLS), (s) -> {
+
+		BiomeModifications.create(new Identifier(modid, "bamboo_jungle_hills_gen")).add(
+				ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.BAMBOO_JUNGLE_HILLS), (s) -> {
 					hillsBiome(s);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "taiga_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.categories(Biome.Category.TAIGA), (s) -> {
-					s.getWeather().setTemperature(0.4f);
+					addLushCave(s);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "river_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.RIVER), (s) -> {
 					s.setDepth(-1.5F);
@@ -294,7 +305,7 @@ public class RebalancedWorldGen {
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PROTOTYPE_SPRING_WATER);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "river_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BADLANDS_RIVER_KEY), (s) -> {
 					s.setCategory(Biome.Category.RIVER);
@@ -322,10 +333,14 @@ public class RebalancedWorldGen {
 						s.setScale(0.25f);
 					}
 					s.getWeather().setTemperature(0.4f);
-					s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_NORMAL);
-					s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_FOREST);
-					s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_TAIGA);
-					s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_STONE_SHORE_SURFACE).get());
+					s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+							ConfiguredFeatures.PATCH_GRASS_NORMAL);
+					s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+							ConfiguredFeatures.PATCH_GRASS_FOREST);
+					s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+							ConfiguredFeatures.PATCH_GRASS_TAIGA);
+					s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER
+							.getKey(BiomeCreator.CONFIGURED_STONE_SHORE_SURFACE).get());
 				});
 		BiomeModifications.create(new Identifier(modid, "extreme_hills")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.MOUNTAINS), (s) -> {
@@ -341,12 +356,12 @@ public class RebalancedWorldGen {
 				BiomeSelectors.includeByKey(BiomeKeys.TAIGA_MOUNTAINS), (s) -> {
 					nonSnowyExtremeHills(s);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "extreme_hills")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.TAIGA_MOUNTAINS), (s) -> {
 					nonSnowyExtremeHills(s);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "extreme_hills")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(EXTREME_HILLS_PLATEAU_KEY), (s) -> {
 					s.getWeather().setTemperature(0.4f);
@@ -356,12 +371,12 @@ public class RebalancedWorldGen {
 				BiomeSelectors.includeByKey(BiomeKeys.GRAVELLY_MOUNTAINS), (s) -> {
 					gravellyExtremeHills(s);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "extreme_hills")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.MODIFIED_GRAVELLY_MOUNTAINS), (s) -> {
 					gravellyExtremeHills(s);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "snowy_biome_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.categories(Biome.Category.ICY), (s) -> {
 					snowyBiome(s);
@@ -385,9 +400,10 @@ public class RebalancedWorldGen {
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE_DESERT);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "savanna_biome_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.categories(Biome.Category.SAVANNA), (s) -> {
+					addLushCave(s);
 					s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.SHEEP);
 					s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.CHICKEN);
 					s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.PIG);
@@ -395,67 +411,74 @@ public class RebalancedWorldGen {
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.FLOWER_DEFAULT);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.FLOWER_WARM);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "taiga_biome_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.categories(Biome.Category.DESERT), (s) -> {
 					s.setDepth(0.2f);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE);
 				});
-		
+
 		BiomeModifications.create(new Identifier(modid, "ocean_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.OCEAN), (s) -> {
 					normalOcean(s);
-									});
+				});
 		BiomeModifications.create(new Identifier(modid, "ocean_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.DEEP_OCEAN), (s) -> {
 					normalOcean(s);
-									});
+				});
 		BiomeModifications.create(new Identifier(modid, "ocean_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.COLD_OCEAN), (s) -> {
 					normalOcean(s);
-									});
+				});
 		BiomeModifications.create(new Identifier(modid, "ocean_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.DEEP_COLD_OCEAN), (s) -> {
 					normalOcean(s);
-									});
-		
+				});
+
 		BiomeModifications.create(new Identifier(modid, "warm_ocean_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.WARM_OCEAN), (s) -> {
 					warmOcean(s);
-									});
+				});
 		BiomeModifications.create(new Identifier(modid, "warm_ocean_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.LUKEWARM_OCEAN), (s) -> {
 					warmOcean(s);
-									});
+				});
 		BiomeModifications.create(new Identifier(modid, "warm_ocean_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.DEEP_LUKEWARM_OCEAN), (s) -> {
 					warmOcean(s);
-									});
-		
+				});
+
 		BiomeModifications.create(new Identifier(modid, "frozen_ocean_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.FROZEN_OCEAN), (s) -> {
 					frozenOcean(s);
-									});
+				});
 		BiomeModifications.create(new Identifier(modid, "frozen_ocean_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.DEEP_FROZEN_OCEAN), (s) -> {
 					frozenOcean(s);
-									});
-		
-		
+				});
+		BiomeModifications.create(new Identifier(modid, "jungle_biome_gen")).add(ModificationPhase.POST_PROCESSING,
+				BiomeSelectors.categories(Biome.Category.JUNGLE), (s) -> {
+					addLushCave(s);
+				});
 	}
 
 	public static void normalOcean(BiomeModificationContext s) {
-		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_OCEAN_SURFACE).get());
+		s.getGenerationSettings().setSurfaceBuilder(
+				BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_OCEAN_SURFACE).get());
 	}
-	
-	public static void warmOcean (BiomeModificationContext s) {
-		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_SAND_OCEAN_SURFACE).get());
+
+	public static void warmOcean(BiomeModificationContext s) {
+		s.getGenerationSettings().setSurfaceBuilder(
+				BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_SAND_OCEAN_SURFACE).get());
+		addLushCave(s);
+		
 	}
-	
-	public static void frozenOcean (BiomeModificationContext s) {
-		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_FROZEN_OCEAN_SURFACE).get());
+
+	public static void frozenOcean(BiomeModificationContext s) {
+		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER
+				.getKey(BiomeCreator.CONFIGURED_FROZEN_OCEAN_SURFACE).get());
 	}
-	
+
 	public static void snowyBiome(BiomeModificationContext s) {
 		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE);
 		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_TAIGA_GRASS);
@@ -468,14 +491,18 @@ public class RebalancedWorldGen {
 		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.BROWN_MUSHROOM_TAIGA);
 		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.RED_MUSHROOM_TAIGA);
 	}
-	
+
 	public static void nonSnowyExtremeHills(BiomeModificationContext s) {
-		s.getWeather().setTemperature(0.4f);
-		s.getGenerationSettings().setBuiltInSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
-		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_NORMAL);
-		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_FOREST);
-		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_TAIGA);
-		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_TALL_GRASS);
+		s.getWeather().setTemperature(0.3f);
+		//s.getGenerationSettings().setBuiltInSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
+		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+				ConfiguredFeatures.PATCH_GRASS_NORMAL);
+		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+				ConfiguredFeatures.PATCH_GRASS_FOREST);
+		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+				ConfiguredFeatures.PATCH_GRASS_TAIGA);
+		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+				ConfiguredFeatures.PATCH_TALL_GRASS);
 		if (isSimplyImprovedTerrainLoaded) {
 			s.setScale(1.5f);
 		} else {
@@ -483,7 +510,7 @@ public class RebalancedWorldGen {
 		}
 		s.setDepth(-0.1f);
 	}
-	
+
 	public static void gravellyExtremeHills(BiomeModificationContext s) {
 		s.getWeather().setTemperature(0.3f);
 		if (isSimplyImprovedTerrainLoaded) {
@@ -493,16 +520,36 @@ public class RebalancedWorldGen {
 		}
 		s.setDepth(-0.1f);
 	}
-	
-	public static void hillsBiome (BiomeModificationContext s) {
-		//s.setDepth(0.11F);
-		//s.setScale(0.8F);
+
+	public static void hillsBiome(BiomeModificationContext s) {
+		// s.setDepth(0.11F);
+		// s.setScale(0.8F);
 		s.setDepth(0.11F);
+		GenerationSettingsContext gen = s.getGenerationSettings();
+		gen.addBuiltInFeature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ConfiguredFeatures.LARGE_DRIPSTONE);
+		gen.addBuiltInFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, ConfiguredFeatures.DRIPSTONE_CLUSTER);
+		gen.addBuiltInFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, ConfiguredFeatures.SMALL_DRIPSTONE);
 		if (isSimplyImprovedTerrainLoaded) {
 			s.setScale(1.2f);
 		} else {
 			s.setScale(0.6f);
 		}
+	}
+	
+	public static void addLushCave (BiomeModificationContext s) {
+		GenerationSettingsContext gen = s.getGenerationSettings();
+		gen.addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+				ConfiguredFeatures.LUSH_CAVES_CEILING_VEGETATION);
+		gen.addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.CAVE_VINES);
+		gen.addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+				ConfiguredFeatures.LUSH_CAVES_CLAY);
+		gen.addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+				ConfiguredFeatures.LUSH_CAVES_VEGETATION);
+		gen.addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+				ConfiguredFeatures.ROOTED_AZALEA_TREES);
+		gen.addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.SPORE_BLOSSOM);
+		gen.addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
+				ConfiguredFeatures.CLASSIC_VINES_CAVE_FEATURE);
 	}
 
 }
