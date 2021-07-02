@@ -6,8 +6,6 @@
   "mixins": [
     "BedBlockMixin",
   	"GolemProtectChestMixin",
-    "DisableLakeMixin",
-    "DisableSpringMixin",
     "FireBlockMixin",
     "KnowledgeBookItemMixin",
     "LocalDifficultyMixin",

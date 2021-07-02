@@ -215,6 +215,16 @@ public class RebalancedWorldGen {
 
 	public static void doBiomeModifications() {
 
+		// REMOVE STUPID GEN STUFF
+		BiomeModifications.create(new Identifier("remove_lakes_and_springs")).add(ModificationPhase.ADDITIONS,
+				BiomeSelectors.foundInOverworld(),
+				(s) -> {
+					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.LAKE_WATER);
+					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.LAKE_LAVA);
+					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
+					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA_DOUBLE);
+				});
+		
 		// SPAWNING STUFF
 		BiomeModifications.create(new Identifier("wither_skeleton")).add(ModificationPhase.ADDITIONS,
 				BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY),
