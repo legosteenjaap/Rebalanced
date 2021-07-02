@@ -284,10 +284,7 @@ public class RebalancedWorldGen {
 					hillsBiome(s);
 				});
 
-		BiomeModifications.create(new Identifier(modid, "taiga_gen")).add(ModificationPhase.POST_PROCESSING,
-				BiomeSelectors.categories(Biome.Category.TAIGA), (s) -> {
-					addLushCave(s);
-				});
+
 
 		BiomeModifications.create(new Identifier(modid, "river_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.RIVER), (s) -> {
@@ -403,7 +400,6 @@ public class RebalancedWorldGen {
 
 		BiomeModifications.create(new Identifier(modid, "savanna_biome_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.categories(Biome.Category.SAVANNA), (s) -> {
-					addLushCave(s);
 					s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.SHEEP);
 					s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.CHICKEN);
 					s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.PIG);
@@ -458,7 +454,6 @@ public class RebalancedWorldGen {
 				});
 		BiomeModifications.create(new Identifier(modid, "jungle_biome_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.categories(Biome.Category.JUNGLE), (s) -> {
-					addLushCave(s);
 				});
 	}
 
@@ -470,7 +465,6 @@ public class RebalancedWorldGen {
 	public static void warmOcean(BiomeModificationContext s) {
 		s.getGenerationSettings().setSurfaceBuilder(
 				BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_SAND_OCEAN_SURFACE).get());
-		addLushCave(s);
 		
 	}
 
@@ -508,7 +502,7 @@ public class RebalancedWorldGen {
 		} else {
 			s.setScale(0.7f);
 		}
-		s.setDepth(-0.1f);
+		//s.setDepth(-0.1f);
 	}
 
 	public static void gravellyExtremeHills(BiomeModificationContext s) {
@@ -518,17 +512,13 @@ public class RebalancedWorldGen {
 		} else {
 			s.setScale(0.7f);
 		}
-		s.setDepth(-0.1f);
+		//s.setDepth(-0.1f);
 	}
 
 	public static void hillsBiome(BiomeModificationContext s) {
 		// s.setDepth(0.11F);
 		// s.setScale(0.8F);
 		s.setDepth(0.11F);
-		GenerationSettingsContext gen = s.getGenerationSettings();
-		gen.addBuiltInFeature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ConfiguredFeatures.LARGE_DRIPSTONE);
-		gen.addBuiltInFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, ConfiguredFeatures.DRIPSTONE_CLUSTER);
-		gen.addBuiltInFeature(GenerationStep.Feature.UNDERGROUND_DECORATION, ConfiguredFeatures.SMALL_DRIPSTONE);
 		if (isSimplyImprovedTerrainLoaded) {
 			s.setScale(1.2f);
 		} else {

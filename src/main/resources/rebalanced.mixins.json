@@ -28,8 +28,7 @@
     "ElytraMixin",
     "RiverReduxMixin",
     "EscapeDangerGoalMixin",
-    "MixinChunkGenerator",
-    "MixinVanillaLayeredBiomeSource"
+    "VanillaLayeredBiomeSourceMixin"
   ],
   "client": [
 	"LongerDayCycleClientMixin"
