@@ -12,6 +12,6 @@ public class Rebalanced implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		RebalancedWorldGen.init();
-		LootTables.init();
+		//LootTables.init();
 	}
 }
