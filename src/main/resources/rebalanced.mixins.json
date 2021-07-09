@@ -24,9 +24,17 @@
     "FireworkItemMixin",
     "MoreRabbitMixin",
     "ElytraMixin",
-    "RiverReduxMixin",
+    //"RiverReduxMixin",
     "EscapeDangerGoalMixin",
-    "VanillaLayeredBiomeSourceMixin"
+    "VanillaLayeredBiomeSourceMixin",
+    "ContinentMixin",
+    "AddBaseBiomeLayerMixin",
+    "AddTemperateBiomesLayerMixin",
+    "AddCoolBiomesLayerMixin",
+    "AddSpecialBiomesLayerMixin",
+    "DisableRiverDebugMixin",
+    "BiomeLayersMixin",
+    "IslandLayerMixin"
   ],
   "client": [
 	"LongerDayCycleClientMixin"

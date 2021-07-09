@@ -22,12 +22,12 @@ public class VanillaLayeredBiomeSourceMixin {
 	
 	@ModifyConstant(constant = @Constant(intValue = 6), method = "<init>")
 	private static int largeBiomes(int original) {
-		return 7;
+		return 6;
 	}
 	
-	@ModifyConstant(constant = @Constant(intValue = 4, ordinal = 0), method = "<init>")
+	@ModifyConstant(constant = @Constant(intValue = 4), method = "<init>")
 	private static int normalBiomes(int original) {
-		return 6;
+		return 1;
 	}
 	
 }

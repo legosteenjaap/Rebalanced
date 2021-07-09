@@ -32,6 +32,8 @@ public class RebalancedWorldGen {
 
 	private final static String modid = Rebalanced.modid;
 
+	private final static boolean disableRiver = true;
+	
 	private final static boolean isSimplyImprovedTerrainLoaded = FabricLoader.getInstance()
 			.isModLoaded("simplyimprovedterrain");
 
@@ -131,13 +133,13 @@ public class RebalancedWorldGen {
 	public static void addBiomeVariants() {
 		OverworldBiomes.addEdgeBiome(BiomeKeys.BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 1.3);
 		OverworldBiomes.addEdgeBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 1.3);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.FOREST, 0.1);
+		/*OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.FOREST, 0.1);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.SWAMP, 0.1);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.DARK_FOREST, 0.1);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.BIRCH_FOREST, 0.1);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.TAIGA, 0.1);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.TAIGA, BiomeKeys.GIANT_TREE_TAIGA, 0.1);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.TAIGA, BiomeKeys.GIANT_SPRUCE_TAIGA, 0.1);
+		OverworldBiomes.addBiomeVariant(BiomeKeys.TAIGA, BiomeKeys.GIANT_SPRUCE_TAIGA, 0.1);*/
 		OverworldBiomes.addHillsBiome(BiomeKeys.MOUNTAINS, EXTREME_HILLS_PLATEAU_KEY, 1f);
 		OverworldBiomes.addHillsBiome(BiomeKeys.JUNGLE, JUNGLE_PLATEAU_KEY, 0.25);
 
@@ -145,43 +147,49 @@ public class RebalancedWorldGen {
 		OverworldBiomes.addShoreBiome(BiomeKeys.SAVANNA_PLATEAU, SAVANNA_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.SHATTERED_SAVANNA, SAVANNA_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.SHATTERED_SAVANNA_PLATEAU, SAVANNA_BEACH_KEY, 1f);
-		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT, BiomeKeys.SAVANNA, 1f);
 
 		OverworldBiomes.addHillsBiome(BiomeKeys.SAVANNA, SAVANNA_HILLS_KEY, 0.6f);
 		OverworldBiomes.addHillsBiome(BiomeKeys.PLAINS, BiomeKeys.WOODED_HILLS, 0.2f);
 
-		OverworldBiomes.setRiverBiome(BiomeKeys.SAVANNA, SAVANNA_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(SAVANNA_HILLS_KEY, SAVANNA_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.SAVANNA_PLATEAU, SAVANNA_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.SHATTERED_SAVANNA, SAVANNA_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.SHATTERED_SAVANNA_PLATEAU, SAVANNA_RIVER_KEY);
+		if (!disableRiver) {
+			OverworldBiomes.setRiverBiome(BiomeKeys.SAVANNA, SAVANNA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(SAVANNA_HILLS_KEY, SAVANNA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SAVANNA_PLATEAU, SAVANNA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SHATTERED_SAVANNA, SAVANNA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SHATTERED_SAVANNA_PLATEAU, SAVANNA_RIVER_KEY);
+			
+			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT, DESERT_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_HILLS, DESERT_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_LAKES, DESERT_RIVER_KEY);
+			
+			OverworldBiomes.setRiverBiome(BiomeKeys.BADLANDS_PLATEAU, BADLANDS_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BADLANDS_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BADLANDS_LOW_PLATEAU_KEY, BADLANDS_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.BADLANDS, BADLANDS_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.ERODED_BADLANDS, BADLANDS_RIVER_KEY);
+			
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA, BiomeKeys.FROZEN_RIVER);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_HILLS, BiomeKeys.FROZEN_RIVER);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_MOUNTAINS, BiomeKeys.FROZEN_RIVER);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TUNDRA, BiomeKeys.FROZEN_RIVER);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_BEACH, BiomeKeys.FROZEN_RIVER);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_MOUNTAINS, BiomeKeys.FROZEN_RIVER);
 
-		OverworldBiomes.addBiomeVariant(BiomeKeys.FOREST, BiomeKeys.DESERT, 1, OverworldClimate.DRY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SWAMP, BiomeKeys.SWAMP);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SWAMP_HILLS, BiomeKeys.SWAMP_HILLS);
+			
+			OverworldBiomes.setRiverBiome(BiomeKeys.MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.WOODED_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.STONE_SHORE, EXTREME_HILLS_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.GRAVELLY_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.MODIFIED_GRAVELLY_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.TAIGA_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
+		}
+		//OverworldBiomes.addBiomeVariant(BiomeKeys.FOREST, BiomeKeys.DESERT, 1, OverworldClimate.DRY);
 		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT, BiomeKeys.DESERT, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_HILLS, BiomeKeys.DESERT_HILLS, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_LAKES, 1f);
-		OverworldBiomes.setRiverBiome(BiomeKeys.DESERT, DESERT_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_HILLS, DESERT_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_LAKES, DESERT_RIVER_KEY);
-
-		OverworldBiomes.setRiverBiome(BiomeKeys.BADLANDS_PLATEAU, BADLANDS_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BADLANDS_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BADLANDS_LOW_PLATEAU_KEY, BADLANDS_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.BADLANDS, BADLANDS_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.ERODED_BADLANDS, BADLANDS_RIVER_KEY);
-
-		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT, BiomeKeys.SAVANNA, 1f);
-		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT_HILLS, BiomeKeys.SAVANNA, 1f);
-		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT_LAKES, BiomeKeys.SAVANNA, 1f);
-		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT, BiomeKeys.SAVANNA, 1f);
-		OverworldBiomes.addEdgeBiome(BiomeKeys.DESERT, BiomeKeys.SAVANNA, 1f);
-
-		OverworldBiomes.setRiverBiome(BiomeKeys.MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.WOODED_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.STONE_SHORE, EXTREME_HILLS_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.GRAVELLY_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.MODIFIED_GRAVELLY_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
-		OverworldBiomes.setRiverBiome(BiomeKeys.TAIGA_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
+		
 
 		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA, GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA_HILLS, GRAVELLY_BEACH_KEY, 1f);
@@ -195,21 +203,13 @@ public class RebalancedWorldGen {
 		OverworldBiomes.addShoreBiome(BiomeKeys.BADLANDS_PLATEAU, BiomeKeys.BADLANDS_PLATEAU, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.ERODED_BADLANDS, BiomeKeys.ERODED_BADLANDS, 1f);
 
-		OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA, BiomeKeys.FROZEN_RIVER);
-		OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_HILLS, BiomeKeys.FROZEN_RIVER);
-		OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_MOUNTAINS, BiomeKeys.FROZEN_RIVER);
-		OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TUNDRA, BiomeKeys.FROZEN_RIVER);
-		OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_BEACH, BiomeKeys.FROZEN_RIVER);
-		OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_MOUNTAINS, BiomeKeys.FROZEN_RIVER);
+		
 
-		OverworldBiomes.setRiverBiome(BiomeKeys.SWAMP, BiomeKeys.SWAMP);
-		OverworldBiomes.setRiverBiome(BiomeKeys.SWAMP_HILLS, BiomeKeys.SWAMP_HILLS);
-
-		OverworldBiomes.addBiomeVariant(BiomeKeys.FROZEN_OCEAN, BiomeKeys.OCEAN, 1f);
+		/*OverworldBiomes.addBiomeVariant(BiomeKeys.FROZEN_OCEAN, BiomeKeys.OCEAN, 1f);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.DEEP_FROZEN_OCEAN, BiomeKeys.DEEP_OCEAN, 0.8f);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.MOUNTAINS, BiomeKeys.WOODED_MOUNTAINS, 0.2);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.SNOWY_TUNDRA, BiomeKeys.FROZEN_OCEAN, 0.2f);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.SNOWY_BEACH, BiomeKeys.FROZEN_OCEAN, 0.2);
+		OverworldBiomes.addBiomeVariant(BiomeKeys.SNOWY_BEACH, BiomeKeys.FROZEN_OCEAN, 0.2);*/
 		OverworldBiomes.addHillsBiome(BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_HILLS, 1f);
 	}
 
@@ -299,7 +299,6 @@ public class RebalancedWorldGen {
 		BiomeModifications.create(new Identifier(modid, "river_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.RIVER), (s) -> {
 					s.setDepth(-1.5F);
-					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.FREEZE_TOP_LAYER);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PROTOTYPE_SPRING_WATER);
 					s.getWeather().setPrecipitation(Biome.Precipitation.RAIN);
@@ -308,7 +307,6 @@ public class RebalancedWorldGen {
 		BiomeModifications.create(new Identifier(modid, "river_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.FROZEN_RIVER), (s) -> {
 					s.setDepth(-1.5F);
-					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.FREEZE_TOP_LAYER);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PROTOTYPE_SPRING_WATER);
 				});
