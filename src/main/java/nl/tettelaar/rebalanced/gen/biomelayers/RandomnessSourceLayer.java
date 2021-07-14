@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.gen;
+package nl.tettelaar.rebalanced.gen.biomelayers;
 
 import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;
 import net.minecraft.world.biome.layer.util.LayerFactory;

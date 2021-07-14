@@ -33,8 +33,10 @@
     "AddCoolBiomesLayerMixin",
     "AddSpecialBiomesLayerMixin",
     "DisableRiverDebugMixin",
-    "BiomeLayersMixin",
-    "IslandLayerMixin"
+    "BiomeLayersDebugMixin",
+    "IslandLayerMixin",
+    "MoreIslandsMixin",
+    "RemoveOldIslandsMixin"
   ],
   "client": [
 	"LongerDayCycleClientMixin"

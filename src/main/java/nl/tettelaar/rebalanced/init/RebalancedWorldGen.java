@@ -32,6 +32,8 @@ public class RebalancedWorldGen {
 
 	private final static String modid = Rebalanced.modid;
 
+	public static final int mainContinentSize = 6;
+	
 	private final static boolean disableRiver = true;
 	
 	private final static boolean isSimplyImprovedTerrainLoaded = FabricLoader.getInstance()

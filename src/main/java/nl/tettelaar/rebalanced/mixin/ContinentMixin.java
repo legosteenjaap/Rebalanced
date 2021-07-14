@@ -8,24 +8,23 @@ import net.minecraft.util.math.noise.PerlinNoiseSampler;
 import net.minecraft.world.biome.BiomeIds;
 import net.minecraft.world.biome.layer.ContinentLayer;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
+import nl.tettelaar.rebalanced.init.RebalancedWorldGen;
 
 @Mixin(ContinentLayer.class)
 public class ContinentMixin {
-
-	private static int mainContinentSize = 3;
 
 	@Overwrite
 	public int sample(LayerRandomnessSource context, int x, int y) {
 		
 		PerlinNoiseSampler samp = context.getNoiseSampler();
 
-		double noise = samp.sample((double) x / 4, 0, (double) y / 4);
+		double noise = samp.sample((double) x / 24, 0, (double) y / 24);
 
-		if (x <= mainContinentSize && x >=-mainContinentSize && y <= mainContinentSize && y >= -mainContinentSize) {
-			noise += (0.3 - (0.03 * (MathHelper.abs(x) + MathHelper.abs(y))));
+		if (x <= RebalancedWorldGen.mainContinentSize && x >=-RebalancedWorldGen.mainContinentSize && y <= RebalancedWorldGen.mainContinentSize && y >= -RebalancedWorldGen.mainContinentSize) {
+			noise += (0.45 - (0.045 * (MathHelper.abs(x) + MathHelper.abs(y))));
 		}
 		
-		if (noise > 0.25) {
+		if (noise > 0.15) {
 			return BiomeIds.PLAINS;
 		} else {
 			return BiomeIds.OCEAN;

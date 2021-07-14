@@ -26,7 +26,7 @@ public class ChangedGameRules {
 	
 	public static final Type<BooleanRule> DO_LIMITED_CRAFTING_TYPE = create(false);
 	
-	public static final Type<IntRule> SPAWN_RADIUS_TYPE = create(500);
+	public static final Type<IntRule> SPAWN_RADIUS_TYPE = create(0);
 	
 	public static final Type<BooleanRule> ANNOUNCE_ADVANCEMENTS_TYPE = create(false);
 	

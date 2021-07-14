@@ -27,7 +27,7 @@ public class VanillaLayeredBiomeSourceMixin {
 	
 	@ModifyConstant(constant = @Constant(intValue = 4), method = "<init>")
 	private static int normalBiomes(int original) {
-		return 1;
+		return 5;
 	}
 	
 }

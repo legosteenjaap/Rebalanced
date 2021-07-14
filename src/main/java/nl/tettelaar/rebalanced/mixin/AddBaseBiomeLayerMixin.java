@@ -41,12 +41,17 @@ public class AddBaseBiomeLayerMixin {
 		} else {
 			switch (value) {
 			case BiomeIds.PLAINS:
-				cir.setReturnValue(context.nextInt(10) == 0 ? TEMPERATE_BIOMES[context.nextInt(TEMPERATE_BIOMES.length)] : COOL_BIOMES[context.nextInt(COOL_BIOMES.length)]);
+				int pBiome = TEMPERATE_BIOMES[context.nextInt(TEMPERATE_BIOMES.length)];
+				if (pBiome != BiomeIds.MOUNTAINS && pBiome != BiomeIds.TAIGA) {
+					cir.setReturnValue(pBiome);
+				} else {
+					cir.setReturnValue(context.nextInt(2) == 0 ? BiomeIds.FOREST : BiomeIds.PLAINS);
+				}
 				break;
 			case BiomeIds.DESERT:
-				int biome = this.chosenGroup1[context.nextInt(this.chosenGroup1.length)];
-				if (biome != BiomeIds.SAVANNA && biome != BiomeIds.PLAINS) {
-					cir.setReturnValue(biome);
+				int dBiome = this.chosenGroup1[context.nextInt(this.chosenGroup1.length)];
+				if (dBiome != BiomeIds.SAVANNA && dBiome != BiomeIds.PLAINS) {
+					cir.setReturnValue(dBiome);
 				} else {
 					cir.setReturnValue(BiomeIds.DESERT);
 				}
@@ -55,7 +60,12 @@ public class AddBaseBiomeLayerMixin {
 				cir.setReturnValue(SNOWY_BIOMES[context.nextInt(SNOWY_BIOMES.length)]);
 				break;
 			case BiomeIds.TAIGA:
-				cir.setReturnValue(TEMPERATE_BIOMES[context.nextInt(TEMPERATE_BIOMES.length)]);
+				int tBiome = COOL_BIOMES[context.nextInt(COOL_BIOMES.length)];
+				if (tBiome != BiomeIds.FOREST && tBiome != BiomeIds.PLAINS) {
+					cir.setReturnValue(tBiome);
+				} else {
+					cir.setReturnValue(BiomeIds.TAIGA);
+				}
 				break;
 			default:
 				cir.setReturnValue(value);
