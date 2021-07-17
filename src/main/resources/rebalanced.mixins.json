@@ -37,7 +37,10 @@
     "IslandLayerMixin",
     "MoreIslandsMixin",
     "RemoveOldIslandsMixin",
-    "AdvancementManagerMixin"
+    "AdvancementManagerMixin",
+    "MultiNoiseBiomeSourceMixin",
+    "NetherBiomeMixin",
+    "MultiNoiseBiomeSourceAccessor"
   ],
   "client": [
 	"LongerDayCycleClientMixin"

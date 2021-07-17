@@ -31,9 +31,6 @@ public class LootTables {
 		
 		for (Pair<List<Identifier>, List<Identifier>> book : RecipeAPI.getKnowledgeBooksLootTable()) {
 			
-			System.out.println("hi");
-			System.out.println(book);
-			
 			ArrayList<ItemEntry> itemEntries = new ArrayList<>();
 			
 			for (Identifier recipe : book.getLeft()) {
@@ -54,9 +51,7 @@ public class LootTables {
 				itemBuilder.conditionally(lootCondition);
 				itemEntries.add((ItemEntry) itemBuilder.build());
 			}
-			
-			System.out.println(itemEntries);
-			
+						
 			for (Identifier loottable : book.getRight()) {
 				ArrayList<ItemEntry> itemEntry = lootPools.get(loottable);
 				if (itemEntry == null) {
@@ -79,7 +74,6 @@ public class LootTables {
 					lootPoolBuilder = lootPoolBuilder.withEntry(entry);
 				}
 				supplier.pool(lootPoolBuilder);
-				System.out.println(id);
 			}
 		})));
 	}
