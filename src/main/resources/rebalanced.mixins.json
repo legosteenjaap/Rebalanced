@@ -36,7 +36,8 @@
     "BiomeLayersDebugMixin",
     "IslandLayerMixin",
     "MoreIslandsMixin",
-    "RemoveOldIslandsMixin"
+    "RemoveOldIslandsMixin",
+    "AdvancementManagerMixin"
   ],
   "client": [
 	"LongerDayCycleClientMixin"

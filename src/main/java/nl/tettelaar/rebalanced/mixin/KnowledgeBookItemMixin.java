@@ -2,6 +2,7 @@ package nl.tettelaar.rebalanced.mixin;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -10,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,6 +21,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -60,8 +63,14 @@ public class KnowledgeBookItemMixin extends Item {
 				for (Recipe<?> recipe : list) {
 					if (player.getRecipeBook().contains(recipe)) {
 						user.incrementStat(Stats.USED.getOrCreateStat(this));
-						user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.BLOCKS, 1f, 1f);
-						cir.setReturnValue(TypedActionResult.fail(itemStack));
+						user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.PLAYERS, 1f, 1f);
+						Random random = user.world.getRandom();
+						int ranInt = random.nextInt(5) + 2;
+						for (int i = 0; i < ranInt; i++) {
+							ExperienceOrbEntity.spawn((ServerWorld) user.world, user.getPos(), random.nextInt(3));
+						}
+
+						cir.setReturnValue(TypedActionResult.success(itemStack, world.isClient()));
 					}
 				}
 			} else {
@@ -76,6 +85,7 @@ public class KnowledgeBookItemMixin extends Item {
 		ItemStack itemStack = user.getStackInHand(hand);
 
 		if (cir.getReturnValue() != TypedActionResult.fail(itemStack)) {
+			user.setStackInHand(hand, ItemStack.EMPTY);
 			user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.BLOCKS, 1f, 1f);
 		}
 	}

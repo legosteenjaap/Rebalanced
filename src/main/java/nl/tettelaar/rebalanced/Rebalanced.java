@@ -3,6 +3,7 @@ package nl.tettelaar.rebalanced;
 import net.fabricmc.api.ModInitializer;
 import nl.tettelaar.rebalanced.init.LootTables;
 import nl.tettelaar.rebalanced.init.RebalancedWorldGen;
+import nl.tettelaar.rebalanced.init.Recipes;
 
 public class Rebalanced implements ModInitializer {
 	public static final String modid = "rebalanced";
@@ -12,6 +13,7 @@ public class Rebalanced implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		RebalancedWorldGen.init();
-		//LootTables.init();
+		Recipes.init();
+		LootTables.init();
 	}
 }
