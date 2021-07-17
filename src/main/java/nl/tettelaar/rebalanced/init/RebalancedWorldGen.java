@@ -70,7 +70,7 @@ public class RebalancedWorldGen {
 			new Identifier(modid, "gravelly_beach"));
 
 	// RIVER STUFF
-	private static final Biome DESERT_RIVER = BiomeCreator.createDesertRiver(-1.5f, 0.1f);
+	private static final Biome DESERT_RIVER = BiomeCreator.createDesertRiver(-0.75f, 0.1f);
 	public static final RegistryKey<Biome> DESERT_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "desert_river"));
 
@@ -83,7 +83,7 @@ public class RebalancedWorldGen {
 	public static final RegistryKey<Biome> EXTREME_HILLS_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "extreme_hills_river"));
 
-	private static final Biome SAVANNA_RIVER = DefaultBiomeCreator.createSavanna(-1.5f, 0.1f, 1f, false, false);
+	private static final Biome SAVANNA_RIVER = DefaultBiomeCreator.createSavanna(-1f, 0.1f, 1f, false, false);
 	public static final RegistryKey<Biome> SAVANNA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "savanna_river"));
 
@@ -308,7 +308,7 @@ public class RebalancedWorldGen {
 
 		BiomeModifications.create(new Identifier(modid, "river_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.FROZEN_RIVER), (s) -> {
-					s.setDepth(-1.5F);
+					s.setDepth(-1F);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PROTOTYPE_SPRING_WATER);
 				});
