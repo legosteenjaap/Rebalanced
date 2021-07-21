@@ -1,10 +1,12 @@
 package nl.tettelaar.rebalanced.gen.biomelayers;
 
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.BiomeIds;
 import net.minecraft.world.biome.layer.type.MergingLayer;
 import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
 import net.minecraft.world.biome.layer.util.LayerSampler;
+import nl.tettelaar.rebalanced.init.worldgen.Biomes;
 
 public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTransformer {
 	INSTANCE;
@@ -36,6 +38,13 @@ public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTr
 				return BiomeIds.GIANT_SPRUCE_TAIGA;
 			} else if (specialBiome == 2) {
 				return BiomeIds.GIANT_TREE_TAIGA;
+			}
+			break;
+		case BiomeIds.SNOWY_TAIGA:
+			if (specialBiome == 1) {
+				return BuiltinRegistries.BIOME.getRawId(Biomes.SNOWY_GIANT_SPRUCE_TAIGA);
+			} else if (specialBiome == 2) {
+				return BuiltinRegistries.BIOME.getRawId(Biomes.SNOWY_GIANT_TREE_TAIGA);
 			}
 			break;
 		}

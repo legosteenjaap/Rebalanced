@@ -4,43 +4,55 @@
   "package": "nl.tettelaar.rebalanced.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "BedBlockMixin",
-  	"GolemProtectChestMixin",
-    "FireBlockMixin",
-    "KnowledgeBookItemMixin",
+    "worldgen.MultiNoiseBiomeSourceMixin",
+    "worldgen.NetherBiomeMixin",
+    "worldgen.MultiNoiseBiomeSourceAccessor",
+    
+    "worldgen.WoodedBadlandsSurfaceBuilderMixin",
+    
+    "worldgen.BiomeRawIdMixin",
+    "worldgen.VanillaLayeredBiomeSourceMixin",
+    "worldgen.ContinentMixin",
+    "worldgen.AddBaseBiomeLayerMixin",
+    "worldgen.AddTemperateBiomesLayerMixin",
+    "worldgen.AddCoolBiomesLayerMixin",
+    "worldgen.AddSpecialBiomesLayerMixin",
+    "worldgen.DisableRiverDebugMixin",
+    "worldgen.BiomeLayersDebugMixin",
+    "worldgen.IslandLayerMixin",
+    "worldgen.MoreIslandsMixin",
+    "worldgen.RemoveOldIslandsMixin",
+	//"worldgen.RiverReduxMixin",
+    
+    "worldgen.DefaultBiomeInvoker",
+    
+	"gamerules.GameRulesMixin",
+    "gamerules.BooleanRuleAccessor",
+    "gamerules.IntRuleAccessor",
+    "gamerules.GameRuleTypeAccessor",
+    
+    "recipe.AdvancementManagerMixin",
+	"recipe.KnowledgeBookItemMixin",
+    
+  	"village.GolemProtectChestMixin",
+    "village.VillagerEntityMixin",
+
     "LocalDifficultyMixin",
-    "StructureConfigMixin",
-    "WoodedBadlandsSurfaceBuilderMixin",
+	"BedBlockMixin",
     "WrittenBookMixin",
-    "VillagerEntityMixin",
-    "DefaultBiomeInvoker",
+    
     "AttackGoalMixin",
     "LongerDayCycleServerMixin",
     "SleepMechanicMixin",
-    "GameRulesMixin",
-    "BooleanRuleAccessor",
-    "IntRuleAccessor",
-    "GameRuleTypeAccessor",
+
     "FireworkItemMixin",
     "MoreRabbitMixin",
     "ElytraMixin",
-    //"RiverReduxMixin",
-    "EscapeDangerGoalMixin",
-    "VanillaLayeredBiomeSourceMixin",
-    "ContinentMixin",
-    "AddBaseBiomeLayerMixin",
-    "AddTemperateBiomesLayerMixin",
-    "AddCoolBiomesLayerMixin",
-    "AddSpecialBiomesLayerMixin",
-    "DisableRiverDebugMixin",
-    "BiomeLayersDebugMixin",
-    "IslandLayerMixin",
-    "MoreIslandsMixin",
-    "RemoveOldIslandsMixin",
-    "AdvancementManagerMixin",
-    "MultiNoiseBiomeSourceMixin",
-    "NetherBiomeMixin",
-    "MultiNoiseBiomeSourceAccessor"
+
+    "EscapeDangerGoalMixin"
+    
+    //"FireBlockMixin",
+
   ],
   "client": [
 	"LongerDayCycleClientMixin"

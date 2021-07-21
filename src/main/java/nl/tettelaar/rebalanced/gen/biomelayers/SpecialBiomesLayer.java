@@ -15,9 +15,9 @@ public enum SpecialBiomesLayer implements RandomnessSourceLayer {
 
 		double noise = samp.sample(((double) x / 20), 0, ((double) y / 20));
 		
-		if (noise > 0.6) {
+		if (noise > 0.45) {
 			return 1;
-		} else if (noise < -0.5) {
+		} else if (noise < -0.15) {
 			return 2;
 		} else if (noise < 0.1 && noise > -0.1) {
 			return 3;

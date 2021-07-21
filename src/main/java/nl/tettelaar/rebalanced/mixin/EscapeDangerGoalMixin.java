@@ -24,7 +24,7 @@ import net.minecraft.util.math.Vec3d;
 @Mixin(EscapeDangerGoal.class)
 public abstract class EscapeDangerGoalMixin extends Goal {
 
-	final double distance = 15D;
+	final double distance = 30D;
 
 	private int timer;
 
@@ -53,7 +53,7 @@ public abstract class EscapeDangerGoalMixin extends Goal {
 		timer++;
 		if (this.mob.getNavigation().isIdle()) {
 			this.findTarget();
-			this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed * 1.5);
+			this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed);
 		}
 	}
 

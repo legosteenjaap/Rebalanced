@@ -8,6 +8,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeatures;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
@@ -16,8 +18,8 @@ import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.GravellySurfaceBuilder;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.SavannaBeachSurfaceBuilder;
+import nl.tettelaar.rebalanced.mixin.worldgen.DefaultBiomeInvoker;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.HeightDependSurfaceBuilder;
-import nl.tettelaar.rebalanced.mixin.DefaultBiomeInvoker;
 
 public class BiomeCreator {
 
@@ -173,11 +175,47 @@ public class BiomeCreator {
 		DefaultBiomeFeatures.addEmeraldOre(builder2);
 		DefaultBiomeFeatures.addInfestedStone(builder2);
 		DefaultBiomeFeatures.addFrozenTopLayer(builder2);
-		return (new Biome.Builder()).precipitation(Biome.Precipitation.RAIN).category(Biome.Category.EXTREME_HILLS)
+		return (new Biome.Builder()).precipitation(Biome.Precipitation.RAIN).category(Biome.Category.RIVER)
 				.depth(-1f).scale(0.1f).temperature(0.2F).downfall(0.3F)
 				.effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463)
 						.skyColor(DefaultBiomeInvoker.invokeGetSkyColor(0.2F)).moodSound(BiomeMoodSound.CAVE).build())
 				.spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 	}
+	
+	public static Biome createSnowyGiantTreeTaiga(float depth, float scale, boolean spruce) {
+	      SpawnSettings.Builder builder = new SpawnSettings.Builder();
+	      DefaultBiomeFeatures.addFarmAnimals(builder);
+	      builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.WOLF, 8, 4, 4));
+	      builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.RABBIT, 4, 2, 3));
+	      builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.FOX, 8, 2, 4));
+	      if (spruce) {
+	         DefaultBiomeFeatures.addBatsAndMonsters(builder);
+	      } else {
+	         DefaultBiomeFeatures.addCaveMobs(builder);
+	         DefaultBiomeFeatures.addMonsters(builder, 100, 25, 100);
+	      }
+
+	      GenerationSettings.Builder builder2 = (new GenerationSettings.Builder()).surfaceBuilder(ConfiguredSurfaceBuilders.GIANT_TREE_TAIGA);
+	      DefaultBiomeFeatures.addDefaultUndergroundStructures(builder2);
+	      builder2.structureFeature(ConfiguredStructureFeatures.RUINED_PORTAL);
+	      DefaultBiomeFeatures.addLandCarvers(builder2);
+	      DefaultBiomeFeatures.addDefaultLakes(builder2);
+	      DefaultBiomeFeatures.addAmethystGeodes(builder2);
+	      DefaultBiomeFeatures.addDungeons(builder2);
+	      DefaultBiomeFeatures.addMossyRocks(builder2);
+	      DefaultBiomeFeatures.addLargeFerns(builder2);
+	      DefaultBiomeFeatures.addMineables(builder2);
+	      DefaultBiomeFeatures.addDefaultOres(builder2);
+	      DefaultBiomeFeatures.addDefaultDisks(builder2);
+	      builder2.feature(GenerationStep.Feature.VEGETAL_DECORATION, spruce ? ConfiguredFeatures.TREES_GIANT_SPRUCE : ConfiguredFeatures.TREES_GIANT);
+	      DefaultBiomeFeatures.addDefaultFlowers(builder2);
+	      DefaultBiomeFeatures.addGiantTaigaGrass(builder2);
+	      DefaultBiomeFeatures.addDefaultMushrooms(builder2);
+	      DefaultBiomeFeatures.addDefaultVegetation(builder2);
+	      DefaultBiomeFeatures.addSprings(builder2);
+	      DefaultBiomeFeatures.addSweetBerryBushesSnowy(builder2);
+	      DefaultBiomeFeatures.addFrozenTopLayer(builder2);
+	      return (new Biome.Builder()).precipitation(Biome.Precipitation.SNOW).category(Biome.Category.TAIGA).depth(depth).scale(scale).temperature(-0.5f).downfall(0.8F).effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(-0.5f)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
+	   }
 
 }

@@ -8,8 +8,8 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.BooleanRule;
 import net.minecraft.world.GameRules.IntRule;
 import net.minecraft.world.GameRules.Type;
-import nl.tettelaar.rebalanced.mixin.BooleanRuleAccessor;
-import nl.tettelaar.rebalanced.mixin.IntRuleAccessor;
+import nl.tettelaar.rebalanced.mixin.gamerules.BooleanRuleAccessor;
+import nl.tettelaar.rebalanced.mixin.gamerules.IntRuleAccessor;
 
 public class ChangedGameRules {
 	public static final Type<BooleanRule> REDUCED_DEBUG_INFO_TYPE = BooleanRuleAccessor.create(true, (server, rule) -> {
