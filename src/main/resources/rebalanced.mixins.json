@@ -38,18 +38,20 @@
     "village.VillagerEntityMixin",
 
     "LocalDifficultyMixin",
-	"BedBlockMixin",
+	"sleep.BedBlockMixin",
     "WrittenBookMixin",
     
     "AttackGoalMixin",
     "LongerDayCycleServerMixin",
-    "SleepMechanicMixin",
+    "sleep.ServerWorldMixin",
 
     "FireworkItemMixin",
     "MoreRabbitMixin",
     "ElytraMixin",
 
-    "EscapeDangerGoalMixin"
+    "EscapeDangerGoalMixin",
+    
+    "ReplaceBlockMixin"
     
     //"FireBlockMixin",
 

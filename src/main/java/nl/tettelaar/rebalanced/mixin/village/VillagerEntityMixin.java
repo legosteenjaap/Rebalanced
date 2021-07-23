@@ -19,7 +19,7 @@ import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.village.VillagerData;
 import net.minecraft.world.World;
-import nl.tettelaar.rebalanced.util.TradeOffers;
+import nl.tettelaar.rebalanced.TradeOffers;
 
 @Mixin(VillagerEntity.class)
 public abstract class VillagerEntityMixin extends MerchantEntity {
