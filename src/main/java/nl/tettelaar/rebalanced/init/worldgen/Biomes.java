@@ -111,7 +111,6 @@ public class Biomes {
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_TREE_TAIGA_HILLS_KEY.getValue(), SNOWY_GIANT_TREE_TAIGA_HILLS);
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_SPRUCE_TAIGA_KEY.getValue(), SNOWY_GIANT_SPRUCE_TAIGA);
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY.getValue(), SNOWY_GIANT_SPRUCE_TAIGA_HILLS);
-		
 	}
 	
 	@SuppressWarnings("deprecation")

@@ -27,6 +27,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
@@ -45,6 +46,9 @@ public class KnowledgeBookItemMixin extends Item {
 		NbtCompound compoundTag = itemStack.getTag();
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
 			if (!world.isClient) {
+				
+				//THIS CODE GETS LIST OF RECIPES
+				
 				NbtList listTag = compoundTag.getList("Recipes", 8);
 				List<Recipe<?>> list = Lists.newArrayList();
 				RecipeManager recipeManager = world.getServer().getRecipeManager();
@@ -60,19 +64,34 @@ public class KnowledgeBookItemMixin extends Item {
 
 				ServerPlayerEntity player = (ServerPlayerEntity) user;
 
+				//THIS CODE MAKES SURE THAT THE PLAYER IS COMPENSATED FOR THE RECIPES THAT THEY ALREADY HAVE
+				
 				for (Recipe<?> recipe : list) {
 					if (player.getRecipeBook().contains(recipe)) {
 						user.incrementStat(Stats.USED.getOrCreateStat(this));
 						user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.PLAYERS, 1f, 1f);
 						Random random = user.world.getRandom();
-						int ranInt = random.nextInt(5) + 2;
+						int ranInt = random.nextInt(7) + 3;
+						switch (recipe.getOutput().getRarity()) {
+						case UNCOMMON:
+							ranInt *= 2;
+							break;
+						case RARE:
+							ranInt *= 3;
+							break;
+						case EPIC:
+							ranInt *= 4;
+							break;
+								
+						}
 						for (int i = 0; i < ranInt; i++) {
 							ExperienceOrbEntity.spawn((ServerWorld) user.world, user.getPos(), random.nextInt(3));
 						}
 
-						cir.setReturnValue(TypedActionResult.success(itemStack, world.isClient()));
 					}
 				}
+				
+				
 			} else {
 				user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.BLOCKS, 1f, 1f);
 				cir.setReturnValue(TypedActionResult.fail(itemStack));
@@ -82,11 +101,9 @@ public class KnowledgeBookItemMixin extends Item {
 
 	@Inject(method = "use", at = @At("RETURN"), cancellable = true)
 	public void useReturn(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult> cir) {
-		ItemStack itemStack = user.getStackInHand(hand);
 
-		if (cir.getReturnValue() != TypedActionResult.fail(itemStack)) {
-			user.setStackInHand(hand, ItemStack.EMPTY);
-			user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.BLOCKS, 1f, 1f);
-		}
+		//THIS CODE REMOVES THE RECIPE BOOK FROM THE PLAYER
+		
+		user.setStackInHand(hand, ItemStack.EMPTY);
 	}
 }

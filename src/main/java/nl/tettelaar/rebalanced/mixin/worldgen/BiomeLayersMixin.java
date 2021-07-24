@@ -16,6 +16,8 @@ import net.minecraft.world.biome.layer.ScaleLayer;
 import net.minecraft.world.biome.layer.util.LayerFactory;
 import net.minecraft.world.biome.layer.util.LayerSampleContext;
 import net.minecraft.world.biome.layer.util.LayerSampler;
+import nl.tettelaar.rebalanced.gen.biomelayers.ApplyClimateLayer;
+import nl.tettelaar.rebalanced.gen.biomelayers.ApplySpecialBiomeLayer;
 import nl.tettelaar.rebalanced.gen.biomelayers.ClimateLayer;
 import nl.tettelaar.rebalanced.gen.biomelayers.RemoveSmallIslandLayer;
 import nl.tettelaar.rebalanced.gen.biomelayers.SpecialBiomesLayer;
@@ -98,8 +100,10 @@ public class BiomeLayersMixin {
 	@Redirect(method = "build(ZIILjava/util/function/LongFunction;)Lnet/minecraft/world/biome/layer/util/LayerFactory;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/layer/IncreaseEdgeCurvatureLayer;create(Lnet/minecraft/world/biome/layer/util/LayerSampleContext;Lnet/minecraft/world/biome/layer/util/LayerFactory;)Lnet/minecraft/world/biome/layer/util/LayerFactory;", ordinal = 5))
 	private static <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> removeIncreaseEdgeCurvatureLayer5AndAddClimateAndSpecialBiomeLayers(
 			IncreaseEdgeCurvatureLayer layer, LayerSampleContext<?> context, LayerFactory<T> layerFactory) {
-		layerFactory = ClimateLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(5L), layerFactory);
-	    layerFactory = SpecialBiomesLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(5L), layerFactory);
+		LayerFactory<T> layerFactoryClimate = ClimateLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(5L), layerFactory);
+	    layerFactory = ApplyClimateLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(100L), layerFactory, layerFactoryClimate);
+	    LayerFactory<T> layerFactorySpecialBiomes = SpecialBiomesLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(5L), layerFactory);
+	    layerFactory = ApplySpecialBiomeLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(100L), layerFactory, layerFactorySpecialBiomes);
 		return layerFactory;
 	}
 	

@@ -18,11 +18,12 @@
     "worldgen.AddCoolBiomesLayerMixin",
     "worldgen.AddSpecialBiomesLayerMixin",
     //"worldgen.DisableRiverDebugMixin",
-    "worldgen.BiomeLayersDebugMixin",
+    //"worldgen.BiomeLayersDebugMixin",
+    "worldgen.BiomeLayersMixin",
     "worldgen.IslandLayerMixin",
     "worldgen.MoreIslandsMixin",
     "worldgen.RemoveOldIslandsMixin",
-	//"worldgen.RiverReduxMixin",
+	"worldgen.RiverReduxMixin",
     
     "worldgen.DefaultBiomeInvoker",
     

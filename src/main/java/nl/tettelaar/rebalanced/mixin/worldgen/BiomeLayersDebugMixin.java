@@ -122,9 +122,9 @@ public class BiomeLayersDebugMixin {
 	    //layerFactory = ScaleLayer.NORMAL.create((LayerSampleContext<T>)contextProvider.apply(2003L), layerFactory); //-
 	    //layerFactory = IncreaseEdgeCurvatureLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(4L), layerFactory); //-
 	    LayerFactory<T> layerFactoryClimate = ClimateLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(5L), layerFactory); //+
-	    layerFactory = ApplyClimateLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(100L), layerFactory, layerFactoryClimate);
+	    layerFactory = ApplyClimateLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(100L), layerFactory, layerFactoryClimate); //+
 	    LayerFactory<T> layerFactorySpecialBiomes = SpecialBiomesLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(5L), layerFactory); //+
-	    layerFactory = ApplySpecialBiomeLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(100L), layerFactory, layerFactorySpecialBiomes);
+	    layerFactory = ApplySpecialBiomeLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(100L), layerFactory, layerFactorySpecialBiomes); //+
 	    layerFactory = AddMushroomIslandLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(5L), layerFactory);
 	    layerFactory = AddDeepOceanLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(4L), layerFactory);
 	    layerFactory = stack(1000L, ScaleLayer.NORMAL, layerFactory, 0, contextProvider);
