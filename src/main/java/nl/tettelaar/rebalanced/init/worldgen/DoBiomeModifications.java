@@ -42,11 +42,6 @@ public class DoBiomeModifications {
 				BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY),
 				context -> context.getSpawnSettings().addSpawn(SpawnGroup.MONSTER,
 						new SpawnSettings.SpawnEntry(EntityType.WITHER_SKELETON, 1, 1, 1)));
-		
-		BiomeModifications.create(new Identifier("w")).add(ModificationPhase.ADDITIONS,
-				BiomeSelectors.foundInOverworld(),
-				context -> context.getSpawnSettings().addSpawn(SpawnGroup.MONSTER,
-						new SpawnSettings.SpawnEntry(EntityType.EVOKER, 100, 1, 1)));
 
 		// GENERATION STUFF
 		BiomeModifications.create(new Identifier(modid, "badlands_gen")).add(ModificationPhase.POST_PROCESSING,
