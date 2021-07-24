@@ -46,6 +46,10 @@ public class Biomes {
 	private static final Biome SAVANNA_BEACH = BiomeCreator.createSavannaBeach(0.05f, 0.0001f, 1.2f, 0f, 4159204);
 	public static final RegistryKey<Biome> SAVANNA_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "savanna_beach"));
+	
+	private static final Biome TROPICAL_BEACH = BiomeCreator.createTropicalBeach(0.05f, 0.0001f, 1.2f, 0f, 4159204, false, false);
+	public static final RegistryKey<Biome> TROPICAL_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
+			new Identifier(modid, "tropical_beach"));
 
 	private static final Biome GRAVELLY_BEACH = BiomeCreator.createGravellyBeach(0.02f, 0.0001f, 0.25f, 0.8f, 4159204);
 	public static final RegistryKey<Biome> GRAVELLY_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
@@ -72,6 +76,14 @@ public class Biomes {
 	private static final Biome JUNGLE_RIVER = BiomeCreator.createJungleRiver();
 	public static final RegistryKey<Biome> JUNGLE_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "jungle_river"));
+	
+	private static final Biome TAIGA_RIVER = BiomeCreator.createTaigaRiver(false);
+	public static final RegistryKey<Biome> TAIGA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
+			new Identifier(modid, "taiga_river"));
+	
+	private static final Biome SNOWY_TAIGA_RIVER = BiomeCreator.createTaigaRiver(true);
+	public static final RegistryKey<Biome> SNOWY_TAIGA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
+			new Identifier(modid, "snowy_taiga_river"));
 
 	//SNOWY BIOME VARIANTS
 	public static final Biome SNOWY_GIANT_TREE_TAIGA = BiomeCreator.createSnowyGiantTreeTaiga(0.2f, 0.2f, false);
@@ -111,6 +123,11 @@ public class Biomes {
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_TREE_TAIGA_HILLS_KEY.getValue(), SNOWY_GIANT_TREE_TAIGA_HILLS);
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_SPRUCE_TAIGA_KEY.getValue(), SNOWY_GIANT_SPRUCE_TAIGA);
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY.getValue(), SNOWY_GIANT_SPRUCE_TAIGA_HILLS);
+		Registry.register(BuiltinRegistries.BIOME, TROPICAL_BEACH_KEY.getValue(), TROPICAL_BEACH);
+		Registry.register(BuiltinRegistries.BIOME, TAIGA_RIVER_KEY.getValue(), TAIGA_RIVER);
+		Registry.register(BuiltinRegistries.BIOME, SNOWY_TAIGA_RIVER_KEY.getValue(), SNOWY_TAIGA_RIVER);
+		
+
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -161,12 +178,26 @@ public class Biomes {
 			OverworldBiomes.setRiverBiome(BiomeKeys.BADLANDS, BADLANDS_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.ERODED_BADLANDS, BADLANDS_RIVER_KEY);
 			
-			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA, BiomeKeys.FROZEN_RIVER);
-			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_HILLS, BiomeKeys.FROZEN_RIVER);
-			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_MOUNTAINS, BiomeKeys.FROZEN_RIVER);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA, SNOWY_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_HILLS, SNOWY_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_MOUNTAINS, SNOWY_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY, SNOWY_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(SNOWY_GIANT_TREE_TAIGA_HILLS_KEY, SNOWY_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, SNOWY_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(SNOWY_GIANT_TREE_TAIGA_KEY, SNOWY_TAIGA_RIVER_KEY);
+				
 			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TUNDRA, BiomeKeys.FROZEN_RIVER);
 			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_BEACH, BiomeKeys.FROZEN_RIVER);
 			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_MOUNTAINS, BiomeKeys.FROZEN_RIVER);
+			
+			OverworldBiomes.setRiverBiome(BiomeKeys.TAIGA, TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.TAIGA_HILLS, TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.TAIGA_MOUNTAINS, TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.GIANT_SPRUCE_TAIGA_HILLS, TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.GIANT_TREE_TAIGA_HILLS, TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.GIANT_SPRUCE_TAIGA, TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.GIANT_TREE_TAIGA, TAIGA_RIVER_KEY);
+			
 
 			OverworldBiomes.setRiverBiome(BiomeKeys.SWAMP, BiomeKeys.SWAMP);
 			OverworldBiomes.setRiverBiome(BiomeKeys.SWAMP_HILLS, BiomeKeys.SWAMP_HILLS);
@@ -189,6 +220,15 @@ public class Biomes {
 		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_TREE_TAIGA, GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_SPRUCE_TAIGA, GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA, GRAVELLY_BEACH_KEY, 1f);
+		
+		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE_EDGE, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE_HILLS, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.BAMBOO_JUNGLE, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.BAMBOO_JUNGLE_HILLS, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.MODIFIED_JUNGLE, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.MODIFIED_JUNGLE_EDGE, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(JUNGLE_PLATEAU_KEY, TROPICAL_BEACH_KEY, 1F);
 
 		OverworldBiomes.addShoreBiome(BiomeKeys.BADLANDS, BiomeKeys.BADLANDS, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BiomeKeys.WOODED_BADLANDS_PLATEAU, 1f);
