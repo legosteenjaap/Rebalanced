@@ -150,6 +150,7 @@ public class Biomes {
 			OverworldBiomes.setRiverBiome(BiomeKeys.BAMBOO_JUNGLE_HILLS, JUNGLE_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.MODIFIED_JUNGLE, JUNGLE_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.MODIFIED_JUNGLE_EDGE, JUNGLE_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(JUNGLE_PLATEAU_KEY, JUNGLE_RIVER_KEY);
 			
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT, DESERT_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_HILLS, DESERT_RIVER_KEY);
