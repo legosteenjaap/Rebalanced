@@ -217,5 +217,11 @@ public class BiomeCreator {
 	      DefaultBiomeFeatures.addFrozenTopLayer(builder2);
 	      return (new Biome.Builder()).precipitation(Biome.Precipitation.SNOW).category(Biome.Category.TAIGA).depth(depth).scale(scale).temperature(-0.5f).downfall(0.8F).effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(-0.5f)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 	   }
-
+	   public static Biome createJungleRiver() {
+		      SpawnSettings.Builder builder = new SpawnSettings.Builder();
+		      DefaultBiomeFeatures.addJungleMobs(builder);
+		      builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.PARROT, 40, 1, 2)).spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.OCELOT, 2, 1, 3)).spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.PANDA, 1, 1, 2));
+		      builder.playerSpawnFriendly();
+		      return DefaultBiomeInvoker.invokeCreateJungleFeatures(-1f, 0.2F, 0.9F, false, false, false, builder);
+		   }
 }

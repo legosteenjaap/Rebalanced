@@ -68,6 +68,10 @@ public class Biomes {
 	private static final Biome SAVANNA_RIVER = DefaultBiomeCreator.createSavanna(-1f, 0.1f, 1f, false, false);
 	public static final RegistryKey<Biome> SAVANNA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "savanna_river"));
+	
+	private static final Biome JUNGLE_RIVER = BiomeCreator.createJungleRiver();
+	public static final RegistryKey<Biome> JUNGLE_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
+			new Identifier(modid, "jungle_river"));
 
 	//SNOWY BIOME VARIANTS
 	public static final Biome SNOWY_GIANT_TREE_TAIGA = BiomeCreator.createSnowyGiantTreeTaiga(0.2f, 0.2f, false);
@@ -102,10 +106,12 @@ public class Biomes {
 		Registry.register(BuiltinRegistries.BIOME, EXTREME_HILLS_PLATEAU_KEY.getValue(), EXTREME_HILLS_PLATEAU);
 		Registry.register(BuiltinRegistries.BIOME, SAVANNA_HILLS_KEY.getValue(), SAVANNA_HILLS);
 		Registry.register(BuiltinRegistries.BIOME, SAVANNA_RIVER_KEY.getValue(), SAVANNA_RIVER);
+		Registry.register(BuiltinRegistries.BIOME, JUNGLE_RIVER_KEY.getValue(), JUNGLE_RIVER);
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_TREE_TAIGA_KEY.getValue(), SNOWY_GIANT_TREE_TAIGA);
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_TREE_TAIGA_HILLS_KEY.getValue(), SNOWY_GIANT_TREE_TAIGA_HILLS);
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_SPRUCE_TAIGA_KEY.getValue(), SNOWY_GIANT_SPRUCE_TAIGA);
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY.getValue(), SNOWY_GIANT_SPRUCE_TAIGA_HILLS);
+		
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -136,6 +142,14 @@ public class Biomes {
 			OverworldBiomes.setRiverBiome(BiomeKeys.SAVANNA_PLATEAU, SAVANNA_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.SHATTERED_SAVANNA, SAVANNA_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.SHATTERED_SAVANNA_PLATEAU, SAVANNA_RIVER_KEY);
+			
+			OverworldBiomes.setRiverBiome(BiomeKeys.JUNGLE, JUNGLE_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.JUNGLE_EDGE, JUNGLE_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.JUNGLE_HILLS, JUNGLE_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.BAMBOO_JUNGLE, JUNGLE_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.BAMBOO_JUNGLE_HILLS, JUNGLE_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.MODIFIED_JUNGLE, JUNGLE_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.MODIFIED_JUNGLE_EDGE, JUNGLE_RIVER_KEY);
 			
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT, DESERT_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_HILLS, DESERT_RIVER_KEY);
