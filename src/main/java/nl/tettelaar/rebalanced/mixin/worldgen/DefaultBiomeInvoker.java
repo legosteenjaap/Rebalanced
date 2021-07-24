@@ -34,4 +34,8 @@ public interface DefaultBiomeInvoker {
 	public static int invokeGetSkyColor(float temperature) {
 		throw new AssertionError();
 	}
+	@Invoker("createJungleFeatures")
+	public static Biome invokeCreateJungleFeatures (float depth, float scale, float downfall, boolean bamboo, boolean edge, boolean modified, SpawnSettings.Builder builder) {
+		throw new AssertionError();
+	}
 }
