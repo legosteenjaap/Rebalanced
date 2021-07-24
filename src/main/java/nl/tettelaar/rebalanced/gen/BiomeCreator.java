@@ -264,14 +264,7 @@ public class BiomeCreator {
 		      DefaultBiomeFeatures.addBatsAndMonsters(builder);
 		      float f = snowy ? -0.5F : 0.25F;
 		      GenerationSettings.Builder builder2 = (new GenerationSettings.Builder()).surfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
-		     
-		         builder2.structureFeature(ConfiguredStructureFeatures.VILLAGE_TAIGA);
-		         builder2.structureFeature(ConfiguredStructureFeatures.PILLAGER_OUTPOST);
-		      
 
-		     
-		         builder2.structureFeature(ConfiguredStructureFeatures.IGLOO);
-		      
 
 		      DefaultBiomeFeatures.addDefaultUndergroundStructures(builder2);
 		      builder2.structureFeature(ConfiguredStructureFeatures.RUINED_PORTAL);
