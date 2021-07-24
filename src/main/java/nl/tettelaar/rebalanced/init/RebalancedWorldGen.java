@@ -10,7 +10,7 @@ public class RebalancedWorldGen {
 
 	public static final int mainContinentSize = 6;
 	
-	public static final boolean disableRiver = true;
+	public static final boolean disableRiver = false;
 	
 	public static final boolean isSimplyImprovedTerrainLoaded = FabricLoader.getInstance()
 			.isModLoaded("simplyimprovedterrain");

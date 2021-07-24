@@ -17,7 +17,7 @@
     "worldgen.AddTemperateBiomesLayerMixin",
     "worldgen.AddCoolBiomesLayerMixin",
     "worldgen.AddSpecialBiomesLayerMixin",
-    "worldgen.DisableRiverDebugMixin",
+    //"worldgen.DisableRiverDebugMixin",
     "worldgen.BiomeLayersDebugMixin",
     "worldgen.IslandLayerMixin",
     "worldgen.MoreIslandsMixin",
@@ -37,6 +37,9 @@
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
 
+	"enchantment.LuckEnchantMixin",
+	"enchantment.SilkTouchEnchantMixin",
+    
     "LocalDifficultyMixin",
 	"sleep.BedBlockMixin",
     "WrittenBookMixin",
