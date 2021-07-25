@@ -15,7 +15,7 @@ public class RecipeAPI {
 		knowledgeBooksLootTable.add(new Pair<List<Identifier>, List<Identifier>>(recipes, loottables));
 	}
 
-	public static void registerKnowledgeBook(List<String> recipes, List<String> loottables) {
+	public static void registerKnowledgeBook(List<String> recipes, List<String> loottables, int weight) {
 
 		ArrayList<Identifier> recipesID = new ArrayList<>();
 		ArrayList<Identifier> loottablesID = new ArrayList<>();
@@ -28,8 +28,9 @@ public class RecipeAPI {
 			loottablesID.add(new Identifier(loottable));
 		}
 
-		registerKnowledgeBookID(recipesID, loottablesID);
-
+		for (int i = 0; i < weight; i++) {
+			registerKnowledgeBookID(recipesID, loottablesID);
+		}
 	}
 
 	public static List<Identifier> getRemovedRecipeAdvancements() {
