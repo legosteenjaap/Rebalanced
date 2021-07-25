@@ -59,6 +59,10 @@ public class Biomes {
 	private static final Biome DESERT_RIVER = BiomeCreator.createDesertRiver(-0.75f, 0.1f);
 	public static final RegistryKey<Biome> DESERT_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "desert_river"));
+	
+	private static final Biome BIRCH_RIVER = BiomeCreator.createBirchRiver(-0.75f, 0.1f, false);
+	public static final RegistryKey<Biome> BIRCH_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
+			new Identifier(modid, "birch_river"));
 
 	private static final Biome BADLANDS_RIVER = DefaultBiomeInvoker.createBadlands(ConfiguredSurfaceBuilders.BADLANDS,
 			-0.5f, 0.1f, false, false);
@@ -126,6 +130,9 @@ public class Biomes {
 		Registry.register(BuiltinRegistries.BIOME, TROPICAL_BEACH_KEY.getValue(), TROPICAL_BEACH);
 		Registry.register(BuiltinRegistries.BIOME, TAIGA_RIVER_KEY.getValue(), TAIGA_RIVER);
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_TAIGA_RIVER_KEY.getValue(), SNOWY_TAIGA_RIVER);
+		Registry.register(BuiltinRegistries.BIOME, BIRCH_RIVER_KEY.getValue(), BIRCH_RIVER );
+
+		
 		
 
 	}
@@ -171,6 +178,11 @@ public class Biomes {
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT, DESERT_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_HILLS, DESERT_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_LAKES, DESERT_RIVER_KEY);
+			
+			OverworldBiomes.setRiverBiome(BiomeKeys.BIRCH_FOREST, BIRCH_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.BIRCH_FOREST_HILLS, BIRCH_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.TALL_BIRCH_FOREST, BIRCH_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.TALL_BIRCH_HILLS, BIRCH_RIVER_KEY);
 			
 			OverworldBiomes.setRiverBiome(BiomeKeys.BADLANDS_PLATEAU, BADLANDS_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BADLANDS_RIVER_KEY);
