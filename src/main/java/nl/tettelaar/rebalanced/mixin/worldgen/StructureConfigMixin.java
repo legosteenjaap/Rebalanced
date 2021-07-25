@@ -11,6 +11,6 @@ import net.minecraft.world.gen.chunk.StructureConfig;
 public class StructureConfigMixin {
 	@Inject(method = "getSpacing", at = @At("RETURN"), cancellable = true)
 	public void getSpacing(CallbackInfoReturnable<Integer> cir) {
-		cir.setReturnValue(cir.getReturnValue() * 3);
+		cir.setReturnValue(cir.getReturnValue() * 5);
 	}
 }

@@ -110,7 +110,7 @@ public class DoBiomeModifications {
 
 		BiomeModifications.create(new Identifier(modid, "river_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.RIVER), (s) -> {
-					s.setDepth(-1.5F);
+					s.setDepth(RebalancedWorldGen.normalRiverDepth);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PROTOTYPE_SPRING_WATER);
 					s.getWeather().setPrecipitation(Biome.Precipitation.RAIN);
@@ -118,7 +118,7 @@ public class DoBiomeModifications {
 
 		BiomeModifications.create(new Identifier(modid, "river_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.FROZEN_RIVER), (s) -> {
-					s.setDepth(-1F);
+					s.setDepth(RebalancedWorldGen.frozenRiverDepth);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
 					s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PROTOTYPE_SPRING_WATER);
 				});

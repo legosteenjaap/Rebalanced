@@ -51,12 +51,12 @@ public class Biomes {
 	public static final RegistryKey<Biome> TROPICAL_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "tropical_beach"));
 
-	private static final Biome GRAVELLY_BEACH = BiomeCreator.createGravellyBeach(0.02f, 0.0001f, 0.25f, 0.8f, 4159204);
+	private static final Biome GRAVELLY_BEACH = BiomeCreator.createGravellyBeach(false);
 	public static final RegistryKey<Biome> GRAVELLY_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "gravelly_beach"));
 
 	// RIVER STUFF
-	private static final Biome DESERT_RIVER = BiomeCreator.createDesertRiver(-0.75f, 0.1f);
+	private static final Biome DESERT_RIVER = BiomeCreator.createDesertRiver(RebalancedWorldGen.dryRiverDepth, 0.1f);
 	public static final RegistryKey<Biome> DESERT_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "desert_river"));
 	
@@ -65,7 +65,7 @@ public class Biomes {
 			new Identifier(modid, "birch_river"));
 
 	private static final Biome BADLANDS_RIVER = DefaultBiomeInvoker.createBadlands(ConfiguredSurfaceBuilders.BADLANDS,
-			-0.5f, 0.1f, false, false);
+			RebalancedWorldGen.dryRiverDepth, 0.1f, false, false);
 	public static final RegistryKey<Biome> BADLANDS_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "badlands_river"));
 
@@ -73,7 +73,7 @@ public class Biomes {
 	public static final RegistryKey<Biome> EXTREME_HILLS_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "extreme_hills_river"));
 
-	private static final Biome SAVANNA_RIVER = DefaultBiomeCreator.createSavanna(-1f, 0.1f, 1f, false, false);
+	private static final Biome SAVANNA_RIVER = DefaultBiomeCreator.createSavanna(RebalancedWorldGen.dryRiverDepth, 0.1f, 1f, false, false);
 	public static final RegistryKey<Biome> SAVANNA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "savanna_river"));
 	

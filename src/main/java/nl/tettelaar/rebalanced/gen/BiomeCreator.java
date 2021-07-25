@@ -17,59 +17,44 @@ import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.GravellySurfaceBuilder;
-import nl.tettelaar.rebalanced.gen.surfacebuilders.SavannaBeachSurfaceBuilder;
-import nl.tettelaar.rebalanced.mixin.worldgen.DefaultBiomeInvoker;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.HeightDependSurfaceBuilder;
+import nl.tettelaar.rebalanced.gen.surfacebuilders.SavannaBeachSurfaceBuilder;
+import nl.tettelaar.rebalanced.init.RebalancedWorldGen;
+import nl.tettelaar.rebalanced.mixin.worldgen.DefaultBiomeInvoker;
 
 public class BiomeCreator {
 
-	public static SavannaBeachSurfaceBuilder SAVANNA_BEACH_SURFACE = new SavannaBeachSurfaceBuilder(
-			TernarySurfaceConfig.CODEC);
+	public static SavannaBeachSurfaceBuilder SAVANNA_BEACH_SURFACE = new SavannaBeachSurfaceBuilder(TernarySurfaceConfig.CODEC);
 	public static GravellySurfaceBuilder GRAVELLY_SURFACE = new GravellySurfaceBuilder(TernarySurfaceConfig.CODEC);
 
-	public static HeightDependSurfaceBuilder STONE_SHORE_SURFACE = new HeightDependSurfaceBuilder(
-			TernarySurfaceConfig.CODEC, 145);
+	public static HeightDependSurfaceBuilder STONE_SHORE_SURFACE = new HeightDependSurfaceBuilder(TernarySurfaceConfig.CODEC, 145);
 
-	public static HeightDependSurfaceBuilder ELEVATED_EXTREME_HILLS_SURFACE = new HeightDependSurfaceBuilder(
-			TernarySurfaceConfig.CODEC, 128);
+	public static HeightDependSurfaceBuilder ELEVATED_EXTREME_HILLS_SURFACE = new HeightDependSurfaceBuilder(TernarySurfaceConfig.CODEC, 128);
 
-	private static final TernarySurfaceConfig SAVANNA_BEACH_CONFIG = new TernarySurfaceConfig(
-			Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState());
-	private static final TernarySurfaceConfig GRAVELLY_CONFIG = new TernarySurfaceConfig(Blocks.SAND.getDefaultState(),
-			Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState());
-	public static final TernarySurfaceConfig SAND_STONE_CONFIG = new TernarySurfaceConfig(
-			Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState());
+	private static final TernarySurfaceConfig SAVANNA_BEACH_CONFIG = new TernarySurfaceConfig(Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState());
+	private static final TernarySurfaceConfig GRAVELLY_CONFIG = new TernarySurfaceConfig(Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState());
+	public static final TernarySurfaceConfig SAND_STONE_CONFIG = new TernarySurfaceConfig(Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState());
 
-	public static final TernarySurfaceConfig STONE_SAND_UNDERWATER_CONFIG = new TernarySurfaceConfig(
-			Blocks.STONE.getDefaultState(), Blocks.STONE.getDefaultState(), Blocks.SAND.getDefaultState());
-	public static final TernarySurfaceConfig NORMAL_UNDERWATER_CONFIG = new TernarySurfaceConfig(
-			Blocks.STONE.getDefaultState(), Blocks.STONE.getDefaultState(), Blocks.GRAVEL.getDefaultState());
+	public static final TernarySurfaceConfig STONE_SAND_UNDERWATER_CONFIG = new TernarySurfaceConfig(Blocks.STONE.getDefaultState(), Blocks.STONE.getDefaultState(), Blocks.SAND.getDefaultState());
+	public static final TernarySurfaceConfig NORMAL_UNDERWATER_CONFIG = new TernarySurfaceConfig(Blocks.STONE.getDefaultState(), Blocks.STONE.getDefaultState(), Blocks.GRAVEL.getDefaultState());
 
-	public static final TernarySurfaceConfig STONE_SHORE_CONFIG = new TernarySurfaceConfig(
-			Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.STONE.getDefaultState());
+	public static final TernarySurfaceConfig STONE_SHORE_CONFIG = new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.STONE.getDefaultState());
 
-	public static final TernarySurfaceConfig ELEVATED_EXTREME_HILLS_CONFIG = new TernarySurfaceConfig(
-			Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.STONE.getDefaultState());
+	public static final TernarySurfaceConfig ELEVATED_EXTREME_HILLS_CONFIG = new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.STONE.getDefaultState());
 
-	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_SAVANNA_BEACH_SURFACE = SAVANNA_BEACH_SURFACE
-			.withConfig(SAVANNA_BEACH_CONFIG);
-	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_GRAVELLY_SURFACE = GRAVELLY_SURFACE
-			.withConfig(GRAVELLY_CONFIG);
-	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_SANDSTONE_RIVER_SURFACE = SurfaceBuilder.DEFAULT
-			.withConfig(SAND_STONE_CONFIG);
+	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_SAVANNA_BEACH_SURFACE = SAVANNA_BEACH_SURFACE.withConfig(SAVANNA_BEACH_CONFIG);
+	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_GRAVELLY_SURFACE = GRAVELLY_SURFACE.withConfig(GRAVELLY_CONFIG);
+	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_SANDSTONE_RIVER_SURFACE = SurfaceBuilder.DEFAULT.withConfig(SAND_STONE_CONFIG);
 
-	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_STONE_SHORE_SURFACE = STONE_SHORE_SURFACE
-			.withConfig(STONE_SHORE_CONFIG);
+	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_STONE_SHORE_SURFACE = STONE_SHORE_SURFACE.withConfig(STONE_SHORE_CONFIG);
 
-	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_ELEVATED_EXTREME_HILLS_SURFACE = ELEVATED_EXTREME_HILLS_SURFACE
-			.withConfig(ELEVATED_EXTREME_HILLS_CONFIG);
-	
+	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_ELEVATED_EXTREME_HILLS_SURFACE = ELEVATED_EXTREME_HILLS_SURFACE.withConfig(ELEVATED_EXTREME_HILLS_CONFIG);
+
 	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_OCEAN_SURFACE = SurfaceBuilder.DEFAULT.withConfig(NORMAL_UNDERWATER_CONFIG);
 	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_SAND_OCEAN_SURFACE = SurfaceBuilder.DEFAULT.withConfig(STONE_SAND_UNDERWATER_CONFIG);
 	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_FROZEN_OCEAN_SURFACE = SurfaceBuilder.FROZEN_OCEAN.withConfig(NORMAL_UNDERWATER_CONFIG);
 
-	public static Biome createSavannaBeach(float depth, float scale, float temperature, float downfall,
-			int waterColor) {
+	public static Biome createSavannaBeach(float depth, float scale, float temperature, float downfall, int waterColor) {
 		SpawnSettings.Builder builder = new SpawnSettings.Builder();
 		builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.TURTLE, 1, 1, 1));
 
@@ -88,16 +73,11 @@ public class BiomeCreator {
 		DefaultBiomeFeatures.addDefaultDisks(builder2);
 		DefaultBiomeFeatures.addDefaultGrass(builder2);
 		DefaultBiomeFeatures.addSavannaTrees(builder2);
-		return (new Biome.Builder()).precipitation(Biome.Precipitation.NONE).category(Biome.Category.SAVANNA)
-				.depth(depth).scale(scale).temperature(temperature).downfall(downfall)
-				.effects((new BiomeEffects.Builder()).waterColor(waterColor).waterFogColor(329011).fogColor(12638463)
-						.skyColor(DefaultBiomeInvoker.invokeGetSkyColor(temperature)).moodSound(BiomeMoodSound.CAVE)
-						.build())
-				.spawnSettings(builder.build()).generationSettings(builder2.build()).build();
+		return (new Biome.Builder()).precipitation(Biome.Precipitation.NONE).category(Biome.Category.SAVANNA).depth(depth).scale(scale).temperature(temperature).downfall(downfall)
+				.effects((new BiomeEffects.Builder()).waterColor(waterColor).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(temperature)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 	}
 
-	public static Biome createGravellyBeach(float depth, float scale, float temperature, float downfall,
-			int waterColor) {
+	public static Biome createGravellyBeach(boolean snowy) {
 		SpawnSettings.Builder builder = new SpawnSettings.Builder();
 
 		DefaultBiomeFeatures.addBatsAndMonsters(builder);
@@ -114,19 +94,14 @@ public class BiomeCreator {
 		DefaultBiomeFeatures.addDefaultOres(builder2);
 		DefaultBiomeFeatures.addDefaultDisks(builder2);
 		DefaultBiomeFeatures.addDefaultGrass(builder2);
-		return (new Biome.Builder()).precipitation(Biome.Precipitation.RAIN).category(Biome.Category.TAIGA).depth(depth)
-				.scale(scale).temperature(temperature).downfall(0.8f)
-				.effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463)
-						.skyColor(DefaultBiomeInvoker.invokeGetSkyColor(temperature)).moodSound(BiomeMoodSound.CAVE)
-						.build())
-				.spawnSettings(builder.build()).generationSettings(builder2.build()).build();
+		return (new Biome.Builder()).precipitation(snowy ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN).category(Biome.Category.TAIGA).depth(0.02f).scale(0.0001f).temperature(snowy ? 0f : 0.25f).downfall(0.8f)
+				.effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(0.25f)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 	}
 
 	public static Biome createDesertRiver(float depth, float scale) {
 		SpawnSettings.Builder builder = new SpawnSettings.Builder();
 		DefaultBiomeFeatures.addDesertMobs(builder);
-		GenerationSettings.Builder builder2 = (new GenerationSettings.Builder())
-				.surfaceBuilder(CONFIGURED_SANDSTONE_RIVER_SURFACE);
+		GenerationSettings.Builder builder2 = (new GenerationSettings.Builder()).surfaceBuilder(CONFIGURED_SANDSTONE_RIVER_SURFACE);
 
 		DefaultBiomeFeatures.addFossils(builder2);
 
@@ -143,11 +118,8 @@ public class BiomeCreator {
 		DefaultBiomeFeatures.addSprings(builder2);
 		DefaultBiomeFeatures.addDesertFeatures(builder2);
 		DefaultBiomeFeatures.addFrozenTopLayer(builder2);
-		return (new Biome.Builder()).precipitation(Biome.Precipitation.NONE).category(Biome.Category.RIVER)
-				.depth(-0.75f).scale(0f).temperature(2.0F).downfall(0.0F)
-				.effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463)
-						.skyColor(DefaultBiomeInvoker.invokeGetSkyColor(2.0F)).moodSound(BiomeMoodSound.CAVE).build())
-				.spawnSettings(builder.build()).generationSettings(builder2.build()).build();
+		return (new Biome.Builder()).precipitation(Biome.Precipitation.NONE).category(Biome.Category.RIVER).depth(-0.75f).scale(0f).temperature(2.0F).downfall(0.0F)
+				.effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(2.0F)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 	}
 
 	public static Biome createExtremeHillsRiver() {
@@ -155,8 +127,7 @@ public class BiomeCreator {
 		DefaultBiomeFeatures.addFarmAnimals(builder);
 		builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.LLAMA, 5, 4, 6));
 		DefaultBiomeFeatures.addBatsAndMonsters(builder);
-		GenerationSettings.Builder builder2 = (new GenerationSettings.Builder())
-				.surfaceBuilder(ConfiguredSurfaceBuilders.STONE);
+		GenerationSettings.Builder builder2 = (new GenerationSettings.Builder()).surfaceBuilder(ConfiguredSurfaceBuilders.STONE);
 		DefaultBiomeFeatures.addDefaultUndergroundStructures(builder2);
 		builder2.structureFeature(ConfiguredStructureFeatures.RUINED_PORTAL_MOUNTAIN);
 		DefaultBiomeFeatures.addLandCarvers(builder2);
@@ -175,13 +146,10 @@ public class BiomeCreator {
 		DefaultBiomeFeatures.addEmeraldOre(builder2);
 		DefaultBiomeFeatures.addInfestedStone(builder2);
 		DefaultBiomeFeatures.addFrozenTopLayer(builder2);
-		return (new Biome.Builder()).precipitation(Biome.Precipitation.RAIN).category(Biome.Category.RIVER)
-				.depth(-1f).scale(0.1f).temperature(0.2F).downfall(0.3F)
-				.effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463)
-						.skyColor(DefaultBiomeInvoker.invokeGetSkyColor(0.2F)).moodSound(BiomeMoodSound.CAVE).build())
-				.spawnSettings(builder.build()).generationSettings(builder2.build()).build();
+		return (new Biome.Builder()).precipitation(Biome.Precipitation.RAIN).category(Biome.Category.RIVER).depth(RebalancedWorldGen.normalRiverDepth).scale(0f).temperature(0.2F).downfall(0.3F)
+				.effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(0.2F)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 	}
-	
+
 	public static Biome createSnowyGiantTreeTaiga(float depth, float scale, boolean spruce) {
 	      SpawnSettings.Builder builder = new SpawnSettings.Builder();
 	      DefaultBiomeFeatures.addFarmAnimals(builder);
@@ -316,4 +284,82 @@ public class BiomeCreator {
 		      DefaultBiomeFeatures.addFrozenTopLayer(builder2);
 		      return (new Biome.Builder()).precipitation(Biome.Precipitation.RAIN).category(Biome.Category.FOREST).depth(-1F).scale(0.2F).temperature(0.6F).downfall(0.6F).effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(0.6F)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 		   }
+
+	public static Biome createJungleRiver() {
+		SpawnSettings.Builder builder = new SpawnSettings.Builder();
+		DefaultBiomeFeatures.addJungleMobs(builder);
+		builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.PARROT, 40, 1, 2)).spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.OCELOT, 2, 1, 3)).spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.PANDA, 1, 1, 2));
+		builder.playerSpawnFriendly();
+		return DefaultBiomeInvoker.invokeCreateJungleFeatures(RebalancedWorldGen.normalRiverDepth, 0F, 0.9F, false, false, false, builder);
+	}
+
+	public static Biome createTropicalBeach(float depth, float scale, float temperature, float downfall, int waterColor, boolean snowy, boolean stony) {
+		SpawnSettings.Builder builder = new SpawnSettings.Builder();
+
+		builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.TURTLE, 5, 2, 5));
+
+		DefaultBiomeFeatures.addBatsAndMonsters(builder);
+		GenerationSettings.Builder builder2 = (new GenerationSettings.Builder()).surfaceBuilder(stony ? ConfiguredSurfaceBuilders.STONE : ConfiguredSurfaceBuilders.DESERT);
+
+		builder2.structureFeature(ConfiguredStructureFeatures.MINESHAFT);
+		builder2.structureFeature(ConfiguredStructureFeatures.BURIED_TREASURE);
+		builder2.structureFeature(ConfiguredStructureFeatures.SHIPWRECK_BEACHED);
+
+		builder2.feature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.SEAGRASS_RIVER);
+
+		builder2.structureFeature(stony ? ConfiguredStructureFeatures.RUINED_PORTAL_MOUNTAIN : ConfiguredStructureFeatures.RUINED_PORTAL);
+		DefaultBiomeFeatures.addLandCarvers(builder2);
+		DefaultBiomeFeatures.addDefaultLakes(builder2);
+		DefaultBiomeFeatures.addAmethystGeodes(builder2);
+		DefaultBiomeFeatures.addDungeons(builder2);
+		DefaultBiomeFeatures.addMineables(builder2);
+		DefaultBiomeFeatures.addDefaultOres(builder2);
+		DefaultBiomeFeatures.addDefaultDisks(builder2);
+		DefaultBiomeFeatures.addDefaultFlowers(builder2);
+		DefaultBiomeFeatures.addDefaultGrass(builder2);
+		DefaultBiomeFeatures.addDefaultMushrooms(builder2);
+		DefaultBiomeFeatures.addDefaultVegetation(builder2);
+		DefaultBiomeFeatures.addSprings(builder2);
+		DefaultBiomeFeatures.addFrozenTopLayer(builder2);
+		return (new Biome.Builder()).precipitation(Biome.Precipitation.RAIN).category(Biome.Category.BEACH).depth(0.0F).scale(0.025F).temperature(0.6F).downfall(0.4F)
+				.effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(0.8F)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
+	}
+
+	public static Biome createTaigaRiver(boolean snowy) {
+		SpawnSettings.Builder builder = new SpawnSettings.Builder();
+		DefaultBiomeFeatures.addFarmAnimals(builder);
+		builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.WOLF, 8, 4, 4)).spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.RABBIT, 4, 2, 3)).spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.FOX, 8, 2, 4)).spawn(SpawnGroup.CREATURE,
+				new SpawnSettings.SpawnEntry(EntityType.SALMON, 5, 2, 6));
+		builder.playerSpawnFriendly();
+
+		DefaultBiomeFeatures.addBatsAndMonsters(builder);
+		float f = snowy ? -0.5F : 0.25F;
+		GenerationSettings.Builder builder2 = (new GenerationSettings.Builder()).surfaceBuilder(CONFIGURED_GRAVELLY_SURFACE);
+
+		DefaultBiomeFeatures.addDefaultUndergroundStructures(builder2);
+		builder2.structureFeature(ConfiguredStructureFeatures.RUINED_PORTAL);
+		DefaultBiomeFeatures.addLandCarvers(builder2);
+		DefaultBiomeFeatures.addDefaultLakes(builder2);
+		DefaultBiomeFeatures.addAmethystGeodes(builder2);
+		DefaultBiomeFeatures.addDungeons(builder2);
+		DefaultBiomeFeatures.addLargeFerns(builder2);
+		DefaultBiomeFeatures.addMineables(builder2);
+		DefaultBiomeFeatures.addDefaultOres(builder2);
+		DefaultBiomeFeatures.addDefaultDisks(builder2);
+		DefaultBiomeFeatures.addTaigaTrees(builder2);
+		DefaultBiomeFeatures.addDefaultFlowers(builder2);
+		DefaultBiomeFeatures.addTaigaGrass(builder2);
+		DefaultBiomeFeatures.addDefaultMushrooms(builder2);
+		DefaultBiomeFeatures.addDefaultVegetation(builder2);
+		DefaultBiomeFeatures.addSprings(builder2);
+		if (snowy) {
+			DefaultBiomeFeatures.addSweetBerryBushesSnowy(builder2);
+		} else {
+			DefaultBiomeFeatures.addSweetBerryBushes(builder2);
+		}
+
+		DefaultBiomeFeatures.addFrozenTopLayer(builder2);
+		return (new Biome.Builder()).precipitation(snowy ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN).category(Biome.Category.TAIGA).depth(RebalancedWorldGen.normalRiverDepth).scale(0F).temperature(f).downfall(snowy ? 0.4F : 0.8F)
+				.effects((new BiomeEffects.Builder()).waterColor(snowy ? 4020182 : 4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(f)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
+	}
 }
