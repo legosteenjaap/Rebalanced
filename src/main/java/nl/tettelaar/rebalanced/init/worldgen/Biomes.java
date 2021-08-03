@@ -85,9 +85,9 @@ public class Biomes {
 	public static final RegistryKey<Biome> TAIGA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "taiga_river"));
 	
-	private static final Biome SNOWY_TAIGA_RIVER = BiomeCreator.createTaigaRiver(true);
-	public static final RegistryKey<Biome> SNOWY_TAIGA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
-			new Identifier(modid, "snowy_taiga_river"));
+	private static final Biome FROZEN_TAIGA_RIVER = BiomeCreator.createTaigaRiver(true);
+	public static final RegistryKey<Biome> FROZEN_TAIGA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
+			new Identifier(modid, "frozen_taiga_river"));
 
 	//SNOWY BIOME VARIANTS
 	public static final Biome SNOWY_GIANT_TREE_TAIGA = BiomeCreator.createSnowyGiantTreeTaiga(0.2f, 0.2f, false);
@@ -129,7 +129,7 @@ public class Biomes {
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY.getValue(), SNOWY_GIANT_SPRUCE_TAIGA_HILLS);
 		Registry.register(BuiltinRegistries.BIOME, TROPICAL_BEACH_KEY.getValue(), TROPICAL_BEACH);
 		Registry.register(BuiltinRegistries.BIOME, TAIGA_RIVER_KEY.getValue(), TAIGA_RIVER);
-		Registry.register(BuiltinRegistries.BIOME, SNOWY_TAIGA_RIVER_KEY.getValue(), SNOWY_TAIGA_RIVER);
+		Registry.register(BuiltinRegistries.BIOME, FROZEN_TAIGA_RIVER_KEY.getValue(), FROZEN_TAIGA_RIVER);
 		Registry.register(BuiltinRegistries.BIOME, BIRCH_RIVER_KEY.getValue(), BIRCH_RIVER );
 
 		
@@ -141,13 +141,6 @@ public class Biomes {
 	public static void addBiomeVariants() {
 		OverworldBiomes.addEdgeBiome(BiomeKeys.BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 1.3);
 		OverworldBiomes.addEdgeBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 1.3);
-		/*OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.FOREST, 0.1);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.SWAMP, 0.1);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.DARK_FOREST, 0.1);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.BIRCH_FOREST, 0.1);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.PLAINS, BiomeKeys.TAIGA, 0.1);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.TAIGA, BiomeKeys.GIANT_TREE_TAIGA, 0.1);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.TAIGA, BiomeKeys.GIANT_SPRUCE_TAIGA, 0.1);*/
 		OverworldBiomes.addHillsBiome(BiomeKeys.MOUNTAINS, EXTREME_HILLS_PLATEAU_KEY, 1f);
 		OverworldBiomes.addHillsBiome(BiomeKeys.JUNGLE, JUNGLE_PLATEAU_KEY, 0.25);
 
@@ -190,13 +183,13 @@ public class Biomes {
 			OverworldBiomes.setRiverBiome(BiomeKeys.BADLANDS, BADLANDS_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.ERODED_BADLANDS, BADLANDS_RIVER_KEY);
 			
-			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA, SNOWY_TAIGA_RIVER_KEY);
-			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_HILLS, SNOWY_TAIGA_RIVER_KEY);
-			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_MOUNTAINS, SNOWY_TAIGA_RIVER_KEY);
-			OverworldBiomes.setRiverBiome(SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY, SNOWY_TAIGA_RIVER_KEY);
-			OverworldBiomes.setRiverBiome(SNOWY_GIANT_TREE_TAIGA_HILLS_KEY, SNOWY_TAIGA_RIVER_KEY);
-			OverworldBiomes.setRiverBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, SNOWY_TAIGA_RIVER_KEY);
-			OverworldBiomes.setRiverBiome(SNOWY_GIANT_TREE_TAIGA_KEY, SNOWY_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA, FROZEN_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_HILLS, FROZEN_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TAIGA_MOUNTAINS, FROZEN_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY, FROZEN_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(SNOWY_GIANT_TREE_TAIGA_HILLS_KEY, FROZEN_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, FROZEN_TAIGA_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(SNOWY_GIANT_TREE_TAIGA_KEY, FROZEN_TAIGA_RIVER_KEY);
 				
 			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_TUNDRA, BiomeKeys.FROZEN_RIVER);
 			OverworldBiomes.setRiverBiome(BiomeKeys.SNOWY_BEACH, BiomeKeys.FROZEN_RIVER);
@@ -221,7 +214,6 @@ public class Biomes {
 			OverworldBiomes.setRiverBiome(BiomeKeys.MODIFIED_GRAVELLY_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.TAIGA_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
 		}
-		//OverworldBiomes.addBiomeVariant(BiomeKeys.FOREST, BiomeKeys.DESERT, 1, OverworldClimate.DRY);
 		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT, BiomeKeys.DESERT, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_HILLS, BiomeKeys.DESERT_HILLS, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_LAKES, 1f);
@@ -248,13 +240,6 @@ public class Biomes {
 		OverworldBiomes.addShoreBiome(BiomeKeys.BADLANDS_PLATEAU, BiomeKeys.BADLANDS_PLATEAU, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.ERODED_BADLANDS, BiomeKeys.ERODED_BADLANDS, 1f);
 
-		
-
-		/*OverworldBiomes.addBiomeVariant(BiomeKeys.FROZEN_OCEAN, BiomeKeys.OCEAN, 1f);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.DEEP_FROZEN_OCEAN, BiomeKeys.DEEP_OCEAN, 0.8f);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.MOUNTAINS, BiomeKeys.WOODED_MOUNTAINS, 0.2);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.SNOWY_TUNDRA, BiomeKeys.FROZEN_OCEAN, 0.2f);
-		OverworldBiomes.addBiomeVariant(BiomeKeys.SNOWY_BEACH, BiomeKeys.FROZEN_OCEAN, 0.2);*/
 		OverworldBiomes.addHillsBiome(BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_HILLS, 1f);
 		
 		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, BiomeKeys.SNOWY_BEACH, 1f);

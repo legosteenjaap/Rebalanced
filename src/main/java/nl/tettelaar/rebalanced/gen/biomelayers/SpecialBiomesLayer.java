@@ -13,11 +13,11 @@ public enum SpecialBiomesLayer implements RandomnessSourceLayer {
 		
 		PerlinNoiseSampler samp = context.getNoiseSampler();
 
-		double noise = samp.sample(((double) x / 20), 0, ((double) y / 20));
+		double noise = samp.sample(((double) x / 5), 0, ((double) y / 55));
 		
 		if (noise > 0.45) {
 			return 1;
-		} else if (noise < -0.1) {
+		} else if (noise < -0.2) {
 			return 2;
 		} else if (noise < 0.1 && noise > -0.1) {
 			return 3;

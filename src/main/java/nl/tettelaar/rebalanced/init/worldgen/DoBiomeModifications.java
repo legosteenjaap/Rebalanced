@@ -45,6 +45,10 @@ public class DoBiomeModifications {
 
 		// GENERATION STUFF
 		BiomeModifications.create(new Identifier(modid, "badlands_gen")).add(ModificationPhase.POST_PROCESSING,
+				BiomeSelectors.includeByKey(BiomeKeys.BADLANDS), (s) -> {
+					s.setDepth(0.1F);
+				});
+		BiomeModifications.create(new Identifier(modid, "badlands_gen")).add(ModificationPhase.POST_PROCESSING,
 				BiomeSelectors.includeByKey(BiomeKeys.BADLANDS_PLATEAU), (s) -> {
 					s.setDepth(8F);
 				});

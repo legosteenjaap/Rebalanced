@@ -29,7 +29,7 @@ public class FungiBlock extends Block {
 
    public FungiBlock(AbstractBlock.Settings settings) {
       super(settings);
-      this.setDefaultState((BlockState)((BlockState)((BlockState)this.stateManager.getDefaultState()).with(DISTANCE, MAX_DISTANCE)).with(PERSISTENT, false));
+      this.setDefaultState((BlockState)((BlockState)((BlockState)this.stateManager.getDefaultState()).with(DISTANCE, 1)).with(PERSISTENT, false));
    }
 
    public boolean hasRandomTicks(BlockState state) {

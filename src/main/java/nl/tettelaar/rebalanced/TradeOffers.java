@@ -54,8 +54,10 @@ import net.minecraft.village.VillagerDataContainer;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.village.VillagerType;
 import net.minecraft.world.gen.feature.StructureFeature;
+import nl.tettelaar.rebalanced.api.RecipeAPI;
 
 public class TradeOffers {
+	
 	@SuppressWarnings("unchecked")
 	public static final Map<VillagerProfession, Int2ObjectMap<TradeOffers.Factory[]>> PROFESSION_TO_LEVELED_TRADE = (Map) Util
 			.make(Maps.newHashMap(), (map) -> {
@@ -65,7 +67,7 @@ public class TradeOffers {
 								new TradeOffers.BuySupplyFactory(Items.CARROT, 5, 16, 2),
 								new TradeOffers.BuySupplyFactory(Items.BEETROOT, 4, 16, 2),
 								new TradeOffers.SellItemFactory(Items.BREAD, 1, 6, 16, 1), 
-								new TradeOffers.BuyKnowledgeBookFactory(new Identifier("beacon"),10, 2)
+								//new TradeOffers.BuyKnowledgeBookFactory(VillagerProfession.FARMER, 10, 2)
 								/*new TradeOffers.SellItemFactory(Items.POTATO, 4, 26, 4, 2),
 								new TradeOffers.SellItemFactory(Items.CARROT, 22, 26, 4, 2),
 								new TradeOffers.SellItemFactory(Items.BEETROOT, 15, 26, 4, 2),
@@ -878,30 +880,6 @@ public class TradeOffers {
 		public TradeOffer create(Entity entity, Random random) {
 			ItemStack itemStack = new ItemStack(this.buy, this.price);
 			return new TradeOffer(itemStack, new ItemStack(Items.EMERALD), this.maxUses, this.experience,
-					this.multiplier);
-		}
-	}
-
-	static class BuyKnowledgeBookFactory implements TradeOffers.Factory {
-		private final int price;
-		private final int experience;
-		private final float multiplier;
-		private final Identifier recipe;
-
-		public BuyKnowledgeBookFactory(Identifier recipe, int price, int experience) {
-			this.price = price;
-			this.experience = experience;
-			this.multiplier = 0.05F;
-			this.recipe = recipe;
-		}
-
-		public TradeOffer create(Entity entity, Random random) {
-			NbtList listTag = new NbtList();
-			listTag.add(0, NbtString.of(recipe.toString()));
-			NbtCompound tag = (NbtCompound) new NbtCompound().put("Recipes", listTag);
-			ItemStack itemStack = new ItemStack(Items.KNOWLEDGE_BOOK.asItem());
-			itemStack.getOrCreateTag().put("Recipes", listTag);
-			return new TradeOffer(new ItemStack(Items.EMERALD), itemStack, 1, this.experience,
 					this.multiplier);
 		}
 	}

@@ -253,7 +253,7 @@ public class BiomeCreator {
 				.effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(0.8F)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 	}
 
-	public static Biome createTaigaRiver(boolean snowy) {
+	public static Biome createTaigaRiver(boolean frozen) {
 		SpawnSettings.Builder builder = new SpawnSettings.Builder();
 		DefaultBiomeFeatures.addFarmAnimals(builder);
 		builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.WOLF, 8, 4, 4)).spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.RABBIT, 4, 2, 3)).spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.FOX, 8, 2, 4)).spawn(SpawnGroup.CREATURE,
@@ -261,7 +261,7 @@ public class BiomeCreator {
 		builder.playerSpawnFriendly();
 
 		DefaultBiomeFeatures.addBatsAndMonsters(builder);
-		float f = snowy ? -0.5F : 0.25F;
+		float f = frozen ? -0.5F : 0.25F;
 		GenerationSettings.Builder builder2 = (new GenerationSettings.Builder()).surfaceBuilder(CONFIGURED_GRAVELLY_SURFACE);
 
 		DefaultBiomeFeatures.addDefaultUndergroundStructures(builder2);
@@ -280,14 +280,14 @@ public class BiomeCreator {
 		DefaultBiomeFeatures.addDefaultMushrooms(builder2);
 		DefaultBiomeFeatures.addDefaultVegetation(builder2);
 		DefaultBiomeFeatures.addSprings(builder2);
-		if (snowy) {
+		if (frozen) {
 			DefaultBiomeFeatures.addSweetBerryBushesSnowy(builder2);
 		} else {
 			DefaultBiomeFeatures.addSweetBerryBushes(builder2);
 		}
 
 		DefaultBiomeFeatures.addFrozenTopLayer(builder2);
-		return (new Biome.Builder()).precipitation(snowy ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN).category(Biome.Category.TAIGA).depth(RebalancedWorldGen.normalRiverDepth).scale(0F).temperature(f).downfall(snowy ? 0.4F : 0.8F)
-				.effects((new BiomeEffects.Builder()).waterColor(snowy ? 4020182 : 4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(f)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
+		return (new Biome.Builder()).precipitation(frozen ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN).category(Biome.Category.TAIGA).depth(RebalancedWorldGen.normalRiverDepth).scale(0F).temperature(f).downfall(frozen ? 0.4F : 0.8F)
+				.effects((new BiomeEffects.Builder()).waterColor(frozen ? 4020182 : 4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(f)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 	}
 }

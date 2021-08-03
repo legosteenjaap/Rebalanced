@@ -18,7 +18,7 @@ public class ContinentMixin {
 		
 		PerlinNoiseSampler samp = context.getNoiseSampler();
 
-		double noise = samp.sample((double) x / 24, 0, (double) y / 24);
+		double noise = samp.sample((double) x / 20, 0, (double) y / 20);
 
 		if (x <= RebalancedWorldGen.mainContinentSize && x >=-RebalancedWorldGen.mainContinentSize && y <= RebalancedWorldGen.mainContinentSize && y >= -RebalancedWorldGen.mainContinentSize) {
 			noise += (0.45 - (0.045 * (MathHelper.abs(x) + MathHelper.abs(y))));

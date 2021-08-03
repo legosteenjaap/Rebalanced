@@ -19,10 +19,10 @@ public enum ClimateLayer implements RandomnessSourceLayer {
 
 		PerlinNoiseSampler samp = context.getNoiseSampler();
 
-		double noise = samp.sample(((double) x / 120), 0, ((double) y / 120));
+		double noise = samp.sample(((double) x / 60), 0, ((double) y / 60));
 
 		/*if (x <= RebalancedWorldGen.mainContinentSize && x >=-RebalancedWorldGen.mainContinentSize && y <= RebalancedWorldGen.mainContinentSize && y >= -RebalancedWorldGen.mainContinentSize) {
-			noise += (0.45 - (0.045 * (MathHelper.abs(x) + MathHelper.abs(y))));
+			noise /= (RebalancedWorldGen.mainContinentSize * 2) - (MathHelper.abs(x) + MathHelper.abs(y));
 		}*/
 		
 		if (noise > lukewarmBorder && noise <= warmBorder) {

@@ -2,6 +2,7 @@ package nl.tettelaar.rebalanced.init;
 
 import java.util.Arrays;
 
+import net.minecraft.village.VillagerProfession;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
 
 public class Recipes {
@@ -18,6 +19,13 @@ public class Recipes {
 						"chests/desert_pyramid", "chests/igloo_chest", "chests/jungle_temple", "chests/pillager_outpost", "chests/end_city_treasure", "chests/stronghold_corridor", "chests/stronghold_crossing", "chests/woodland_mansion", "chests/bastion_treasure", "chests/bastion_bridge", "chests/bastion_other",  "chests/nether_bridge"), 2);
 		RecipeAPI.registerKnowledgeBook(Arrays.asList("netherite_sword", "netherite_pickaxe", "netherite_axe", "netherite_shovel", "netherite_hoe", "netherite_boots", "netherite_leggings", "netherite_chestplate", "netherite_helmet"),
 				Arrays.asList("chests/endcity_treasure", "chests/bastion_treasure", "chests/nether_bridge"), 1);
+		
+		
+		
+		//VILLAGERS
+		//RecipeAPI.registerKnowledgeBook(Arrays.asList());
+		
+		RecipeAPI.registerKnowledgeBook(Arrays.asList("bread", "cake"), 3, 10, VillagerProfession.FARMER, 1, 1);
 
 	}
 	
