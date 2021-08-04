@@ -13,7 +13,7 @@ public enum ClimateLayer implements RandomnessSourceLayer {
 	private final static double desertEndBorder = 0.55;
 	private final static double desertBeginBorder = 0.35;
 	private final static double lukewarmBorder = 0.3;
-	private final static double coldBorder = 0.05;
+	private final static double coldBorder = -0.01;
 	private final static double frozenBorder = -0.2;
 	private final static double treeBorder = -0.35;
 	
