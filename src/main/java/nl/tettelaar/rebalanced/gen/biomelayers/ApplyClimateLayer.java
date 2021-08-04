@@ -17,9 +17,10 @@ public enum ApplyClimateLayer implements MergingLayer, IdentityCoordinateTransfo
 			return climate;
 		} else {
 			switch (climate) {
-			case BiomeIds.DESERT:
+			case BiomeIds.JUNGLE:
 				return BiomeIds.WARM_OCEAN;
 			case BiomeIds.SAVANNA:
+			case BiomeIds.DESERT:
 				return BiomeIds.LUKEWARM_OCEAN;
 			case BiomeIds.PLAINS:
 				return BiomeIds.OCEAN;

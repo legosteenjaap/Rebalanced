@@ -9,6 +9,7 @@
     "worldgen.MultiNoiseBiomeSourceAccessor",
     
     "worldgen.WoodedBadlandsSurfaceBuilderMixin",
+    "worldgen.BadlandsSurfaceBuilderMixin",
     
     "worldgen.BiomeRawIdMixin",
     "worldgen.VanillaLayeredBiomeSourceMixin",
@@ -24,6 +25,7 @@
     "worldgen.MoreIslandsMixin",
     "worldgen.RemoveOldIslandsMixin",
 	"worldgen.RiverReduxMixin",
+	"worldgen.AddEdgeBiomesLayerMixin",
     
     "worldgen.DefaultBiomeInvoker",
     
@@ -40,7 +42,8 @@
 
 	"enchantment.LuckEnchantMixin",
 	"enchantment.SilkTouchEnchantMixin",
-    
+	"enchantment.InfinityEnchantMixin",
+
     "LocalDifficultyMixin",
 	"sleep.BedBlockMixin",
     "WrittenBookMixin",

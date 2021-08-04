@@ -4,7 +4,9 @@ import java.util.function.LongFunction;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -111,6 +113,11 @@ public class BiomeLayersMixin {
 	private static <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> removeApplyOceanTemperatureLayer(
 			ApplyOceanTemperatureLayer layer, LayerSampleContext<?> context, LayerFactory<T> layerFactory1, LayerFactory<T> layerFactory2) {
 		return layerFactory1;
+	}
+	
+	@ModifyConstant(constant = @Constant(intValue = 1), method = "build")
+	private static int changeEdgeBiomeSize(int original) {
+		return 0;
 	}
 
 }

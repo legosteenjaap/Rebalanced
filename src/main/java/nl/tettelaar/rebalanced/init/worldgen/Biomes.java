@@ -22,70 +22,70 @@ public class Biomes {
 	private final static boolean isSimplyImprovedTerrainLoaded = RebalancedWorldGen.isSimplyImprovedTerrainLoaded;
 
 	// PLATEAU STUFF
-	private static final Biome JUNGLE_PLATEAU = DefaultBiomeInvoker.invokeCreateJungle(4.5F, 0.25F, 10, 1, 1);
+	public static final Biome JUNGLE_PLATEAU = DefaultBiomeInvoker.invokeCreateJungle(4.5F, 0.25F, 10, 1, 1);
 	public static final RegistryKey<Biome> JUNGLE_PLATEAU_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "jungle_plateau"));
 
-	private static final Biome BADLANDS_LOW_PLATEAU = DefaultBiomeInvoker.invokeCreateNormalBadlands(4F, 0.025F, true);
+	public static final Biome BADLANDS_LOW_PLATEAU = DefaultBiomeInvoker.invokeCreateNormalBadlands(4F, 0.025F, true);
 	public static final RegistryKey<Biome> BADLANDS_LOW_PLATEAU_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "badlands_low_plateau"));
 
-	private static final Biome EXTREME_HILLS_PLATEAU = DefaultBiomeCreator.createMountains(3.3f,
+	public static final Biome EXTREME_HILLS_PLATEAU = DefaultBiomeCreator.createMountains(3.3f,
 			isSimplyImprovedTerrainLoaded ? 1.4f : 0.8f, ConfiguredSurfaceBuilders.GRASS, false);
 	public static final RegistryKey<Biome> EXTREME_HILLS_PLATEAU_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "extreme_hills_plateau"));
 
 	// HILLS STUFF
 
-	private static final Biome SAVANNA_HILLS = DefaultBiomeCreator.createSavanna(0.11f,
+	public static final Biome SAVANNA_HILLS = DefaultBiomeCreator.createSavanna(0.11f,
 			isSimplyImprovedTerrainLoaded ? 1.2f : 0.7f, 1f, false, false);
 	public static final RegistryKey<Biome> SAVANNA_HILLS_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "savanna_hills"));
 
 	// BEACH STUFF
-	private static final Biome SAVANNA_BEACH = BiomeCreator.createSavannaBeach(0.05f, 0.0001f, 1.2f, 0f, 4159204);
+	public static final Biome SAVANNA_BEACH = BiomeCreator.createSavannaBeach(0.05f, 0.0001f, 1.2f, 0f, 4159204);
 	public static final RegistryKey<Biome> SAVANNA_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "savanna_beach"));
 	
-	private static final Biome TROPICAL_BEACH = BiomeCreator.createTropicalBeach(0.05f, 0.0001f, 1.2f, 0f, 4159204, false, false);
+	public static final Biome TROPICAL_BEACH = BiomeCreator.createTropicalBeach(0.05f, 0.0001f, 1.2f, 0f, 4159204, false, false);
 	public static final RegistryKey<Biome> TROPICAL_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "tropical_beach"));
 
-	private static final Biome GRAVELLY_BEACH = BiomeCreator.createGravellyBeach(false);
+	public static final Biome GRAVELLY_BEACH = BiomeCreator.createGravellyBeach(false);
 	public static final RegistryKey<Biome> GRAVELLY_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "gravelly_beach"));
 
 	// RIVER STUFF
-	private static final Biome DESERT_RIVER = BiomeCreator.createDesertRiver(RebalancedWorldGen.dryRiverDepth, 0.1f);
+	public static final Biome DESERT_RIVER = BiomeCreator.createDesertRiver(RebalancedWorldGen.dryRiverDepth, 0.1f);
 	public static final RegistryKey<Biome> DESERT_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "desert_river"));
 	
-	private static final Biome BIRCH_RIVER = BiomeCreator.createBirchRiver(-0.75f, 0.1f, false);
+	public static final Biome BIRCH_RIVER = BiomeCreator.createBirchRiver(-0.75f, 0.1f, false);
 	public static final RegistryKey<Biome> BIRCH_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "birch_river"));
 
-	private static final Biome BADLANDS_RIVER = DefaultBiomeInvoker.createBadlands(ConfiguredSurfaceBuilders.BADLANDS,
+	public static final Biome BADLANDS_RIVER = DefaultBiomeInvoker.createBadlands(ConfiguredSurfaceBuilders.BADLANDS,
 			RebalancedWorldGen.dryRiverDepth, 0.1f, false, false);
 	public static final RegistryKey<Biome> BADLANDS_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "badlands_river"));
 
-	private static final Biome EXTREME_HILLS_RIVER = BiomeCreator.createExtremeHillsRiver();
+	public static final Biome EXTREME_HILLS_RIVER = BiomeCreator.createExtremeHillsRiver();
 	public static final RegistryKey<Biome> EXTREME_HILLS_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "extreme_hills_river"));
 
-	private static final Biome SAVANNA_RIVER = DefaultBiomeCreator.createSavanna(RebalancedWorldGen.dryRiverDepth, 0.1f, 1f, false, false);
+	public static final Biome SAVANNA_RIVER = DefaultBiomeCreator.createSavanna(RebalancedWorldGen.dryRiverDepth, 0.1f, 1f, false, false);
 	public static final RegistryKey<Biome> SAVANNA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "savanna_river"));
 	
-	private static final Biome JUNGLE_RIVER = BiomeCreator.createJungleRiver();
+	public static final Biome JUNGLE_RIVER = BiomeCreator.createJungleRiver();
 	public static final RegistryKey<Biome> JUNGLE_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "jungle_river"));
 	
-	private static final Biome TAIGA_RIVER = BiomeCreator.createTaigaRiver(false);
+	public static final Biome TAIGA_RIVER = BiomeCreator.createTaigaRiver(false);
 	public static final RegistryKey<Biome> TAIGA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "taiga_river"));
 	
-	private static final Biome FROZEN_TAIGA_RIVER = BiomeCreator.createTaigaRiver(true);
+	public static final Biome FROZEN_TAIGA_RIVER = BiomeCreator.createTaigaRiver(true);
 	public static final RegistryKey<Biome> FROZEN_TAIGA_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "frozen_taiga_river"));
 
@@ -139,19 +139,50 @@ public class Biomes {
 	
 	@SuppressWarnings("deprecation")
 	public static void addBiomeVariants() {
-		OverworldBiomes.addEdgeBiome(BiomeKeys.BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 1.3);
-		OverworldBiomes.addEdgeBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 1.3);
+		
+		//PLATEAUS
+		OverworldBiomes.addEdgeBiome(BiomeKeys.BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 1);
+		OverworldBiomes.addEdgeBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 1);
 		OverworldBiomes.addHillsBiome(BiomeKeys.MOUNTAINS, EXTREME_HILLS_PLATEAU_KEY, 1f);
 		OverworldBiomes.addHillsBiome(BiomeKeys.JUNGLE, JUNGLE_PLATEAU_KEY, 0.25);
-
+		
+		//BEACHES
 		OverworldBiomes.addShoreBiome(BiomeKeys.SAVANNA, SAVANNA_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.SAVANNA_PLATEAU, SAVANNA_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.SHATTERED_SAVANNA, SAVANNA_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.SHATTERED_SAVANNA_PLATEAU, SAVANNA_BEACH_KEY, 1f);
 
-		OverworldBiomes.addHillsBiome(BiomeKeys.SAVANNA, SAVANNA_HILLS_KEY, 0.6f);
-		OverworldBiomes.addHillsBiome(BiomeKeys.PLAINS, BiomeKeys.WOODED_HILLS, 0.2f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA_HILLS, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_TREE_TAIGA, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_SPRUCE_TAIGA, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA, GRAVELLY_BEACH_KEY, 1f);
+		
+		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE_EDGE, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE_HILLS, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.BAMBOO_JUNGLE, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.BAMBOO_JUNGLE_HILLS, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.MODIFIED_JUNGLE, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(BiomeKeys.MODIFIED_JUNGLE_EDGE, TROPICAL_BEACH_KEY, 1F);
+		OverworldBiomes.addShoreBiome(JUNGLE_PLATEAU_KEY, TROPICAL_BEACH_KEY, 1F);
 
+		OverworldBiomes.addShoreBiome(BiomeKeys.BADLANDS, BiomeKeys.BADLANDS, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BiomeKeys.WOODED_BADLANDS_PLATEAU, 1f);
+		OverworldBiomes.addShoreBiome(BADLANDS_LOW_PLATEAU_KEY, BADLANDS_LOW_PLATEAU_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.BADLANDS_PLATEAU, BiomeKeys.BADLANDS_PLATEAU, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.ERODED_BADLANDS, BiomeKeys.ERODED_BADLANDS, 1f);
+
+		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT, BiomeKeys.DESERT, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_HILLS, BiomeKeys.DESERT_HILLS, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_LAKES, 1f);
+		
+		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, BiomeKeys.SNOWY_BEACH, 1f);
+		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY, BiomeKeys.SNOWY_BEACH, 1f);
+		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_KEY, BiomeKeys.SNOWY_BEACH, 1f);
+		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_HILLS_KEY, BiomeKeys.SNOWY_BEACH, 1f);
+		
+		//RIVERS
 		if (!RebalancedWorldGen.disableRiver) {
 			OverworldBiomes.setRiverBiome(BiomeKeys.SAVANNA, SAVANNA_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(SAVANNA_HILLS_KEY, SAVANNA_RIVER_KEY);
@@ -214,38 +245,13 @@ public class Biomes {
 			OverworldBiomes.setRiverBiome(BiomeKeys.MODIFIED_GRAVELLY_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.TAIGA_MOUNTAINS, EXTREME_HILLS_RIVER_KEY);
 		}
-		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT, BiomeKeys.DESERT, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_HILLS, BiomeKeys.DESERT_HILLS, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_LAKES, 1f);
-		
 
-		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA, GRAVELLY_BEACH_KEY, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA_HILLS, GRAVELLY_BEACH_KEY, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_TREE_TAIGA, GRAVELLY_BEACH_KEY, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_SPRUCE_TAIGA, GRAVELLY_BEACH_KEY, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA, GRAVELLY_BEACH_KEY, 1f);
-		
-		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE, TROPICAL_BEACH_KEY, 1F);
-		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE_EDGE, TROPICAL_BEACH_KEY, 1F);
-		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE_HILLS, TROPICAL_BEACH_KEY, 1F);
-		OverworldBiomes.addShoreBiome(BiomeKeys.BAMBOO_JUNGLE, TROPICAL_BEACH_KEY, 1F);
-		OverworldBiomes.addShoreBiome(BiomeKeys.BAMBOO_JUNGLE_HILLS, TROPICAL_BEACH_KEY, 1F);
-		OverworldBiomes.addShoreBiome(BiomeKeys.MODIFIED_JUNGLE, TROPICAL_BEACH_KEY, 1F);
-		OverworldBiomes.addShoreBiome(BiomeKeys.MODIFIED_JUNGLE_EDGE, TROPICAL_BEACH_KEY, 1F);
-		OverworldBiomes.addShoreBiome(JUNGLE_PLATEAU_KEY, TROPICAL_BEACH_KEY, 1F);
-
-		OverworldBiomes.addShoreBiome(BiomeKeys.BADLANDS, BiomeKeys.BADLANDS, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BiomeKeys.WOODED_BADLANDS_PLATEAU, 1f);
-		OverworldBiomes.addShoreBiome(BADLANDS_LOW_PLATEAU_KEY, BADLANDS_LOW_PLATEAU_KEY, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.BADLANDS_PLATEAU, BiomeKeys.BADLANDS_PLATEAU, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.ERODED_BADLANDS, BiomeKeys.ERODED_BADLANDS, 1f);
-
+		//HILLS
+		OverworldBiomes.addHillsBiome(BiomeKeys.SAVANNA, SAVANNA_HILLS_KEY, 0.6f);
+		OverworldBiomes.addHillsBiome(BiomeKeys.PLAINS, BiomeKeys.WOODED_HILLS, 0.2f);
 		OverworldBiomes.addHillsBiome(BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_HILLS, 1f);
 		
-		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, BiomeKeys.SNOWY_BEACH, 1f);
-		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY, BiomeKeys.SNOWY_BEACH, 1f);
-		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_KEY, BiomeKeys.SNOWY_BEACH, 1f);
-		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_HILLS_KEY, BiomeKeys.SNOWY_BEACH, 1f);
+		
 	}
 	
 }

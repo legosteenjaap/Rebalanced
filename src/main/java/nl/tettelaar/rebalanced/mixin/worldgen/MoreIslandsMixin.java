@@ -17,9 +17,12 @@ public class MoreIslandsMixin {
 	      switch (center) {
 	      case BiomeIds.DEEP_WARM_OCEAN:
 	      case BiomeIds.WARM_OCEAN:
+	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(25) == 0) cir.setReturnValue(context.nextInt(3) == 0 ? BiomeIds.JUNGLE: BiomeIds.BAMBOO_JUNGLE);
+	    	  break;
 	      case BiomeIds.DEEP_LUKEWARM_OCEAN:
 	      case BiomeIds.LUKEWARM_OCEAN:
-	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(25) == 0) cir.setReturnValue(context.nextInt(3) == 0 ? BiomeIds.JUNGLE: BiomeIds.BAMBOO_JUNGLE);
+	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(25) == 0) cir.setReturnValue(context.nextInt(3) == 0 ? BiomeIds.SAVANNA_PLATEAU : BiomeIds.SAVANNA);
+	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(50) == 0) cir.setReturnValue(context.nextInt(3) == 0 ? BiomeIds.SHATTERED_SAVANNA_PLATEAU : BiomeIds.SHATTERED_SAVANNA);
 	    	  break;
 	      case BiomeIds.DEEP_OCEAN:
 	      case BiomeIds.OCEAN:
@@ -28,7 +31,7 @@ public class MoreIslandsMixin {
 	    	  break;
 	      case BiomeIds.DEEP_COLD_OCEAN:
 	      case BiomeIds.COLD_OCEAN:
-	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(20) == 0) cir.setReturnValue(context.nextInt(3) == 0 ? BiomeIds.TAIGA_HILLS: BiomeIds.GIANT_SPRUCE_TAIGA);
+	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(20) == 0) cir.setReturnValue(context.nextInt(3) == 0 ? BiomeIds.TAIGA: BiomeIds.GIANT_SPRUCE_TAIGA);
 	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(80) == 0) cir.setReturnValue(BiomeIds.MOUNTAINS);
 	    	  break;
 	      case BiomeIds.DEEP_FROZEN_OCEAN:

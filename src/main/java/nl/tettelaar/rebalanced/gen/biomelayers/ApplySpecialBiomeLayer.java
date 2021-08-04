@@ -18,9 +18,9 @@ public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTr
 		
 		
 		switch (continent) {
-		case BiomeIds.SAVANNA:
+		case BiomeIds.SNOWY_TUNDRA:
 			if (specialBiome == 1) {
-				return BiomeIds.JUNGLE;
+				return BiomeIds.SNOWY_TUNDRA;
 			}
 			break;
 		case BiomeIds.DESERT:
