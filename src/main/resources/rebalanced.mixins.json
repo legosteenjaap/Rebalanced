@@ -26,6 +26,7 @@
     "worldgen.RemoveOldIslandsMixin",
 	"worldgen.RiverReduxMixin",
 	"worldgen.AddEdgeBiomesLayerMixin",
+	"worldgen.StructureConfigMixin",
     
     "worldgen.DefaultBiomeInvoker",
     
