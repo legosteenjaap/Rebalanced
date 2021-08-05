@@ -177,6 +177,9 @@ public class Biomes {
 		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_HILLS, BiomeKeys.DESERT_HILLS, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.DESERT_LAKES, BiomeKeys.DESERT_LAKES, 1f);
 		
+		OverworldBiomes.addShoreBiome(BiomeKeys.SWAMP, BiomeKeys.SWAMP, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.SWAMP_HILLS, BiomeKeys.SWAMP, 1f);
+		
 		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, BiomeKeys.SNOWY_BEACH, 1f);
 		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY, BiomeKeys.SNOWY_BEACH, 1f);
 		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_KEY, BiomeKeys.SNOWY_BEACH, 1f);

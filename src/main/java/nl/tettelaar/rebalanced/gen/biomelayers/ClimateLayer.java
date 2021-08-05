@@ -11,9 +11,9 @@ public enum ClimateLayer implements RandomnessSourceLayer {
 	
 	private final static double warmBorder = 0.6;
 	private final static double desertEndBorder = 0.55;
-	private final static double desertBeginBorder = 0.35;
+	private final static double desertBeginBorder = 0.4;
 	private final static double lukewarmBorder = 0.3;
-	private final static double coldBorder = -0.01;
+	private final static double coldBorder = -0.1;
 	private final static double frozenBorder = -0.2;
 	private final static double treeBorder = -0.35;
 	
@@ -22,9 +22,9 @@ public enum ClimateLayer implements RandomnessSourceLayer {
 		PerlinNoiseSampler samp = context.getNoiseSampler();
 
 		double noise = samp.sample(((double) x / 50), 0, ((double) y / 50));
-
-		if (x <= RebalancedWorldGen.mainContinentSize && x >=-RebalancedWorldGen.mainContinentSize && y <= RebalancedWorldGen.mainContinentSize && y >= -RebalancedWorldGen.mainContinentSize) {
-			noise *=  ((MathHelper.abs(x) + MathHelper.abs(y)) / (RebalancedWorldGen.mainContinentSize * 2));
+		
+		if (x == 0 && y == 0 && noise > desertBeginBorder && noise <= desertEndBorder) {
+			return BiomeIds.SAVANNA;
 		}
 		
 		if (noise > lukewarmBorder && noise <= desertBeginBorder) {

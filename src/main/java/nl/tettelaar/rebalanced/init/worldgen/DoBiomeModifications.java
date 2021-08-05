@@ -109,6 +109,13 @@ public class DoBiomeModifications {
 				ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.BAMBOO_JUNGLE_HILLS), (s) -> {
 					hillsBiome(s);
 				});
+		
+		BiomeModifications.create(new Identifier(modid, "swamp_hills_gen")).add(
+				ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.SWAMP_HILLS), (s) -> {
+					s.setDepth(-0.15f);
+					s.setScale(0.6f);
+				});
+
 
 
 

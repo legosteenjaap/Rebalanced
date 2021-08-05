@@ -8,7 +8,7 @@ import nl.tettelaar.rebalanced.init.worldgen.SurfaceBuilders;
 
 public class RebalancedWorldGen {
 
-	public static final int mainContinentSize = 8;
+	public static final int mainContinentSize = 4;
 	
 	public static final boolean disableRiver = false;
 	
