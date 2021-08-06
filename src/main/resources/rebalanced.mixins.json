@@ -38,7 +38,10 @@
     "recipe.AdvancementManagerMixin",
 	"recipe.KnowledgeBookItemMixin",
 	"recipe.MobKnowledgeBookMixin",
-    
+	"recipe.CampfireBlockMixin",
+	"recipe.StonecutterScreenHandlerMixin",
+	"recipe.SmithingScreenHandlerMixin",
+	    
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
 
