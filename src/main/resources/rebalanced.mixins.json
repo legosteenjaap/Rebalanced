@@ -37,6 +37,7 @@
     
     "recipe.AdvancementManagerMixin",
 	"recipe.KnowledgeBookItemMixin",
+	"recipe.MobKnowledgeBookMixin",
     
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
@@ -65,7 +66,9 @@
 
   ],
   "client": [
-	"LongerDayCycleClientMixin"
+	"LongerDayCycleClientMixin",
+	"recipe.ToastManagerClientMixin",
+	"recipe.ToastManagerEntryClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

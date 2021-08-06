@@ -23,7 +23,7 @@ public class DoBiomeModifications {
 	private final static String modid = Rebalanced.modid;
 
 	private final static boolean isSimplyImprovedTerrainLoaded = RebalancedWorldGen.isSimplyImprovedTerrainLoaded;
-	
+
 	@SuppressWarnings("deprecation")
 	public static void init() {
 
@@ -112,8 +112,10 @@ public class DoBiomeModifications {
 		
 		BiomeModifications.create(new Identifier(modid, "swamp_hills_gen")).add(
 				ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.SWAMP_HILLS), (s) -> {
-					s.setDepth(-0.15f);
-					s.setScale(0.6f);
+					if (isSimplyImprovedTerrainLoaded) {
+						s.setDepth(-0.15f);
+						s.setScale(0.6f);
+					}
 				});
 
 
@@ -289,19 +291,16 @@ public class DoBiomeModifications {
 	}
 
 	public static void normalOcean(BiomeModificationContext s) {
-		s.getGenerationSettings().setSurfaceBuilder(
-				BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_OCEAN_SURFACE).get());
+		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_OCEAN_SURFACE).get());
 	}
 
 	public static void warmOcean(BiomeModificationContext s) {
-		s.getGenerationSettings().setSurfaceBuilder(
-				BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_SAND_OCEAN_SURFACE).get());
-		
+		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_SAND_OCEAN_SURFACE).get());
+
 	}
 
 	public static void frozenOcean(BiomeModificationContext s) {
-		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER
-				.getKey(BiomeCreator.CONFIGURED_FROZEN_OCEAN_SURFACE).get());
+		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_FROZEN_OCEAN_SURFACE).get());
 	}
 
 	@SuppressWarnings("deprecation")
@@ -321,15 +320,11 @@ public class DoBiomeModifications {
 	@SuppressWarnings("deprecation")
 	public static void nonSnowyExtremeHills(BiomeModificationContext s) {
 		s.getWeather().setTemperature(0.3f);
-		//s.getGenerationSettings().setBuiltInSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
-		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
-				ConfiguredFeatures.PATCH_GRASS_NORMAL);
-		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
-				ConfiguredFeatures.PATCH_GRASS_FOREST);
-		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
-				ConfiguredFeatures.PATCH_GRASS_TAIGA);
-		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
-				ConfiguredFeatures.PATCH_TALL_GRASS);
+		// s.getGenerationSettings().setBuiltInSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
+		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_NORMAL);
+		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_FOREST);
+		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_TAIGA);
+		s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_TALL_GRASS);
 		if (isSimplyImprovedTerrainLoaded) {
 			s.setScale(1.5f);
 		} else {
@@ -356,5 +351,5 @@ public class DoBiomeModifications {
 			s.setScale(0.6f);
 		}
 	}
-	
+
 }

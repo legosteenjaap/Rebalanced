@@ -16,6 +16,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.util.Pair;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.village.VillagerData;
@@ -74,12 +75,14 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
 			}
 		}
 
-		List<?> knowledgeBookTrades = RecipeAPI.getKnowledgeBooksVillager(villagerData.getProfession(), villagerData.getLevel());
+		List<Pair<TradeOffers.Factory, Float>> knowledgeBookTrades = RecipeAPI.getKnowledgeBooksVillagerTrades(villagerData.getProfession(), villagerData.getLevel());
 
 		if (knowledgeBookTrades != null) {
-			Factory factory = ((TradeOffers.Factory)knowledgeBookTrades.get(this.random.nextInt(knowledgeBookTrades.size())));
+			Pair<TradeOffers.Factory, Float> knowledgeBookTrade = knowledgeBookTrades.get(this.random.nextInt(knowledgeBookTrades.size()));
+			Factory factory = knowledgeBookTrade.getLeft();
 			TradeOffer tradeOffer = factory.create(this, this.random);
-			if (tradeOffer != null) {
+			if (tradeOffer != null && this.random.nextFloat() <= knowledgeBookTrade.getRight()) {
+				tradeList.remove(tradeList.size() - 1);
 				tradeList.add(tradeOffer);
 			}
 		}

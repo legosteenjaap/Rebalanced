@@ -4,3 +4,4 @@ accessWidener v1 named
 #accessible class party/lemons/biomemakeover/crafting/witch/QuestRewardTable$ItemStackRewardItem
 accessible class net/minecraft/world/biome/source/MultiNoiseBiomeSource$NoiseParameters
 accessible method net/minecraft/world/biome/source/MultiNoiseBiomeSource <init> (JLjava/util/list;Ljava/util/function/Supplier;Ljava/util/Optional;Lnet/minecraft/world/biome/source/MultiNoiseBiomeSource$Preset;)V
+accessible class net/minecraft/client/toast/ToastManager$Entry

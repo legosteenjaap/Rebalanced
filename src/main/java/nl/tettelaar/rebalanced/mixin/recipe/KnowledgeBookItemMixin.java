@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.google.common.collect.Lists;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -18,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.KnowledgeBookItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -27,9 +30,9 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import nl.tettelaar.rebalanced.RebalancedClient;
 
 @Mixin(KnowledgeBookItem.class)
 public class KnowledgeBookItemMixin extends Item {
@@ -67,12 +70,16 @@ public class KnowledgeBookItemMixin extends Item {
 				//THIS CODE MAKES SURE THAT THE PLAYER IS COMPENSATED FOR THE RECIPES THAT THEY ALREADY HAVE
 				
 				for (Recipe<?> recipe : list) {
+					ItemStack item = recipe.getOutput();
+					System.out.println(item);
+					PacketByteBuf buf = PacketByteBufs.create();
+				    ServerPlayNetworking.send((ServerPlayerEntity) user, RebalancedClient.SHOW_FLOATING_ITEM_ID, buf.writeItemStack(item));
 					if (player.getRecipeBook().contains(recipe)) {
 						user.incrementStat(Stats.USED.getOrCreateStat(this));
 						user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.PLAYERS, 1f, 1f);
 						Random random = user.world.getRandom();
 						int ranInt = random.nextInt(7) + 3;
-						switch (recipe.getOutput().getRarity()) {
+						switch (item.getRarity()) {
 						case UNCOMMON:
 							ranInt *= 2;
 							break;
@@ -82,13 +89,15 @@ public class KnowledgeBookItemMixin extends Item {
 						case EPIC:
 							ranInt *= 4;
 							break;
+						default:
+							break;
 								
 						}
 						for (int i = 0; i < ranInt; i++) {
 							ExperienceOrbEntity.spawn((ServerWorld) user.world, user.getPos(), random.nextInt(3));
 						}
 
-					}
+					} 
 				}
 				
 				

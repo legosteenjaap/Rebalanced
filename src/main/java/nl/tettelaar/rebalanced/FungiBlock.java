@@ -15,8 +15,6 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -25,8 +23,7 @@ public class FungiBlock extends Block {
    public static final int MAX_DISTANCE = 15;
    public static final IntProperty DISTANCE;
    public static final BooleanProperty PERSISTENT;
-   private static final int field_31112 = 1;
-
+   
    public FungiBlock(AbstractBlock.Settings settings) {
       super(settings);
       this.setDefaultState((BlockState)((BlockState)((BlockState)this.stateManager.getDefaultState()).with(DISTANCE, 1)).with(PERSISTENT, false));

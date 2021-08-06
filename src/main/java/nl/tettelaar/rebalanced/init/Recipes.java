@@ -2,6 +2,7 @@ package nl.tettelaar.rebalanced.init;
 
 import java.util.Arrays;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.village.VillagerProfession;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
 
@@ -25,8 +26,10 @@ public class Recipes {
 		//VILLAGERS
 		//RecipeAPI.registerKnowledgeBook(Arrays.asList());
 		
-		RecipeAPI.registerKnowledgeBook(Arrays.asList("bread", "cake"), 3, 10, VillagerProfession.FARMER, 1, 1);
+		RecipeAPI.registerKnowledgeBook(Arrays.asList("bread", "cake"), 3, 10, 1, VillagerProfession.FARMER, 1, 1);
 
+		RecipeAPI.registerKnowledgeBook(EntityType.ZOMBIE, Arrays.asList("stone_sword", "stone_pickaxe", "stone_axe", "stone_shovel", "stone_hoe"), 1);
+		
 	}
 	
 }
