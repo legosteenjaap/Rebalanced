@@ -105,6 +105,11 @@ public class RecipeAPI {
 					removedRecipeAdvancements.add(recipe);
 				}
 			}
+			
+			/*for (HashMap<Integer, List<Pair<TradeOffers.Factory, Float>>> entry : Arrays.asList(KnowledgeBooksVillagerTrades.values())) {
+				
+			}*/
+			
 			RecipeAPI.removedRecipeAdvancements = removedRecipeAdvancements;
 		}
 		return RecipeAPI.removedRecipeAdvancements;
