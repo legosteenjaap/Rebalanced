@@ -115,9 +115,4 @@ public class BiomeLayersMixin {
 		return layerFactory1;
 	}
 	
-	@ModifyConstant(constant = @Constant(intValue = 1), method = "build")
-	private static int changeEdgeBiomeSize(int original) {
-		return 0;
-	}
-
 }

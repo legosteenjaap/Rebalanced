@@ -18,6 +18,7 @@
     "worldgen.AddTemperateBiomesLayerMixin",
     "worldgen.AddCoolBiomesLayerMixin",
     "worldgen.AddSpecialBiomesLayerMixin",
+    "worldgen.AddDeepOceanLayerMixin",
     //"worldgen.DisableRiverDebugMixin",
     //"worldgen.BiomeLayersDebugMixin",
     "worldgen.BiomeLayersMixin",
@@ -37,7 +38,7 @@
     
     "recipe.AdvancementManagerMixin",
 	"recipe.KnowledgeBookItemMixin",
-	"recipe.MobKnowledgeBookMixin",
+	//"recipe.MobKnowledgeBookMixin",
 	"recipe.CampfireBlockMixin",
 	"recipe.StonecutterScreenHandlerMixin",
 	"recipe.SmithingScreenHandlerMixin",

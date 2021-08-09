@@ -16,7 +16,7 @@ public class RebalancedWorldGen {
 	
 	public static final float frozenRiverDepth = -1f;
 	
-	public static final float dryRiverDepth = -0.75f;
+	public static final float dryRiverDepth = -0.85f;
 	
 	public static final boolean isSimplyImprovedTerrainLoaded = FabricLoader.getInstance()
 			.isModLoaded("simplyimprovedterrain");

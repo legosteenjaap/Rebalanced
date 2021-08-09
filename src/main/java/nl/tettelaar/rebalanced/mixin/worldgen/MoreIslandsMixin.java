@@ -36,7 +36,7 @@ public class MoreIslandsMixin {
 	    	  break;
 	      case BiomeIds.DEEP_FROZEN_OCEAN:
 	      case BiomeIds.FROZEN_OCEAN:
-	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(20) == 0) cir.setReturnValue(BiomeIds.SNOWY_TUNDRA);
+	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(20) == 0) cir.setReturnValue(context.nextInt(3) == 0 ? BiomeIds.SNOWY_TAIGA_HILLS :BiomeIds.SNOWY_TAIGA);
 	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(80) == 0) cir.setReturnValue(BiomeIds.ICE_SPIKES);
 	    	  break;
 	      }

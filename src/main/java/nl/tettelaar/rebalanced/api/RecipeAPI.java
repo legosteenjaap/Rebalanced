@@ -22,13 +22,14 @@ import nl.tettelaar.rebalanced.util.RecipeUtil;
 
 public class RecipeAPI {
 
-	private static List<Identifier> removedRecipeAdvancements;
+	private static List<Identifier> removedRecipeAdvancements = new ArrayList<>();
 	private static ArrayList<Pair<List<Identifier>, List<Identifier>>> knowledgeBooksLootTable = new ArrayList<>();
 	private static HashMap<VillagerProfession, HashMap<Integer, List<Pair<TradeOffers.Factory, Float>>>> KnowledgeBooksVillagerTrades = new HashMap<>();
 	private static HashMap<EntityType<? extends MobEntity>, List<Identifier>> knowledgeBooksMobEquipment = new HashMap<>();
 	
 	private static void registerKnowledgeBookID(List<Identifier> recipes, List<Identifier> loottables) {
 		knowledgeBooksLootTable.add(new Pair<List<Identifier>, List<Identifier>>(recipes, loottables));
+		removedRecipeAdvancements.addAll(recipes);
 	}
 
 	public static void registerKnowledgeBook(List<String> recipes, List<String> loottables, int weight) {
@@ -61,6 +62,7 @@ public class RecipeAPI {
 			trades.add(new Pair<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
 			KnowledgeBooksVillagerTrades.get(villager).put(level, trades);
 		}
+		removedRecipeAdvancements.addAll(recipes);
 	}
 
 	public static void registerKnowledgeBook(List<String> recipes, int minPrice, int maxPrice, float chance, VillagerProfession villager, int level, int weight) {
@@ -83,6 +85,9 @@ public class RecipeAPI {
 		} else {
 			knowledgeBooksMobEquipment.put(entity, recipes);
 		}
+		
+		removedRecipeAdvancements.addAll(recipes);
+		
 	}
 	
 	public static void registerKnowledgeBook(EntityType<? extends MobEntity> entity, List<String> recipes, int weight) {
@@ -98,20 +103,6 @@ public class RecipeAPI {
 	}
 	
 	public static List<Identifier> getRemovedRecipeAdvancements() {
-		if (RecipeAPI.removedRecipeAdvancements == null) {
-			ArrayList<Identifier> removedRecipeAdvancements = new ArrayList<>();
-			for (Pair<List<Identifier>, List<Identifier>> entry : getKnowledgeBooksLootTable()) {
-				for (Identifier recipe : entry.getLeft()) {
-					removedRecipeAdvancements.add(recipe);
-				}
-			}
-			
-			/*for (HashMap<Integer, List<Pair<TradeOffers.Factory, Float>>> entry : Arrays.asList(KnowledgeBooksVillagerTrades.values())) {
-				
-			}*/
-			
-			RecipeAPI.removedRecipeAdvancements = removedRecipeAdvancements;
-		}
 		return RecipeAPI.removedRecipeAdvancements;
 	}
 

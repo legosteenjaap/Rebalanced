@@ -20,7 +20,9 @@ public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTr
 		switch (continent) {
 		case BiomeIds.SNOWY_TUNDRA:
 			if (specialBiome == 1) {
-				return BiomeIds.SNOWY_TUNDRA;
+				return BiomeIds.ICE_SPIKES;
+			} else if (specialBiome == 3) {
+				return BiomeIds.SNOWY_MOUNTAINS;
 			}
 			break;
 		case BiomeIds.DESERT:
@@ -38,6 +40,8 @@ public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTr
 				return BiomeIds.GIANT_SPRUCE_TAIGA;
 			} else if (specialBiome == 2) {
 				return BiomeIds.GIANT_TREE_TAIGA;
+			} else if (specialBiome == 3) {
+				return BiomeIds.MOUNTAINS;
 			}
 			break;
 		case BiomeIds.SNOWY_TAIGA:
@@ -45,6 +49,8 @@ public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTr
 				return BuiltinRegistries.BIOME.getRawId(Biomes.SNOWY_GIANT_SPRUCE_TAIGA);
 			} else if (specialBiome == 2) {
 				return BuiltinRegistries.BIOME.getRawId(Biomes.SNOWY_GIANT_TREE_TAIGA);
+			} else if (specialBiome == 3) {
+				return BiomeIds.SNOWY_MOUNTAINS;
 			}
 			break;
 		}

@@ -24,7 +24,7 @@ public class SavannaBeachSurfaceBuilder extends SurfaceBuilder<TernarySurfaceCon
 			BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int i, long l,
 			TernarySurfaceConfig surfaceConfig) {
 		// TODO Auto-generated method stub
-		if (noise > 2.5D) {
+		if (noise > 2.5D && height > seaLevel + 1) {
 			SurfaceBuilder.DEFAULT.generate(random, chunk, biome, x, z, height, noise, defaultBlock, defaultFluid, seaLevel, i, l,
 					SurfaceBuilder.GRASS_CONFIG);
 		} else {

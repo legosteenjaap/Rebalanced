@@ -27,8 +27,15 @@ public class HeightDependSurfaceBuilder extends SurfaceBuilder<TernarySurfaceCon
 			BlockState defaultBlock, BlockState defaultFluid, int seaLevel, int i, long l,
 			TernarySurfaceConfig surfaceConfig) {
 		// TODO Auto-generated method stub
-		if (height > this.minHeight) {
-			chunk.setBlockState(new BlockPos(x, height, z), Blocks.GRASS_BLOCK.getDefaultState(), false);
+		int y = height - 1;
+		while (chunk.getBlockState(new BlockPos(x, y, z)) == Blocks.WATER.getDefaultState()) {
+			y--;
+		}
+		y++;
+		if (height > this.minHeight + (int)(noise * 2)) {
+			chunk.setBlockState(new BlockPos(x, y, z), Blocks.GRASS_BLOCK.getDefaultState(), false);
+		} else {
+			chunk.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), false);
 		}
 		
 	}

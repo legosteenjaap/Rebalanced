@@ -90,7 +90,7 @@ public class BiomeLayersDebugMixin {
 	    		layerFactory4 = IncreaseEdgeCurvatureLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(3L), layerFactory4);
 	    	}
 
-	    	if (i == /*1*/ 0 || biomeSize == 1) {
+	    	if (i == 1 || biomeSize == 1) {
 	    		layerFactory4 = AddEdgeBiomesLayer.INSTANCE.create((LayerSampleContext<T>)contextProvider.apply(1000L), layerFactory4);
 	    	}
 	   }

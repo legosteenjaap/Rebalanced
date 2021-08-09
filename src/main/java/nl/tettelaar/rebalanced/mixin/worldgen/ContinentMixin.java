@@ -18,7 +18,7 @@ public class ContinentMixin {
 		
 		PerlinNoiseSampler samp = context.getNoiseSampler();
 
-		double noise = samp.sample((double) x / 8, 0, (double) y / 8);
+		double noise = samp.sample((double) x / 16, 0, (double) y / 16);
 
 		if (x <= RebalancedWorldGen.mainContinentSize && x >=-RebalancedWorldGen.mainContinentSize && y <= RebalancedWorldGen.mainContinentSize && y >= -RebalancedWorldGen.mainContinentSize) {
 			noise += 1 - (MathHelper.abs(x) + MathHelper.abs(y)) / (2 * (RebalancedWorldGen.mainContinentSize));
@@ -30,6 +30,8 @@ public class ContinentMixin {
 		
 		if (noise > 0.15) {
 			return BiomeIds.PLAINS;
+		} else if (noise < -0.2) {
+			return BiomeIds.DEEP_OCEAN;
 		} else {
 			return BiomeIds.OCEAN;
 		}

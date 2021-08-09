@@ -17,6 +17,6 @@ public abstract class WoodedBadlandsSurfaceBuilderMixin {
 
 	@ModifyConstant(constant = @Constant(intValue = 15, ordinal = 2), method = "generate")
 	private static int changeTerracottaDeepness(int original) {
-		return 30;
+		return 128;
 	}
 }

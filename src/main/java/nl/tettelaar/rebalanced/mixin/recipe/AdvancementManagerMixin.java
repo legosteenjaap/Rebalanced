@@ -23,16 +23,6 @@ import nl.tettelaar.rebalanced.api.RecipeAPI;
 @Mixin(AdvancementManager.class)
 public class AdvancementManagerMixin {
 
-	private static final ArrayList<Identifier> recipes = new ArrayList<Identifier>();
-
-	/*
-	 * private static Map<Identifier, Advancement.Task> map;
-	 * 
-	 * @Inject(method="load", at = @At("HEAD"), cancellable = true) public void
-	 * load(Map<Identifier, Advancement.Task> map, CallbackInfo ci) {
-	 * AdvancementManagerMixin.map = map; }
-	 */
-
 	@ModifyVariable(method = "load", at = @At("HEAD"), ordinal = 0)
 	private Map<Identifier, Advancement.Task> removeRecipes(Map<Identifier, Advancement.Task> map) {
 
@@ -48,7 +38,8 @@ public class AdvancementManagerMixin {
 					while (iterator.hasNext()) {
 						JsonElement recipe = iterator.next();
 						Identifier id = new Identifier(recipe.getAsString());
-						if (RecipeAPI.getRemovedRecipeAdvancements().contains(id)) {
+						List<Identifier> removedRecipes = RecipeAPI.getRemovedRecipeAdvancements();
+						if (removedRecipes != null && removedRecipes.contains(id)) {
 							hashMap.remove(idAdvancement);
 						}
 					}
