@@ -21,14 +21,16 @@ public abstract class ElytraMixin extends Entity {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Inject(method = "isFallFlying", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "isFallFlying", at = @At("RETURN"), cancellable = true)
 	public void isFallFlying(CallbackInfoReturnable<Boolean> cir) {
-		if ((world.isRaining() && world.hasRain(new BlockPos(this.getPos())))|| this.isSubmergedInWater() && elytraCooldown == 0) {
+		if (cir.getReturnValue() && (this.world.hasRain(new BlockPos(this.getPos())))|| this.isSubmergedInWater() && elytraCooldown == 0) {
 			this.setFlag(Entity.FALL_FLYING_FLAG_INDEX, false);
 			cir.setReturnValue(false);
-			elytraCooldown = 5;
-		} else if (elytraCooldown > 0) {
+			elytraCooldown = 300;
+		}
+		if (elytraCooldown > 0) {
 			elytraCooldown--;
 		}
 	}
 }
+ 
