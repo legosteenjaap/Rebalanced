@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 public class FungiBlock extends Block {
-   public static final int MAX_DISTANCE = 15;
+   public static final int MAX_DISTANCE = 17;
    public static final IntProperty DISTANCE;
    public static final BooleanProperty PERSISTENT;
    

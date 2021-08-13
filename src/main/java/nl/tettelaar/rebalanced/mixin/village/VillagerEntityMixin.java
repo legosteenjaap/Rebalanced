@@ -1,5 +1,6 @@
 package nl.tettelaar.rebalanced.mixin.village;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -13,9 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.google.common.collect.Sets;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
@@ -24,6 +28,8 @@ import net.minecraft.world.World;
 import nl.tettelaar.rebalanced.TradeOffers;
 import nl.tettelaar.rebalanced.TradeOffers.Factory;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
+import net.fabricmc.loader.api.metadata.Person;
+
 
 @Mixin(VillagerEntity.class)
 public abstract class VillagerEntityMixin extends MerchantEntity {
@@ -32,19 +38,44 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
 		// TODO Auto-generated constructor stub
 	}
 
+	//check if it is the correct villagerfix mod by checking the author because there is another villagerfix mod with the same id
+	
+	private static final boolean isVillagerTradeFixLoaded = FabricLoader.getInstance()
+			.isModLoaded("villagertradefix");
+	
+	//THIS CODE IS COPIED FROM THIS MOD https://github.com/Globox1997/VillagerTradeFix/blob/master/src/main/java/net/villagerfix/mixin/VillagerEntityMixin.java
+	
+    private List<String> jobList = new ArrayList<String>();
+    private List<TradeOfferList> offerList = new ArrayList<TradeOfferList>();
+    
+    @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
+    public void readCustomDataFromNbtMixin(NbtCompound nbt, CallbackInfo info) {
+        for (int i = 0; i < nbt.getInt("JobCount"); ++i) {
+            String jobString = "OldOffer" + i;
+            jobList.add(nbt.getString(jobString + "OldWork"));
+            if (nbt.contains(jobString, 10)) {
+                offerList.add(new TradeOfferList(nbt.getCompound(jobString)));
+            }
+        }
+    }
+	
+    //*********************************************************************************************************************************************************
+    
 	@Inject(method = "fillRecipes", at = @At("HEAD"), cancellable = true)
 	private void fillRecipes(CallbackInfo ci) {
 		VillagerData villagerData = this.getVillagerData();
-		Int2ObjectMap<TradeOffers.Factory[]> trades = (Int2ObjectMap<Factory[]>) TradeOffers.PROFESSION_TO_LEVELED_TRADE.get(villagerData.getProfession());
+		if (!isVillagerTradeFixLoaded || (this.jobList == null || !this.jobList.contains(((VillagerEntity) (Object) this).getVillagerData().getProfession().toString()))) {
+			Int2ObjectMap<TradeOffers.Factory[]> trades = (Int2ObjectMap<Factory[]>) TradeOffers.PROFESSION_TO_LEVELED_TRADE.get(villagerData.getProfession());
 
-		if (trades != null && !trades.isEmpty()) {
-			TradeOffers.Factory[] factory = (TradeOffers.Factory[]) trades.get(villagerData.getLevel());
-			if (factory != null) {
-				TradeOfferList tradeOfferList = this.getOffers();
-				this.fillTradesFromPool(tradeOfferList, factory, 2, villagerData);
+			if (trades != null && !trades.isEmpty()) {
+				TradeOffers.Factory[] factory = (TradeOffers.Factory[]) trades.get(villagerData.getLevel());
+				if (factory != null) {
+					TradeOfferList tradeOfferList = this.getOffers();
+					this.fillTradesFromPool(tradeOfferList, factory, 2, villagerData);
+				}
 			}
+			ci.cancel();
 		}
-		ci.cancel();
 	}
 
 	@Shadow
