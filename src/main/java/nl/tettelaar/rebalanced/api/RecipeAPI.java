@@ -8,6 +8,7 @@ import java.util.Random;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
@@ -26,6 +27,11 @@ public class RecipeAPI {
 	private static ArrayList<Pair<List<Identifier>, List<Identifier>>> knowledgeBooksLootTable = new ArrayList<>();
 	private static HashMap<VillagerProfession, HashMap<Integer, List<Pair<TradeOffers.Factory, Float>>>> KnowledgeBooksVillagerTrades = new HashMap<>();
 	private static HashMap<EntityType<? extends MobEntity>, List<Identifier>> knowledgeBooksMobEquipment = new HashMap<>();
+	private static List<Identifier> blockRecipeList = new ArrayList<>();
+	
+	public static void registerBlockRecipe (Identifier name) {
+		blockRecipeList.add(name);
+	}
 	
 	private static void registerKnowledgeBookID(List<Identifier> recipes, List<Identifier> loottables) {
 		knowledgeBooksLootTable.add(new Pair<List<Identifier>, List<Identifier>>(recipes, loottables));
@@ -118,6 +124,10 @@ public class RecipeAPI {
 	
 	public static List<Identifier> getKnowledgeBooksMobEquipment(EntityType<? extends MobEntity> entity) {
 		return knowledgeBooksMobEquipment.get(entity);
+	}
+	
+	public static List<Identifier> getBlockRecipeList () {
+		return blockRecipeList;
 	}
 
 	private static class KnowledgeBookTrade implements TradeOffers.Factory {

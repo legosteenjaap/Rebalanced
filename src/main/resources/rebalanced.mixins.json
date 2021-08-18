@@ -42,6 +42,12 @@
 	"recipe.CampfireBlockMixin",
 	"recipe.StonecutterScreenHandlerMixin",
 	"recipe.SmithingScreenHandlerMixin",
+	"recipe.RecipeManagerMixin",
+	"recipe.WitherSkullBlockMixin",
+	"recipe.AbstractFireBlockMixin",
+	"recipe.FlintAndSteelMixin",
+	"recipe.FireChargeMixin",
+	"recipe.CarvedPumpkinBlockMixin",
 	    
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
@@ -49,6 +55,8 @@
 	"enchantment.LuckEnchantMixin",
 	"enchantment.SilkTouchEnchantMixin",
 	"enchantment.InfinityEnchantMixin",
+
+	"foliage.OakSaplingGeneratorMixin",
 
     "LocalDifficultyMixin",
 	"sleep.BedBlockMixin",
@@ -70,9 +78,9 @@
 
   ],
   "client": [
-	"LongerDayCycleClientMixin",
-	"recipe.ToastManagerClientMixin",
-	"recipe.ToastManagerEntryClientMixin"
+	"LongerDayCycleClientMixin"
+	//"recipe.ToastManagerClientMixin",
+	//"recipe.ToastManagerEntryClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

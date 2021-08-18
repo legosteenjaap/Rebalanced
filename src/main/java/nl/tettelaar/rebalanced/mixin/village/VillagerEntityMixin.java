@@ -15,10 +15,10 @@ import com.google.common.collect.Sets;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
 import net.minecraft.village.TradeOffer;
@@ -28,8 +28,6 @@ import net.minecraft.world.World;
 import nl.tettelaar.rebalanced.TradeOffers;
 import nl.tettelaar.rebalanced.TradeOffers.Factory;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
-import net.fabricmc.loader.api.metadata.Person;
-
 
 @Mixin(VillagerEntity.class)
 public abstract class VillagerEntityMixin extends MerchantEntity {
@@ -38,29 +36,30 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
 		// TODO Auto-generated constructor stub
 	}
 
-	//check if it is the correct villagerfix mod by checking the author because there is another villagerfix mod with the same id
-	
-	private static final boolean isVillagerTradeFixLoaded = FabricLoader.getInstance()
-			.isModLoaded("villagertradefix");
-	
-	//THIS CODE IS COPIED FROM THIS MOD https://github.com/Globox1997/VillagerTradeFix/blob/master/src/main/java/net/villagerfix/mixin/VillagerEntityMixin.java
-	
-    private List<String> jobList = new ArrayList<String>();
-    private List<TradeOfferList> offerList = new ArrayList<TradeOfferList>();
-    
-    @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-    public void readCustomDataFromNbtMixin(NbtCompound nbt, CallbackInfo info) {
-        for (int i = 0; i < nbt.getInt("JobCount"); ++i) {
-            String jobString = "OldOffer" + i;
-            jobList.add(nbt.getString(jobString + "OldWork"));
-            if (nbt.contains(jobString, 10)) {
-                offerList.add(new TradeOfferList(nbt.getCompound(jobString)));
-            }
-        }
-    }
-	
-    //*********************************************************************************************************************************************************
-    
+	// check if it is the correct villagerfix mod by checking the author because
+	// there is another villagerfix mod with the same id
+
+	private static final boolean isVillagerTradeFixLoaded = FabricLoader.getInstance().isModLoaded("villagertradefix");
+
+	// THIS CODE IS COPIED FROM THIS MOD
+	// https://github.com/Globox1997/VillagerTradeFix/blob/master/src/main/java/net/villagerfix/mixin/VillagerEntityMixin.java
+
+	private List<String> jobList = new ArrayList<String>();
+	private List<TradeOfferList> offerList = new ArrayList<TradeOfferList>();
+
+	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
+	public void readCustomDataFromNbtMixin(NbtCompound nbt, CallbackInfo info) {
+		for (int i = 0; i < nbt.getInt("JobCount"); ++i) {
+			String jobString = "OldOffer" + i;
+			jobList.add(nbt.getString(jobString + "OldWork"));
+			if (nbt.contains(jobString, 10)) {
+				offerList.add(new TradeOfferList(nbt.getCompound(jobString)));
+			}
+		}
+	}
+
+	// *********************************************************************************************************************************************************
+
 	@Inject(method = "fillRecipes", at = @At("HEAD"), cancellable = true)
 	private void fillRecipes(CallbackInfo ci) {
 		VillagerData villagerData = this.getVillagerData();
@@ -113,11 +112,18 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
 			Factory factory = knowledgeBookTrade.getLeft();
 			TradeOffer tradeOffer = factory.create(this, this.random);
 			if (tradeOffer != null && this.random.nextFloat() <= knowledgeBookTrade.getRight()) {
-				tradeList.remove(tradeList.size() - 1);
 				tradeList.add(tradeOffer);
 			}
 		}
 
 	}
+
+	@Inject(method = "afterUsing", at = @At("RETURN"))
+	protected void afterUsing(TradeOffer offer, CallbackInfo ci) {
+		if (offer.getSellItem().isOf(Items.KNOWLEDGE_BOOK)) {
+			this.offers.remove(offer);
+		}
+	}
+
 
 }
