@@ -40,7 +40,7 @@ public abstract class LongerDayCycleServerMixin extends World {
 	}
 	
 	@Redirect(method = "tickTime()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/GameRules;getBoolean(Lnet/minecraft/world/GameRules$Key;)Z", ordinal = 0))
-	private boolean injected(GameRules.Key<BooleanRule> gameRule, GameRules gameRules) {
+	private boolean injected(GameRules gameRules, GameRules.Key<BooleanRule> gameRule) {
 		timeCounter++;
 		if (Rebalanced.timeMultiplier == timeCounter && !(players.size() == 0 && this.isDay())) {
 			timeCounter = 0;

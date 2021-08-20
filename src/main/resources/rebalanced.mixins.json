@@ -62,7 +62,7 @@
 
 	"sleep.BedBlockMixin",
     "sleep.ServerWorldMixin",
-    //"sleep.LongerDayCycleServerMixin",
+    "sleep.LongerDayCycleServerMixin",
 
     "elytra.FireworkItemMixin",
     "elytra.ElytraMixin",
