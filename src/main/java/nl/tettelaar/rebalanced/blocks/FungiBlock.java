@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced;
+package nl.tettelaar.rebalanced.blocks;
 
 import java.util.Random;
 

@@ -28,6 +28,7 @@
 	"worldgen.RiverReduxMixin",
 	"worldgen.AddEdgeBiomesLayerMixin",
 	"worldgen.StructureConfigMixin",
+	"worldgen.ConfiguredStructureFeaturesMixin",
     
     "worldgen.DefaultBiomeInvoker",
     
@@ -38,15 +39,12 @@
     
     "recipe.AdvancementManagerMixin",
 	"recipe.KnowledgeBookItemMixin",
-	//"recipe.MobKnowledgeBookMixin",
 	"recipe.CampfireBlockMixin",
-	"recipe.StonecutterScreenHandlerMixin",
-	"recipe.SmithingScreenHandlerMixin",
 	"recipe.RecipeManagerMixin",
 	"recipe.WitherSkullBlockMixin",
 	"recipe.AbstractFireBlockMixin",
-	"recipe.FlintAndSteelMixin",
-	"recipe.FireChargeMixin",
+	//"recipe.FlintAndSteelMixin",
+	//"recipe.FireChargeMixin",
 	"recipe.CarvedPumpkinBlockMixin",
 	    
   	"village.GolemProtectChestMixin",
@@ -58,29 +56,30 @@
 
 	"foliage.OakSaplingGeneratorMixin",
 
-    "LocalDifficultyMixin",
+    "ai.AttackGoalMixin",
+
+    "ai.animal.EscapeDangerGoalMixin",
+    "ai.animal.MoreRabbitMixin",
+
 	"sleep.BedBlockMixin",
-    "WrittenBookMixin",
-    
-    "AttackGoalMixin",
-    "LongerDayCycleServerMixin",
     "sleep.ServerWorldMixin",
+    "sleep.LongerDayCycleServerMixin",
 
-    "FireworkItemMixin",
-    "MoreRabbitMixin",
-    "ElytraMixin",
+    "elytra.FireworkItemMixin",
+    "elytra.ElytraMixin",
 
-    "EscapeDangerGoalMixin",
-    
-    "ReplaceBlockMixin"
-    
-    //"FireBlockMixin",
+    "LocalDifficultyMixin",
+    "WrittenBookMixin",
+    "BeaconBlockEntityMixin",
+    "ReplaceBlockMixin",
+    "DisableEndPortalMixin"
 
   ],
   "client": [
-	"LongerDayCycleClientMixin"
-	//"recipe.ToastManagerClientMixin",
-	//"recipe.ToastManagerEntryClientMixin"
+  	"recipe.StonecutterScreenHandlerMixin",
+	"recipe.SmithingScreenHandlerMixin",
+  
+	"sleep.LongerDayCycleClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

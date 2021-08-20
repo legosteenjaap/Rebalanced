@@ -30,7 +30,7 @@ public class ContinentMixin {
 		
 		if (noise > 0.15) {
 			return BiomeIds.PLAINS;
-		} else if (noise < -0.2) {
+		} else if (noise < -0.4) {
 			return BiomeIds.DEEP_OCEAN;
 		} else {
 			return BiomeIds.OCEAN;

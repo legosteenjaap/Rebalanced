@@ -1,5 +1,6 @@
 package nl.tettelaar.rebalanced.mixin.recipe;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -15,7 +16,6 @@ import com.google.common.collect.Lists;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -114,9 +114,8 @@ public class KnowledgeBookItemMixin extends Item {
 		if (!world.isClient()) {
 			recipeManager = world.getServer().getRecipeManager();
 		} else {
-			recipeManager = ((ClientWorld) world).getRecipeManager();
+			// recipeManager = ((ClientWorld) world).getRecipeManager();
 		}
-		
 
 		for (int i = 0; i < listTag.size(); ++i) {
 			String string = listTag.getString(i);
@@ -132,7 +131,7 @@ public class KnowledgeBookItemMixin extends Item {
 	public Rarity getRarity(ItemStack stack) {
 
 		NbtCompound compoundTag = stack.getTag();
-		World world = MinecraftClient.getInstance().world;
+		World world = stack.getHolder().getEntityWorld();
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
 			if (world.isClient) {
 
@@ -169,8 +168,8 @@ public class KnowledgeBookItemMixin extends Item {
 			}
 		}
 
-		return Rarity.UNCOMMON;
+	return Rarity.UNCOMMON;
 
-	}
+}
 
 }

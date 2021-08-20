@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.structure.DesertVillageData;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome;
@@ -14,6 +15,8 @@ import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
+import net.minecraft.world.gen.feature.StructureFeature;
+import net.minecraft.world.gen.feature.StructurePoolFeatureConfig;
 import nl.tettelaar.rebalanced.Rebalanced;
 import nl.tettelaar.rebalanced.gen.BiomeCreator;
 import nl.tettelaar.rebalanced.init.RebalancedWorldGen;
@@ -43,8 +46,11 @@ public class DoBiomeModifications {
 		});
 
 		// GENERATION STUFF
+		BiomeModifications.create(new Identifier(modid, "forest_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.FOREST, BiomeKeys.WOODED_HILLS), (s) -> {
+			//s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, Features.SAPLING_FOREST_DEFAULT);
+		});
+		
 		BiomeModifications.create(new Identifier(modid, "plains_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.PLAINS), (s) -> {
-			// s.setDepth(0f);
 			s.setScale(0f);
 		});
 
@@ -96,7 +102,7 @@ public class DoBiomeModifications {
 		});
 
 		BiomeModifications.create(new Identifier(modid, "savanna_plateau")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.SAVANNA_PLATEAU), (s) -> {
-			s.setDepth(3.5F);
+			s.setDepth(3F);
 		});
 
 		BiomeModifications.create(new Identifier(modid, "stone_shore")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.STONE_SHORE), (s) -> {
@@ -206,15 +212,17 @@ public class DoBiomeModifications {
 
 	public static void normalOcean(BiomeModificationContext s) {
 		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_OCEAN_SURFACE).get());
+		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE);
 	}
 
 	public static void warmOcean(BiomeModificationContext s) {
 		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_SAND_OCEAN_SURFACE).get());
-
+		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE);
 	}
 
 	public static void frozenOcean(BiomeModificationContext s) {
 		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_FROZEN_OCEAN_SURFACE).get());
+		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE);
 	}
 
 	public static void snowyBiome(BiomeModificationContext s) {

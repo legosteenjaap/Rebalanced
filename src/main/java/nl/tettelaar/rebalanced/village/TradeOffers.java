@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced;
+package nl.tettelaar.rebalanced.village;
 
 import java.util.List;
 import java.util.Locale;

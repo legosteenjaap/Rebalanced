@@ -39,7 +39,7 @@ public class RecipeManagerMixin {
 
 		
 		for (Identifier blockRecipe : RecipeAPI.getBlockRecipeList()) {
-			craftingRecipes.put(blockRecipe, new ShapedRecipe(blockRecipe, "", 1, 1, DefaultedList.copyOf(Ingredient.ofItems(Items.AIR)), new ItemStack(Blocks.AIR)));
+			craftingRecipes.put(blockRecipe, new ShapedRecipe(blockRecipe, "", 1, 1, DefaultedList.copyOf(Ingredient.ofItems(Items.AIR), Ingredient.ofItems(Items.AIR)), new ItemStack(Blocks.AIR)));
 		}
 		newRecipes.remove(RecipeType.CRAFTING);
 		newRecipes.put(RecipeType.CRAFTING, craftingRecipes);

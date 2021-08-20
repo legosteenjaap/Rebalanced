@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin;
+package nl.tettelaar.rebalanced.mixin.elytra;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

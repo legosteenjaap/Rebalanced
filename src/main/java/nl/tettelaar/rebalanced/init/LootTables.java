@@ -46,7 +46,7 @@ public class LootTables {
 				PlayerPredicate playerPredicate = builderPlayerPredicate.recipe(recipe, false).build();
 				EntityPredicate.Builder builderEntityPredicate = new EntityPredicate.Builder();
 				EntityPredicate entityPredicate = builderEntityPredicate.player(playerPredicate).build();
-				LootCondition.Builder lootCondition = AlternativeLootCondition.builder((EntityPropertiesLootCondition.builder(EntityTarget.THIS, entityPredicate)),RandomChanceLootCondition.builder(0.2f));
+				LootCondition.Builder lootCondition = AlternativeLootCondition.builder((EntityPropertiesLootCondition.builder(EntityTarget.THIS, entityPredicate)), RandomChanceLootCondition.builder(0.2f));
 				
 				ItemEntry.Builder<?> itemBuilder = ItemEntry.builder(Items.KNOWLEDGE_BOOK);
 				itemBuilder.apply(lootFunction);

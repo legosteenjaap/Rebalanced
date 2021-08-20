@@ -15,7 +15,6 @@ public class RebalancedClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(SHOW_FLOATING_ITEM_ID, (client, handler, buf, responseSender) -> {
 		    ItemStack item = buf.readItemStack();
 			client.execute(() -> {
-		    	System.out.println("test");
 		    	client.gameRenderer.showFloatingItem(item);
 		    });
 		});
