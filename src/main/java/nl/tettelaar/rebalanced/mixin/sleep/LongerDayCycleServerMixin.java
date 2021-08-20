@@ -34,15 +34,10 @@ public abstract class LongerDayCycleServerMixin extends World {
 	
 	int timeCounter = 0;
 	
-	@Inject(method = "tickTime", at = @At("HEAD"), cancellable = true)
-	protected void tickTime(CallbackInfo ci) {
-		
-	}
-	
 	@Redirect(method = "tickTime()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/GameRules;getBoolean(Lnet/minecraft/world/GameRules$Key;)Z", ordinal = 0))
-	private boolean injected(GameRules gameRules, GameRules.Key<BooleanRule> gameRule) {
+	private boolean changeTimeSpeed(GameRules gameRules, GameRules.Key<BooleanRule> gameRule) {
 		timeCounter++;
-		if (Rebalanced.timeMultiplier == timeCounter && !(players.size() == 0 && this.isDay())) {
+		if (Rebalanced.timeMultiplier <= timeCounter && !(players.size() == 0 && this.isDay())) {
 			timeCounter = 0;
 			return true;
 		} else {
