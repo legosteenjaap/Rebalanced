@@ -1,42 +1,32 @@
 package nl.tettelaar.rebalanced.mixin.recipe;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.google.common.collect.Lists;
-
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.KnowledgeBookItem;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import nl.tettelaar.rebalanced.RebalancedClient;
+import nl.tettelaar.rebalanced.util.RecipeUtil;
 
 @Mixin(KnowledgeBookItem.class)
 public class KnowledgeBookItemMixin extends Item {
@@ -47,7 +37,7 @@ public class KnowledgeBookItemMixin extends Item {
 	}
 
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
-	public void useHead(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult> cir) {
+	public void useHead(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
 		ItemStack itemStack = user.getStackInHand(hand);
 
 		NbtCompound compoundTag = itemStack.getTag();
@@ -59,7 +49,7 @@ public class KnowledgeBookItemMixin extends Item {
 				// THIS CODE MAKES SURE THAT THE PLAYER IS COMPENSATED FOR THE RECIPES THAT THEY
 				// ALREADY HAVE
 
-				for (Recipe<?> recipe : getRecipes(compoundTag, world)) {
+				for (Recipe<?> recipe : RecipeUtil.getRecipes(compoundTag, world)) {
 					ItemStack item = recipe.getOutput();
 					PacketByteBuf buf = PacketByteBufs.create();
 					ServerPlayNetworking.send((ServerPlayerEntity) user, RebalancedClient.SHOW_FLOATING_ITEM_ID, buf.writeItemStack(item));
@@ -104,72 +94,7 @@ public class KnowledgeBookItemMixin extends Item {
 		user.setStackInHand(hand, ItemStack.EMPTY);
 	}
 
-	// THIS CODE GETS LIST OF RECIPES
 
-	@Unique
-	private List<Recipe<?>> getRecipes(NbtCompound compoundTag, World world) {
-		NbtList listTag = compoundTag.getList("Recipes", 8);
-		List<Recipe<?>> list = Lists.newArrayList();
-		RecipeManager recipeManager = null;
-		if (!world.isClient()) {
-			recipeManager = world.getServer().getRecipeManager();
-		} else {
-			// recipeManager = ((ClientWorld) world).getRecipeManager();
-		}
 
-		for (int i = 0; i < listTag.size(); ++i) {
-			String string = listTag.getString(i);
-			Optional<? extends Recipe<?>> optional = recipeManager.get(new Identifier(string));
-			if (optional.isPresent()) {
-				list.add(optional.get());
-			}
-		}
-		return list;
-	}
-
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-
-		NbtCompound compoundTag = stack.getTag();
-		World world = stack.getHolder().getEntityWorld();
-		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
-			if (world.isClient) {
-
-				Rarity highestRarity = null;
-				for (Recipe<?> recipe : getRecipes(compoundTag, world)) {
-					ItemStack item = recipe.getOutput();
-					if (highestRarity != null) {
-						switch (item.getRarity()) {
-						case COMMON:
-							break;
-						case UNCOMMON:
-							if (highestRarity != Rarity.COMMON) {
-								highestRarity = item.getRarity();
-								;
-							}
-							break;
-						case RARE:
-							if (highestRarity != Rarity.COMMON && highestRarity != Rarity.UNCOMMON) {
-								highestRarity = item.getRarity();
-								;
-							}
-						default:
-						case EPIC:
-							highestRarity = item.getRarity();
-						}
-
-					} else {
-						highestRarity = item.getRarity();
-					}
-				}
-				if (highestRarity != null) {
-					return highestRarity;
-				}
-			}
-		}
-
-	return Rarity.UNCOMMON;
-
-}
 
 }

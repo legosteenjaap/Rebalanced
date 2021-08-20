@@ -29,7 +29,6 @@
 	"worldgen.AddEdgeBiomesLayerMixin",
 	"worldgen.StructureConfigMixin",
 	"worldgen.ConfiguredStructureFeaturesMixin",
-    
     "worldgen.DefaultBiomeInvoker",
     
 	"gamerules.GameRulesMixin",
@@ -63,7 +62,7 @@
 
 	"sleep.BedBlockMixin",
     "sleep.ServerWorldMixin",
-    "sleep.LongerDayCycleServerMixin",
+    //"sleep.LongerDayCycleServerMixin",
 
     "elytra.FireworkItemMixin",
     "elytra.ElytraMixin",
@@ -78,7 +77,9 @@
   "client": [
   	"recipe.StonecutterScreenHandlerMixin",
 	"recipe.SmithingScreenHandlerMixin",
-  
+	"recipe.KnowledgeBookItemClientMixin",
+	
+	//"sleep.DeathScreenMixin",
 	"sleep.LongerDayCycleClientMixin"
   ],
   "injectors": {
