@@ -167,6 +167,7 @@ public class DoBiomeModifications {
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.CHICKEN);
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.PIG);
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.COW);
+			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.LLAMA);
 			s.getSpawnSettings().addSpawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.RABBIT, 4, 2, 3));
 			s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.FLOWER_DEFAULT);
 			s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.FLOWER_WARM);
