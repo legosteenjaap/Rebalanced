@@ -24,7 +24,7 @@
     "worldgen.BiomeLayersMixin",
     "worldgen.IslandLayerMixin",
     "worldgen.MoreIslandsMixin",
-    "worldgen.RemoveOldIslandsMixin",
+    "worldgen.AddHillsLayerMixin",
 	"worldgen.RiverReduxMixin",
 	"worldgen.AddEdgeBiomesLayerMixin",
 	"worldgen.StructureConfigMixin",

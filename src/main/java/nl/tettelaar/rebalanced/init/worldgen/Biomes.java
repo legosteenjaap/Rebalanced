@@ -54,6 +54,11 @@ public class Biomes {
 	public static final Biome GRAVELLY_BEACH = BiomeCreator.createGravellyBeach(false);
 	public static final RegistryKey<Biome> GRAVELLY_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "gravelly_beach"));
+	
+	public static final Biome SNOWY_GRAVELLY_BEACH = BiomeCreator.createGravellyBeach(true);
+	public static final RegistryKey<Biome> SNOWY_GRAVELLY_BEACH_KEY = RegistryKey.of(Registry.BIOME_KEY,
+			new Identifier(modid, "snowy_gravelly_beach"));
+
 
 	// RIVER STUFF
 	public static final Biome DESERT_RIVER = BiomeCreator.createDesertRiver(RebalancedWorldGen.dryRiverDepth, 0.1f);
@@ -116,6 +121,7 @@ public class Biomes {
 		Registry.register(BuiltinRegistries.BIOME, BADLANDS_LOW_PLATEAU_KEY.getValue(), BADLANDS_LOW_PLATEAU);
 		Registry.register(BuiltinRegistries.BIOME, SAVANNA_BEACH_KEY.getValue(), SAVANNA_BEACH);
 		Registry.register(BuiltinRegistries.BIOME, GRAVELLY_BEACH_KEY.getValue(), GRAVELLY_BEACH);
+		Registry.register(BuiltinRegistries.BIOME, SNOWY_GRAVELLY_BEACH_KEY.getValue(), SNOWY_GRAVELLY_BEACH);
 		Registry.register(BuiltinRegistries.BIOME, DESERT_RIVER_KEY.getValue(), DESERT_RIVER);
 		Registry.register(BuiltinRegistries.BIOME, BADLANDS_RIVER_KEY.getValue(), BADLANDS_RIVER);
 		Registry.register(BuiltinRegistries.BIOME, EXTREME_HILLS_RIVER_KEY.getValue(), EXTREME_HILLS_RIVER);
@@ -158,9 +164,11 @@ public class Biomes {
 
 		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA, GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA_HILLS, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA_MOUNTAINS, GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_TREE_TAIGA, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_TREE_TAIGA_HILLS, GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_SPRUCE_TAIGA, GRAVELLY_BEACH_KEY, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.TAIGA, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.GIANT_SPRUCE_TAIGA_HILLS, GRAVELLY_BEACH_KEY, 1f);
 		
 		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE, TROPICAL_BEACH_KEY, 1F);
 		OverworldBiomes.addShoreBiome(BiomeKeys.JUNGLE_EDGE, TROPICAL_BEACH_KEY, 1F);
@@ -184,10 +192,14 @@ public class Biomes {
 		OverworldBiomes.addShoreBiome(BiomeKeys.SWAMP, BiomeKeys.SWAMP, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.SWAMP_HILLS, BiomeKeys.SWAMP, 1f);
 		
-		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, BiomeKeys.SNOWY_BEACH, 1f);
-		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY, BiomeKeys.SNOWY_BEACH, 1f);
-		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_KEY, BiomeKeys.SNOWY_BEACH, 1f);
-		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_HILLS_KEY, BiomeKeys.SNOWY_BEACH, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.SNOWY_TAIGA, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.SNOWY_TAIGA_HILLS, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.SNOWY_TAIGA_MOUNTAINS, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, SNOWY_GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY, SNOWY_GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_KEY, SNOWY_GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_HILLS_KEY, SNOWY_GRAVELLY_BEACH_KEY, 1f);
+		
 		
 		OverworldBiomes.addShoreBiome(EXTREME_HILLS_PLATEAU_KEY, BiomeKeys.STONE_SHORE, 1f);
 
