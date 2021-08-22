@@ -23,8 +23,12 @@ public enum ClimateLayer implements RandomnessSourceLayer {
 
 		double noise = samp.sample(((double) x / 50), 0, ((double) y / 50));
 		
-		if (x == 0 && y == 0 && noise > desertBeginBorder && noise <= desertEndBorder) {
-			return BiomeIds.SAVANNA;
+		if (x == 0 && y == 0) {
+			if (noise > desertBeginBorder && noise <= desertEndBorder) {
+				return BiomeIds.SAVANNA;
+			} else if (noise < treeBorder) {
+				return BiomeIds.SNOWY_TAIGA;
+			}
 		}
 		
 		if (noise > lukewarmBorder && noise <= desertBeginBorder) {

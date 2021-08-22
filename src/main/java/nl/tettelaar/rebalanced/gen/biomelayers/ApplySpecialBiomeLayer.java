@@ -18,8 +18,6 @@ public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTr
 		switch (continent) {
 		case BiomeIds.SNOWY_TUNDRA:
 			switch (specialBiome) {
-			case 2:
-				return BiomeIds.ICE_SPIKES;
 			case 3:
 				return BiomeIds.SNOWY_MOUNTAINS;
 			}
@@ -64,6 +62,8 @@ public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTr
 		case BiomeIds.DESERT:
 			if (context.nextInt(75) == 0) return BiomeIds.SAVANNA;
 			break;
+		case BiomeIds.SNOWY_TUNDRA:
+			if (context.nextInt(100) == 0) return BiomeIds.ICE_SPIKES;
 		}
 		
 		return continent;
