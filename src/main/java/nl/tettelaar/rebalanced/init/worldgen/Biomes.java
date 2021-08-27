@@ -65,9 +65,9 @@ public class Biomes {
 	public static final RegistryKey<Biome> DESERT_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "desert_river"));
 	
-	private static final Biome DARK_RIVER = BiomeCreator.createDarkRiver(-1f, 0.2f, false);
-	public static final RegistryKey<Biome> DARK_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
-			new Identifier(modid, "dark_river"));
+	private static final Biome DARK_FOREST_RIVER = BiomeCreator.createDarkForestRiver();
+	public static final RegistryKey<Biome> DARK_FOREST_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
+			new Identifier(modid, "dark_forest_river"));
 	
 	public static final Biome BIRCH_RIVER = BiomeCreator.createBirchRiver(-0.75f, 0.1f, false);
 	public static final RegistryKey<Biome> BIRCH_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
@@ -143,10 +143,7 @@ public class Biomes {
 		Registry.register(BuiltinRegistries.BIOME, TAIGA_RIVER_KEY.getValue(), TAIGA_RIVER);
 		Registry.register(BuiltinRegistries.BIOME, FROZEN_TAIGA_RIVER_KEY.getValue(), FROZEN_TAIGA_RIVER);
 		Registry.register(BuiltinRegistries.BIOME, BIRCH_RIVER_KEY.getValue(), BIRCH_RIVER );
-		Registry.register(BuiltinRegistries.BIOME, DARK_RIVER_KEY.getValue(), DARK_RIVER );
-
-		
-		
+		Registry.register(BuiltinRegistries.BIOME, DARK_FOREST_RIVER_KEY.getValue(), DARK_FOREST_RIVER );
 
 	}
 	
@@ -235,8 +232,8 @@ public class Biomes {
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_HILLS, DESERT_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_LAKES, DESERT_RIVER_KEY);
 			
-			OverworldBiomes.setRiverBiome(BiomeKeys.DARK_FOREST, DARK_RIVER_KEY);
-			OverworldBiomes.setRiverBiome(BiomeKeys.DARK_FOREST_HILLS, DARK_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.DARK_FOREST, DARK_FOREST_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.DARK_FOREST_HILLS, DARK_FOREST_RIVER_KEY);
 			
 			OverworldBiomes.setRiverBiome(BiomeKeys.BIRCH_FOREST, BIRCH_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.BIRCH_FOREST_HILLS, BIRCH_RIVER_KEY);

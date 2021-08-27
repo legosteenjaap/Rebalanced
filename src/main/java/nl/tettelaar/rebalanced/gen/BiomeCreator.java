@@ -320,7 +320,7 @@ public class BiomeCreator {
 		      DefaultBiomeFeatures.addFrozenTopLayer(builder2);
 		      return (new Biome.Builder()).precipitation(Biome.Precipitation.RAIN).category(Biome.Category.FOREST).depth(RebalancedWorldGen.normalRiverDepth).scale(0.2F).temperature(0.6F).downfall(0.6F).effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(0.6F)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 		   }
-	   public static Biome createDarkRiver(float depth, float scale, boolean hills) {
+	   public static Biome createDarkForestRiver() {
 		      SpawnSettings.Builder builder = new SpawnSettings.Builder();
 		      DefaultBiomeFeatures.addFarmAnimals(builder);
 		      DefaultBiomeFeatures.addBatsAndMonsters(builder);
@@ -331,7 +331,7 @@ public class BiomeCreator {
 		      DefaultBiomeFeatures.addDefaultLakes(builder2);
 		      DefaultBiomeFeatures.addAmethystGeodes(builder2);
 		      DefaultBiomeFeatures.addDungeons(builder2); 
-		      builder2.feature(GenerationStep.Feature.VEGETAL_DECORATION, hills ? ConfiguredFeatures.DARK_FOREST_VEGETATION_RED : ConfiguredFeatures.DARK_FOREST_VEGETATION_BROWN);
+		      builder2.feature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FOREST_VEGETATION_BROWN);
 		      DefaultBiomeFeatures.addForestFlowers(builder2);
 		      DefaultBiomeFeatures.addMineables(builder2);
 		      DefaultBiomeFeatures.addDefaultOres(builder2);
@@ -342,7 +342,7 @@ public class BiomeCreator {
 		      DefaultBiomeFeatures.addDefaultVegetation(builder2);
 		      DefaultBiomeFeatures.addSprings(builder2);
 		      DefaultBiomeFeatures.addFrozenTopLayer(builder2);
-		      return (new Biome.Builder()).precipitation(Biome.Precipitation.RAIN).category(Biome.Category.FOREST).depth(RebalancedWorldGen.normalRiverDepth).scale(0.2F).temperature(0.7F).downfall(0.8F).effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(0.7F)).grassColorModifier(BiomeEffects.GrassColorModifier.DARK_FOREST).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
+		      return (new Biome.Builder()).precipitation(Biome.Precipitation.RAIN).category(Biome.Category.RIVER).depth(RebalancedWorldGen.normalRiverDepth).scale(0F).temperature(0.7F).downfall(0.8F).effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(0.7F)).grassColorModifier(BiomeEffects.GrassColorModifier.DARK_FOREST).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
 		   }
 
 
