@@ -9,26 +9,36 @@ import nl.tettelaar.rebalanced.init.RebalancedWorldGen;
 public enum ClimateLayer implements RandomnessSourceLayer {
 	INSTANCE;
 	
-	private static double warmBorder = 0.4;
-	private static double lukewarmBorder = 0.3;
-	private static double coldBorder = -0.15;
-	private static double frozenBorder = -0.2;
-	private static double treeBorder = -0.35;
+	private final static double warmBorder = 0.6;
+	private final static double desertEndBorder = 0.55;
+	private final static double desertBeginBorder = 0.4;
+	private final static double lukewarmBorder = 0.3;
+	private final static double coldBorder = -0.1;
+	private final static double frozenBorder = -0.2;
+	private final static double treeBorder = -0.35;
 	
 	public int sample(LayerRandomnessSource context, int x, int y, int value) {
 
 		PerlinNoiseSampler samp = context.getNoiseSampler();
 
-		double noise = samp.sample(((double) x / 120), 0, ((double) y / 120));
-
-		/*if (x <= RebalancedWorldGen.mainContinentSize && x >=-RebalancedWorldGen.mainContinentSize && y <= RebalancedWorldGen.mainContinentSize && y >= -RebalancedWorldGen.mainContinentSize) {
-			noise += (0.45 - (0.045 * (MathHelper.abs(x) + MathHelper.abs(y))));
-		}*/
+		double noise = samp.sample(((double) x / 50), 0, ((double) y / 50));
 		
-		if (noise > lukewarmBorder && noise <= warmBorder) {
+		if (x == 0 && y == 0) {
+			if (noise > desertBeginBorder && noise <= desertEndBorder) {
+				return BiomeIds.SAVANNA;
+			} else if (noise < treeBorder) {
+				return BiomeIds.SNOWY_TAIGA;
+			}
+		}
+		
+		if (noise > lukewarmBorder && noise <= desertBeginBorder) {
 			return BiomeIds.SAVANNA;
-		} else if (noise > warmBorder) {
+		} else if (noise > desertBeginBorder && noise <= desertEndBorder) {
 			return BiomeIds.DESERT;
+		} else if (noise > desertEndBorder && noise <= warmBorder) {
+			return BiomeIds.SAVANNA;
+		} else if (noise > warmBorder){ 
+			return BiomeIds.JUNGLE;
 		} else if (noise < coldBorder && noise >= frozenBorder) {
 			return BiomeIds.TAIGA;
 		} else if (noise < frozenBorder && noise >= treeBorder) {
@@ -38,32 +48,5 @@ public enum ClimateLayer implements RandomnessSourceLayer {
 		} else {
 			return BiomeIds.PLAINS;
 		}
-		
-		/*if (value == BiomeIds.PLAINS) {
-			
-		} else {
-			if (noise > lukewarmBorder && noise <= warmBorder) {
-				return BiomeIds.LUKEWARM_OCEAN;
-			} else if (noise > warmBorder) {
-				return BiomeIds.WARM_OCEAN;
-			} else if (noise < coldBorder && noise >= treeBorder) {
-				return BiomeIds.COLD_OCEAN;
-			} else if (noise < treeBorder) {
-				return BiomeIds.FROZEN_OCEAN;
-			}
-		}
-		return value;*/
-		// return context.nextInt(10) == 0 ? BiomeIds.PLAINS : BiomeIds.OCEAN;
-
-		/*
-		 * int xDiv = x % 4; int yDiv = y % 4;
-		 * 
-		 * if (xDiv == 0 && yDiv == 0) { if (x == 0 && y == 0) { return BiomeIds.PLAINS;
-		 * } switch (context.nextInt(3)) { case 0: return BiomeIds.PLAINS; case 1:
-		 * return BiomeIds.SNOWY_TUNDRA; case 2: return BiomeIds.DESERT; default: throw
-		 * new AssertionError(); } } else { return BiomeIds.OCEAN; }
-		 */
-
-		// return BiomeIds.OCEAN;
 	}
 }

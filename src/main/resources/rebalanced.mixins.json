@@ -9,6 +9,7 @@
     "worldgen.MultiNoiseBiomeSourceAccessor",
     
     "worldgen.WoodedBadlandsSurfaceBuilderMixin",
+    "worldgen.BadlandsSurfaceBuilderMixin",
     
     "worldgen.BiomeRawIdMixin",
     "worldgen.VanillaLayeredBiomeSourceMixin",
@@ -17,14 +18,17 @@
     "worldgen.AddTemperateBiomesLayerMixin",
     "worldgen.AddCoolBiomesLayerMixin",
     "worldgen.AddSpecialBiomesLayerMixin",
+    "worldgen.AddDeepOceanLayerMixin",
     //"worldgen.DisableRiverDebugMixin",
     //"worldgen.BiomeLayersDebugMixin",
     "worldgen.BiomeLayersMixin",
     "worldgen.IslandLayerMixin",
     "worldgen.MoreIslandsMixin",
-    "worldgen.RemoveOldIslandsMixin",
+    "worldgen.AddHillsLayerMixin",
 	"worldgen.RiverReduxMixin",
-    
+	"worldgen.AddEdgeBiomesLayerMixin",
+	"worldgen.StructureConfigMixin",
+	"worldgen.ConfiguredStructureFeaturesMixin",
     "worldgen.DefaultBiomeInvoker",
     
 	"gamerules.GameRulesMixin",
@@ -34,34 +38,53 @@
     
     "recipe.AdvancementManagerMixin",
 	"recipe.KnowledgeBookItemMixin",
-    
+	"recipe.CampfireBlockMixin",
+	"recipe.RecipeManagerMixin",
+	"recipe.WitherSkullBlockMixin",
+	"recipe.AbstractFireBlockMixin",
+	//"recipe.FlintAndSteelMixin",
+	//"recipe.FireChargeMixin",
+	"recipe.CarvedPumpkinBlockMixin",
+	    
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
+    "village.TradeOfferMixin",
 
 	"enchantment.LuckEnchantMixin",
 	"enchantment.SilkTouchEnchantMixin",
+	"enchantment.InfinityEnchantMixin",
+
+	"foliage.OakSaplingGeneratorMixin",
+
+    "ai.AttackGoalMixin",
+	"ai.LivingEntityMixin",
+
+    "ai.animal.EscapeDangerGoalMixin",
+    "ai.animal.MoreRabbitMixin",
     
-    "LocalDifficultyMixin",
+    "ai.monster.SkeletonEntityMixin",
+
 	"sleep.BedBlockMixin",
-    "WrittenBookMixin",
-    
-    "AttackGoalMixin",
-    "LongerDayCycleServerMixin",
     "sleep.ServerWorldMixin",
+    //"sleep.LongerDayCycleServerMixin",
 
-    "FireworkItemMixin",
-    "MoreRabbitMixin",
-    "ElytraMixin",
+    "elytra.FireworkItemMixin",
+    "elytra.ElytraMixin",
 
-    "EscapeDangerGoalMixin",
-    
-    "ReplaceBlockMixin"
-    
-    //"FireBlockMixin",
+    "LocalDifficultyMixin",
+    "WrittenBookMixin",
+    "BeaconBlockEntityMixin",
+    "ReplaceBlockMixin",
+    "DisableEndPortalMixin"
 
   ],
   "client": [
-	"LongerDayCycleClientMixin"
+  	"recipe.StonecutterScreenHandlerMixin",
+	"recipe.SmithingScreenHandlerMixin",
+	"recipe.KnowledgeBookItemClientMixin"
+	
+	//"sleep.DeathScreenMixin",
+	//"sleep.LongerDayCycleClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

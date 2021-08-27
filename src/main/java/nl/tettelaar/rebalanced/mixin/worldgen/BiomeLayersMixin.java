@@ -8,7 +8,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.minecraft.world.biome.layer.AddBambooJungleLayer;
 import net.minecraft.world.biome.layer.AddColdClimatesLayer;
+import net.minecraft.world.biome.layer.AddDeepOceanLayer;
 import net.minecraft.world.biome.layer.ApplyOceanTemperatureLayer;
 import net.minecraft.world.biome.layer.BiomeLayers;
 import net.minecraft.world.biome.layer.IncreaseEdgeCurvatureLayer;
@@ -107,10 +109,22 @@ public class BiomeLayersMixin {
 		return layerFactory;
 	}
 	
+	@Redirect(method = "build(ZIILjava/util/function/LongFunction;)Lnet/minecraft/world/biome/layer/util/LayerFactory;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/layer/AddDeepOceanLayer;create(Lnet/minecraft/world/biome/layer/util/LayerSampleContext;Lnet/minecraft/world/biome/layer/util/LayerFactory;)Lnet/minecraft/world/biome/layer/util/LayerFactory;"))
+	private static <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> removeAddDeepOceanLayer(
+			AddDeepOceanLayer layer, LayerSampleContext<?> context, LayerFactory<T> layerFactory) {
+		return layerFactory;
+	}
+	
+	@Redirect(method = "build(ZIILjava/util/function/LongFunction;)Lnet/minecraft/world/biome/layer/util/LayerFactory;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/layer/AddBambooJungleLayer;create(Lnet/minecraft/world/biome/layer/util/LayerSampleContext;Lnet/minecraft/world/biome/layer/util/LayerFactory;)Lnet/minecraft/world/biome/layer/util/LayerFactory;"))
+	private static <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> removeAddBambooJungleLayer(
+			AddBambooJungleLayer layer, LayerSampleContext<?> context, LayerFactory<T> layerFactory) {
+		return layerFactory;
+	}
+	
 	@Redirect(method = "build(ZIILjava/util/function/LongFunction;)Lnet/minecraft/world/biome/layer/util/LayerFactory;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/biome/layer/ApplyOceanTemperatureLayer;create(Lnet/minecraft/world/biome/layer/util/LayerSampleContext;Lnet/minecraft/world/biome/layer/util/LayerFactory;Lnet/minecraft/world/biome/layer/util/LayerFactory;)Lnet/minecraft/world/biome/layer/util/LayerFactory;"))
 	private static <T extends LayerSampler, C extends LayerSampleContext<T>> LayerFactory<T> removeApplyOceanTemperatureLayer(
 			ApplyOceanTemperatureLayer layer, LayerSampleContext<?> context, LayerFactory<T> layerFactory1, LayerFactory<T> layerFactory2) {
 		return layerFactory1;
 	}
-
+	
 }

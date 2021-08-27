@@ -1,10 +1,9 @@
-package nl.tettelaar.rebalanced;
+package nl.tettelaar.rebalanced.village;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
@@ -35,16 +34,12 @@ import net.minecraft.item.Items;
 import net.minecraft.item.SuspiciousStewItem;
 import net.minecraft.item.map.MapIcon;
 import net.minecraft.item.map.MapState;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -54,8 +49,10 @@ import net.minecraft.village.VillagerDataContainer;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.village.VillagerType;
 import net.minecraft.world.gen.feature.StructureFeature;
+import nl.tettelaar.rebalanced.util.RecipeUtil;
 
 public class TradeOffers {
+	
 	@SuppressWarnings("unchecked")
 	public static final Map<VillagerProfession, Int2ObjectMap<TradeOffers.Factory[]>> PROFESSION_TO_LEVELED_TRADE = (Map) Util
 			.make(Maps.newHashMap(), (map) -> {
@@ -64,26 +61,22 @@ public class TradeOffers {
 								new TradeOffers.BuySupplyFactory(Items.POTATO, 6, 16, 2),
 								new TradeOffers.BuySupplyFactory(Items.CARROT, 5, 16, 2),
 								new TradeOffers.BuySupplyFactory(Items.BEETROOT, 4, 16, 2),
-								new TradeOffers.SellItemFactory(Items.BREAD, 1, 6, 16, 1), 
-								new TradeOffers.BuyKnowledgeBookFactory(new Identifier("beacon"),10, 2)
-								/*new TradeOffers.SellItemFactory(Items.POTATO, 4, 26, 4, 2),
-								new TradeOffers.SellItemFactory(Items.CARROT, 22, 26, 4, 2),
-								new TradeOffers.SellItemFactory(Items.BEETROOT, 15, 26, 4, 2),
-								new TradeOffers.SellItemFactory(Items.WHEAT, 20, 26, 4, 2),
-								new TradeOffers.SellItemFactory(Items.BREAD, 1, 6, 16, 1)*/
 				},
 						2,
 						new TradeOffers.Factory[] { 
 								new TradeOffers.BuySupplyFactory(Blocks.PUMPKIN, 4, 12, 10),
-								new TradeOffers.SellItemFactory(Items.PUMPKIN_PIE, 1, 4, 5),
-								new TradeOffers.SellItemFactory(Items.APPLE, 1, 4, 16, 5) },
+								new TradeOffers.BuySupplyFactory(Items.BEETROOT_SEEDS, 3, 10, 10),
+								new TradeOffers.SellItemFactory(Items.APPLE, 1, 4, 16, 5),
+								new TradeOffers.SellItemFactory(Items.BREAD, 1, 6, 16, 1), 
+					},
+						
 						3,
 						new TradeOffers.Factory[] { 
-								new TradeOffers.SellItemFactory(Items.COOKIE, 3, 18, 10),
+								new TradeOffers.BuySupplyFactory(Items.BEETROOT_SEEDS, 3, 10, 10),
 								new TradeOffers.BuySupplyFactory(Blocks.MELON, 3, 12, 20) },
 						4,
 						new TradeOffers.Factory[] { 
-								new TradeOffers.SellItemFactory(Blocks.CAKE, 1, 1, 12, 15),
+								new TradeOffers.SellItemFactory(Items.PUMPKIN_PIE, 1, 1, 12, 15),
 								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.NIGHT_VISION, 100, 15),
 								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.JUMP_BOOST, 160, 15),
 								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.WEAKNESS, 140, 15),
@@ -838,7 +831,7 @@ public class TradeOffers {
 		}
 	}
 
-	static class BuySupplyFactory implements TradeOffers.Factory {
+	public static class BuySupplyFactory implements TradeOffers.Factory {
 		private final Item buy;
 		private final int price;
 		private final int maxUses;
@@ -853,8 +846,11 @@ public class TradeOffers {
 			this.multiplier = 0.05F;
 		}
 
+		public TradeOffer createBuySupply(Entity entity, Random random) {
+			return new TradeOffer(new ItemStack(this.buy, this.price), new ItemStack(Items.EMERALD), this.maxUses, this.experience, this.multiplier);
+		}
+		
 		public TradeOffer create(Entity entity, Random random) {
-			ItemStack itemStack = new ItemStack(this.buy, this.price);
 			return new TradeOffer(new ItemStack(Items.EMERALD),
 					new ItemStack(this.buy, this.price), this.maxUses, this.experience, this.multiplier);
 		}
@@ -878,30 +874,6 @@ public class TradeOffers {
 		public TradeOffer create(Entity entity, Random random) {
 			ItemStack itemStack = new ItemStack(this.buy, this.price);
 			return new TradeOffer(itemStack, new ItemStack(Items.EMERALD), this.maxUses, this.experience,
-					this.multiplier);
-		}
-	}
-
-	static class BuyKnowledgeBookFactory implements TradeOffers.Factory {
-		private final int price;
-		private final int experience;
-		private final float multiplier;
-		private final Identifier recipe;
-
-		public BuyKnowledgeBookFactory(Identifier recipe, int price, int experience) {
-			this.price = price;
-			this.experience = experience;
-			this.multiplier = 0.05F;
-			this.recipe = recipe;
-		}
-
-		public TradeOffer create(Entity entity, Random random) {
-			NbtList listTag = new NbtList();
-			listTag.add(0, NbtString.of(recipe.toString()));
-			NbtCompound tag = (NbtCompound) new NbtCompound().put("Recipes", listTag);
-			ItemStack itemStack = new ItemStack(Items.KNOWLEDGE_BOOK.asItem());
-			itemStack.getOrCreateTag().put("Recipes", listTag);
-			return new TradeOffer(new ItemStack(Items.EMERALD), itemStack, 1, this.experience,
 					this.multiplier);
 		}
 	}

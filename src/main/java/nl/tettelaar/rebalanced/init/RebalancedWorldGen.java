@@ -1,14 +1,14 @@
 package nl.tettelaar.rebalanced.init;
 
 import net.fabricmc.loader.api.FabricLoader;
-import nl.tettelaar.rebalanced.Rebalanced;
+import nl.tettelaar.rebalanced.gen.Features;
 import nl.tettelaar.rebalanced.init.worldgen.Biomes;
 import nl.tettelaar.rebalanced.init.worldgen.DoBiomeModifications;
 import nl.tettelaar.rebalanced.init.worldgen.SurfaceBuilders;
 
 public class RebalancedWorldGen {
 
-	public static final int mainContinentSize = 6;
+	public static final int mainContinentSize = 4;
 	
 	public static final boolean disableRiver = false;
 	
@@ -16,12 +16,13 @@ public class RebalancedWorldGen {
 	
 	public static final float frozenRiverDepth = -1f;
 	
-	public static final float dryRiverDepth = -0.75f;
+	public static final float dryRiverDepth = -1f;
 	
 	public static final boolean isSimplyImprovedTerrainLoaded = FabricLoader.getInstance()
 			.isModLoaded("simplyimprovedterrain");
 	
 	public static void init() {
+		Features.init();
 		SurfaceBuilders.init();
 		Biomes.init();
 		DoBiomeModifications.init();

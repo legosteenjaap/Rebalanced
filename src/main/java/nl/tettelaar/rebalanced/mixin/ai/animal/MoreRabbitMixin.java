@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin;
+package nl.tettelaar.rebalanced.mixin.ai.animal;
 
 import java.util.Random;
 

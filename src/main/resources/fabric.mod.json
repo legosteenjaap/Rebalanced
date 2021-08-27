@@ -15,6 +15,9 @@
   "entrypoints": {
     "main": [
       "nl.tettelaar.rebalanced.Rebalanced"
+    ],
+    "client": [ 
+      "nl.tettelaar.rebalanced.RebalancedClient"
     ]
   },
   "mixins": [

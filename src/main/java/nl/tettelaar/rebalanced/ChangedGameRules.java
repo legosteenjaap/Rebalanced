@@ -14,7 +14,7 @@ import nl.tettelaar.rebalanced.mixin.gamerules.IntRuleAccessor;
 public class ChangedGameRules {
 	public static final Type<BooleanRule> REDUCED_DEBUG_INFO_TYPE = BooleanRuleAccessor.create(true, (server, rule) -> {
 		byte b = (byte) (rule.get() ? 22 : 23);
-		Iterator var3 = server.getPlayerManager().getPlayerList().iterator();
+		Iterator<ServerPlayerEntity> var3 = server.getPlayerManager().getPlayerList().iterator();
 
 		while (var3.hasNext()) {
 			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) var3.next();
@@ -24,9 +24,9 @@ public class ChangedGameRules {
 
 	});;
 	
-	public static final Type<BooleanRule> DO_LIMITED_CRAFTING_TYPE = create(false);
+	public static final Type<BooleanRule> DO_LIMITED_CRAFTING_TYPE = create(true);
 	
-	public static final Type<IntRule> SPAWN_RADIUS_TYPE = create(0);
+	public static final Type<IntRule> SPAWN_RADIUS_TYPE = create(500);
 	
 	public static final Type<BooleanRule> ANNOUNCE_ADVANCEMENTS_TYPE = create(false);
 	

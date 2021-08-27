@@ -32,21 +32,12 @@ public class AddBaseBiomeLayerMixin {
 
 	@Inject(method = "sample", at = @At("HEAD"), cancellable = true)
 	public void sample(LayerRandomnessSource context, int value, CallbackInfoReturnable<Integer> cir) {
-		
-		
-		//cir.setReturnValue(value);
-		
-		if (isOcean(value) || value == BiomeIds.MUSHROOM_FIELDS) {
+		if (isOcean(value) || value == BiomeIds.MUSHROOM_FIELDS || value == BiomeIds.JUNGLE) {
 			cir.setReturnValue(value);
 		} else {
 			switch (value) {
 			case BiomeIds.PLAINS:
-				int pBiome = TEMPERATE_BIOMES[context.nextInt(TEMPERATE_BIOMES.length)];
-				if (pBiome != BiomeIds.MOUNTAINS && pBiome != BiomeIds.TAIGA) {
-					cir.setReturnValue(pBiome);
-				} else {
-					cir.setReturnValue(context.nextInt(2) == 0 ? BiomeIds.FOREST : BiomeIds.PLAINS);
-				}
+				cir.setReturnValue(getTemperateBiome(context));
 				break;
 			case BiomeIds.DESERT:
 				int dBiome = this.chosenGroup1[context.nextInt(this.chosenGroup1.length)];
@@ -57,60 +48,35 @@ public class AddBaseBiomeLayerMixin {
 				}
 				break;
 			case BiomeIds.SNOWY_TUNDRA:
-				cir.setReturnValue(SNOWY_BIOMES[context.nextInt(SNOWY_BIOMES.length)]);
+				int sBiome = SNOWY_BIOMES[context.nextInt(SNOWY_BIOMES.length)];
+				if (sBiome != BiomeIds.ICE_SPIKES && sBiome != BiomeIds.SNOWY_MOUNTAINS) {
+					cir.setReturnValue(sBiome);
+				} else {
+					cir.setReturnValue(BiomeIds.SNOWY_TUNDRA);
+				}
 				break;
 			case BiomeIds.TAIGA:
 				int tBiome = COOL_BIOMES[context.nextInt(COOL_BIOMES.length)];
-				if (tBiome != BiomeIds.FOREST && tBiome != BiomeIds.PLAINS) {
+				if (tBiome != BiomeIds.FOREST && tBiome != BiomeIds.PLAINS && tBiome != BiomeIds.MOUNTAINS) {
 					cir.setReturnValue(tBiome);
 				} else {
 					cir.setReturnValue(BiomeIds.TAIGA);
 				}
 				break;
+			
 			default:
 				cir.setReturnValue(value);
 			}
 		}
-		
-		
-		/*int i = (value & 3840) >> 8;
-		int j = value & -3841;
-		if (!isOcean(value) && value != BiomeIds.MUSHROOM_FIELDS) {
-			switch (j) {
-			case 1:
-				if (i > 0) {
-					cir.setReturnValue(context.nextInt(3) == 0 ? 39 : 38);
-					break;
-				}
-
-				cir.setReturnValue(this.chosenGroup1[context.nextInt(this.chosenGroup1.length)]);
-				break;
-			case 2:
-				if (i > 0) {
-					cir.setReturnValue(21);
-					break;
-				}
-
-				cir.setReturnValue(TEMPERATE_BIOMES[context.nextInt(TEMPERATE_BIOMES.length)]);
-				break;
-			case 3:
-				if (i > 0) {
-					cir.setReturnValue(32);
-					break;
-				}
-
-				cir.setReturnValue(COOL_BIOMES[context.nextInt(COOL_BIOMES.length)]);
-				break;
-			case 4:
-				cir.setReturnValue(SNOWY_BIOMES[context.nextInt(SNOWY_BIOMES.length)]);
-				break;
-			default:
-				cir.setReturnValue(14);
-			}
+	}
+	
+	private static int getTemperateBiome(LayerRandomnessSource context) {
+		int pBiome = TEMPERATE_BIOMES[context.nextInt(TEMPERATE_BIOMES.length)];
+		if ((pBiome != BiomeIds.MOUNTAINS && pBiome != BiomeIds.TAIGA && (pBiome != BiomeIds.PLAINS || context.nextInt(20) == 0))) {
+			return pBiome;
 		} else {
-			cir.setReturnValue(value);
-		}*/
-
+			return getTemperateBiome(context);
+		}
 	}
 
 	private static boolean isOcean(int id) {

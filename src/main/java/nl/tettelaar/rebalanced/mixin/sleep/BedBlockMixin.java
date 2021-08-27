@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -20,7 +21,9 @@ public class BedBlockMixin {
 	@Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
 	public void onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
 		if (player.experienceLevel < 10 && world.getDimension().isBedWorking() && !world.isDay() && !world.isThundering()) {
-            
+            if (player instanceof ServerPlayerEntity) {
+            	((ServerPlayerEntity) player).setSpawnPoint(world.getRegistryKey(), pos, 0.0F, false, true);
+            }
             TranslatableText text = new TranslatableText("sleep.try.xp");
 			player.sendMessage(text , true);
 			cir.setReturnValue(ActionResult.FAIL);

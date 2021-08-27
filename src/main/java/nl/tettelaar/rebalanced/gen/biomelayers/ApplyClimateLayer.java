@@ -15,11 +15,29 @@ public enum ApplyClimateLayer implements MergingLayer, IdentityCoordinateTransfo
 		int climate = climateSamp.sample(this.transformX(x), this.transformZ(z));
 		if (continent == BiomeIds.PLAINS) {
 			return climate;
+		} else if (continent == BiomeIds.DEEP_OCEAN) {
+			switch (climate) {
+			case BiomeIds.JUNGLE:
+				return BiomeIds.DEEP_WARM_OCEAN;
+			case BiomeIds.SAVANNA:
+			case BiomeIds.DESERT:
+				return BiomeIds.DEEP_LUKEWARM_OCEAN;
+			case BiomeIds.PLAINS:
+				return BiomeIds.DEEP_OCEAN;
+			case BiomeIds.TAIGA:
+			case BiomeIds.SNOWY_TAIGA:
+				return BiomeIds.DEEP_COLD_OCEAN;
+			case BiomeIds.SNOWY_TUNDRA:
+				return BiomeIds.DEEP_FROZEN_OCEAN;
+			default:
+				return BiomeIds.DEEP_OCEAN;
+			}
 		} else {
 			switch (climate) {
-			case BiomeIds.DESERT:
+			case BiomeIds.JUNGLE:
 				return BiomeIds.WARM_OCEAN;
 			case BiomeIds.SAVANNA:
+			case BiomeIds.DESERT:
 				return BiomeIds.LUKEWARM_OCEAN;
 			case BiomeIds.PLAINS:
 				return BiomeIds.OCEAN;

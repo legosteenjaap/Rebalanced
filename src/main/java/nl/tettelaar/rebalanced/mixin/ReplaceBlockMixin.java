@@ -12,7 +12,7 @@ import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.registry.Registry;
-import nl.tettelaar.rebalanced.FungiBlock;
+import nl.tettelaar.rebalanced.blocks.FungiBlock;
 
 @Mixin(Blocks.class)
 public class ReplaceBlockMixin {

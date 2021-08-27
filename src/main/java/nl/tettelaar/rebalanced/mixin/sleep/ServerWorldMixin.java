@@ -26,14 +26,11 @@ public class ServerWorldMixin {
 
 	@Inject(method = "wakeSleepingPlayers", at = @At("HEAD"))
 	public void wakeSleepingPlayers(CallbackInfo ci) {
-		System.out.println(players);
 		((List<ServerPlayerEntity>) this.players.stream().filter(LivingEntity::isSleeping).collect(Collectors.toList()))
 				.forEach((player) -> {
-					System.out.println(player);
 					player.setExperienceLevel(player.experienceLevel - 10);
 					player.networkHandler.sendPacket(new PlaySoundIdS2CPacket(SoundEvents.ENTITY_PLAYER_LEVELUP.getId(), SoundCategory.BLOCKS, player.getPos(), 1f, 1f));
 					player.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 1f, 1f);
-					System.out.println();
 				});
 	}
 }
