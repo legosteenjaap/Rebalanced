@@ -94,6 +94,7 @@ public class BiomeCreator {
 		DefaultBiomeFeatures.addDefaultOres(builder2);
 		DefaultBiomeFeatures.addDefaultDisks(builder2);
 		DefaultBiomeFeatures.addDefaultGrass(builder2);
+		DefaultBiomeFeatures.addFrozenTopLayer(builder2);
 		float temp = snowy ? -0.5f : 0.25f;
 		return (new Biome.Builder()).precipitation(snowy ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN).category(Biome.Category.BEACH).depth(0.02f).scale(0f).temperature(temp).downfall(0.8f)
 				.effects((new BiomeEffects.Builder()).waterColor(4159204).waterFogColor(329011).fogColor(12638463).skyColor(DefaultBiomeInvoker.invokeGetSkyColor(temp)).moodSound(BiomeMoodSound.CAVE).build()).spawnSettings(builder.build()).generationSettings(builder2.build()).build();
