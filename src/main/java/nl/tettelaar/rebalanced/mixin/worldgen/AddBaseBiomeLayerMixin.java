@@ -72,7 +72,7 @@ public class AddBaseBiomeLayerMixin {
 	
 	private static int getTemperateBiome(LayerRandomnessSource context) {
 		int pBiome = TEMPERATE_BIOMES[context.nextInt(TEMPERATE_BIOMES.length)];
-		if ((pBiome != BiomeIds.MOUNTAINS && pBiome != BiomeIds.TAIGA) || (pBiome == BiomeIds.PLAINS && context.nextInt(20) != 0)) {
+		if ((pBiome != BiomeIds.MOUNTAINS && pBiome != BiomeIds.TAIGA && (pBiome != BiomeIds.PLAINS || context.nextInt(20) == 0))) {
 			return pBiome;
 		} else {
 			return getTemperateBiome(context);

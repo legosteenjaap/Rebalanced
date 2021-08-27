@@ -8,6 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.KnowledgeBookItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.text.BaseText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Rarity;
 import net.minecraft.world.World;
 import nl.tettelaar.rebalanced.util.RecipeUtil;
@@ -20,6 +23,22 @@ public class KnowledgeBookItemClientMixin extends Item {
 		// TODO Auto-generated constructor stub
 	}
 
+
+	@Override
+	public Text getName(ItemStack stack) {
+		NbtCompound compoundTag = stack.getTag();
+		World world = MinecraftClient.getInstance().world;
+		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
+			if (world != null && world.isClient) {
+				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);
+				if (output != null) {
+					return ((BaseText) output.getName()).append(Text.of(" ")).append(new TranslatableText(this.getTranslationKey(stack)));
+				}
+			}
+		}
+		return super.getName(stack);
+	}
+	
 	@Override
 	public Rarity getRarity(ItemStack stack) {
 
@@ -27,33 +46,14 @@ public class KnowledgeBookItemClientMixin extends Item {
 		World world = MinecraftClient.getInstance().world;
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
 			if (world != null && world.isClient) {
-				Rarity highestRarity = null;
-				for (Recipe<?> recipe : RecipeUtil.getRecipes(compoundTag, world)) {
-					ItemStack item = recipe.getOutput();
-					if (highestRarity != null) {
-						switch (item.getRarity()) {
-						case COMMON:
-							break;
-						case UNCOMMON:
-							if (highestRarity != Rarity.COMMON) {
-								highestRarity = item.getRarity();
-							}
-							break;
-						case RARE:
-							if (highestRarity != Rarity.COMMON && highestRarity != Rarity.UNCOMMON) {
-								highestRarity = item.getRarity();
-							}
-						default:
-						case EPIC:
-							highestRarity = item.getRarity();
-						}
-
-					} else {
-						highestRarity = item.getRarity();
+				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);
+				if (output != null) {
+					switch (output.getRarity()) {
+					case COMMON:
+						return Rarity.UNCOMMON;
+					default:
+						return Rarity.RARE;
 					}
-				}
-				if (highestRarity != null) {
-					return highestRarity;
 				}
 			}
 		}

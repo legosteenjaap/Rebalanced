@@ -49,6 +49,7 @@ import net.minecraft.village.VillagerDataContainer;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.village.VillagerType;
 import net.minecraft.world.gen.feature.StructureFeature;
+import nl.tettelaar.rebalanced.util.RecipeUtil;
 
 public class TradeOffers {
 	
@@ -60,26 +61,22 @@ public class TradeOffers {
 								new TradeOffers.BuySupplyFactory(Items.POTATO, 6, 16, 2),
 								new TradeOffers.BuySupplyFactory(Items.CARROT, 5, 16, 2),
 								new TradeOffers.BuySupplyFactory(Items.BEETROOT, 4, 16, 2),
-								new TradeOffers.SellItemFactory(Items.BREAD, 1, 6, 16, 1), 
-								//new TradeOffers.BuyKnowledgeBookFactory(VillagerProfession.FARMER, 10, 2)
-								/*new TradeOffers.SellItemFactory(Items.POTATO, 4, 26, 4, 2),
-								new TradeOffers.SellItemFactory(Items.CARROT, 22, 26, 4, 2),
-								new TradeOffers.SellItemFactory(Items.BEETROOT, 15, 26, 4, 2),
-								new TradeOffers.SellItemFactory(Items.WHEAT, 20, 26, 4, 2),
-								new TradeOffers.SellItemFactory(Items.BREAD, 1, 6, 16, 1)*/
 				},
 						2,
 						new TradeOffers.Factory[] { 
 								new TradeOffers.BuySupplyFactory(Blocks.PUMPKIN, 4, 12, 10),
-								new TradeOffers.SellItemFactory(Items.PUMPKIN_PIE, 1, 4, 5),
-								new TradeOffers.SellItemFactory(Items.APPLE, 1, 4, 16, 5) },
+								new TradeOffers.BuySupplyFactory(Items.BEETROOT_SEEDS, 3, 10, 10),
+								new TradeOffers.SellItemFactory(Items.APPLE, 1, 4, 16, 5),
+								new TradeOffers.SellItemFactory(Items.BREAD, 1, 6, 16, 1), 
+					},
+						
 						3,
 						new TradeOffers.Factory[] { 
-								new TradeOffers.SellItemFactory(Items.COOKIE, 3, 18, 10),
+								new TradeOffers.BuySupplyFactory(Items.BEETROOT_SEEDS, 3, 10, 10),
 								new TradeOffers.BuySupplyFactory(Blocks.MELON, 3, 12, 20) },
 						4,
 						new TradeOffers.Factory[] { 
-								new TradeOffers.SellItemFactory(Blocks.CAKE, 1, 1, 12, 15),
+								new TradeOffers.SellItemFactory(Items.PUMPKIN_PIE, 1, 1, 12, 15),
 								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.NIGHT_VISION, 100, 15),
 								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.JUMP_BOOST, 160, 15),
 								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.WEAKNESS, 140, 15),
@@ -834,7 +831,7 @@ public class TradeOffers {
 		}
 	}
 
-	static class BuySupplyFactory implements TradeOffers.Factory {
+	public static class BuySupplyFactory implements TradeOffers.Factory {
 		private final Item buy;
 		private final int price;
 		private final int maxUses;
@@ -849,8 +846,11 @@ public class TradeOffers {
 			this.multiplier = 0.05F;
 		}
 
+		public TradeOffer createBuySupply(Entity entity, Random random) {
+			return new TradeOffer(new ItemStack(this.buy, this.price), new ItemStack(Items.EMERALD), this.maxUses, this.experience, this.multiplier);
+		}
+		
 		public TradeOffer create(Entity entity, Random random) {
-			ItemStack itemStack = new ItemStack(this.buy, this.price);
 			return new TradeOffer(new ItemStack(Items.EMERALD),
 					new ItemStack(this.buy, this.price), this.maxUses, this.experience, this.multiplier);
 		}

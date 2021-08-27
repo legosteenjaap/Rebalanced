@@ -31,19 +31,24 @@ public class LootTables {
 	public static void init() {
 		Map<Identifier,ArrayList<ItemEntry>> lootPools = new HashMap<Identifier,ArrayList<ItemEntry>>();
 		
-		for (Pair<List<Identifier>, List<Identifier>> book : RecipeAPI.getKnowledgeBooksLootTable()) {
+		for (Pair<List<List<Identifier>>, List<Identifier>> book : RecipeAPI.getKnowledgeBooksLootTable()) {
 			
 			ArrayList<ItemEntry> itemEntries = new ArrayList<>();
 			
-			for (Identifier recipe : book.getLeft()) {
+			for (List<Identifier> recipes : book.getLeft()) {
 				NbtList list = new NbtList();
-				list.add(NbtString.of(recipe.toString()));
+				for (Identifier recipe : recipes) {
+					list.add(NbtString.of(recipe.toString()));
+				}
 				NbtCompound nbt = new NbtCompound();
 				nbt.put("Recipes", list);
 				LootFunction.Builder lootFunction = SetNbtLootFunction.builder(nbt);
 				
 				PlayerPredicate.Builder builderPlayerPredicate = new PlayerPredicate.Builder();
-				PlayerPredicate playerPredicate = builderPlayerPredicate.recipe(recipe, false).build();
+				for (Identifier recipe : recipes) {
+					builderPlayerPredicate = builderPlayerPredicate.recipe(recipe, false);
+				}
+				PlayerPredicate playerPredicate = builderPlayerPredicate.build();
 				EntityPredicate.Builder builderEntityPredicate = new EntityPredicate.Builder();
 				EntityPredicate entityPredicate = builderEntityPredicate.player(playerPredicate).build();
 				LootCondition.Builder lootCondition = AlternativeLootCondition.builder((EntityPropertiesLootCondition.builder(EntityTarget.THIS, entityPredicate)), RandomChanceLootCondition.builder(0.2f));

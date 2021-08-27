@@ -149,6 +149,10 @@ public class Biomes {
 		//PLATEAUS
 		OverworldBiomes.addEdgeBiome(BiomeKeys.BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 5);
 		OverworldBiomes.addEdgeBiome(BiomeKeys.WOODED_BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 5);
+		OverworldBiomes.addEdgeBiome(BiomeKeys.MODIFIED_BADLANDS_PLATEAU, BADLANDS_LOW_PLATEAU_KEY, 5);
+		OverworldBiomes.addEdgeBiome(BiomeKeys.SAVANNA_PLATEAU, BiomeKeys.SAVANNA, 5);
+		OverworldBiomes.addEdgeBiome(JUNGLE_PLATEAU_KEY, BiomeKeys.JUNGLE, 5);
+		
 		OverworldBiomes.addHillsBiome(BiomeKeys.MOUNTAINS, EXTREME_HILLS_PLATEAU_KEY, 1f);
 		OverworldBiomes.addHillsBiome(BiomeKeys.JUNGLE, JUNGLE_PLATEAU_KEY, 0.25);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.SAVANNA, BiomeKeys.SAVANNA_PLATEAU, 0.5f);
@@ -192,17 +196,16 @@ public class Biomes {
 		OverworldBiomes.addShoreBiome(BiomeKeys.SWAMP, BiomeKeys.SWAMP, 1f);
 		OverworldBiomes.addShoreBiome(BiomeKeys.SWAMP_HILLS, BiomeKeys.SWAMP, 1f);
 		
-		OverworldBiomes.addShoreBiome(BiomeKeys.SNOWY_TAIGA, GRAVELLY_BEACH_KEY, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.SNOWY_TAIGA_HILLS, GRAVELLY_BEACH_KEY, 1f);
-		OverworldBiomes.addShoreBiome(BiomeKeys.SNOWY_TAIGA_MOUNTAINS, GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.SNOWY_TAIGA, SNOWY_GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.SNOWY_TAIGA_HILLS, SNOWY_GRAVELLY_BEACH_KEY, 1f);
+		OverworldBiomes.addShoreBiome(BiomeKeys.SNOWY_TAIGA_MOUNTAINS, SNOWY_GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, SNOWY_GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY, SNOWY_GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_KEY, SNOWY_GRAVELLY_BEACH_KEY, 1f);
 		OverworldBiomes.addShoreBiome(SNOWY_GIANT_TREE_TAIGA_HILLS_KEY, SNOWY_GRAVELLY_BEACH_KEY, 1f);
 		
-		
 		OverworldBiomes.addShoreBiome(EXTREME_HILLS_PLATEAU_KEY, BiomeKeys.STONE_SHORE, 1f);
-
+		OverworldBiomes.addShoreBiome(BiomeKeys.MODIFIED_GRAVELLY_MOUNTAINS, BiomeKeys.STONE_SHORE, 1f);
 		
 		//RIVERS
 		if (!RebalancedWorldGen.disableRiver) {

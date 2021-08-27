@@ -1,5 +1,4 @@
 package nl.tettelaar.rebalanced.mixin.village;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +17,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
 import net.minecraft.village.TradeOffer;
@@ -26,7 +24,9 @@ import net.minecraft.village.TradeOfferList;
 import net.minecraft.village.VillagerData;
 import net.minecraft.world.World;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
+import nl.tettelaar.rebalanced.village.TradeOfferRebalanced;
 import nl.tettelaar.rebalanced.village.TradeOffers;
+import nl.tettelaar.rebalanced.village.TradeOffers.BuySupplyFactory;
 import nl.tettelaar.rebalanced.village.TradeOffers.Factory;
 
 @Mixin(VillagerEntity.class)
@@ -36,17 +36,14 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
 		// TODO Auto-generated constructor stub
 	}
 
-	// check if it is the correct villagerfix mod by checking the author because
-	// there is another villagerfix mod with the same id
-
 	private static final boolean isVillagerTradeFixLoaded = FabricLoader.getInstance().isModLoaded("villagertradefix");
 
-	// THIS CODE IS COPIED FROM THIS MOD
+	// THIS CODE IS COPIED FROM THE VILLAGERFIX MOD
 	// https://github.com/Globox1997/VillagerTradeFix/blob/master/src/main/java/net/villagerfix/mixin/VillagerEntityMixin.java
 
 	private List<String> jobList = new ArrayList<String>();
-	private List<TradeOfferList> offerList = new ArrayList<TradeOfferList>();
-
+	private List<TradeOfferList> offerList = new ArrayList<TradeOfferList>();	
+	
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
 	public void readCustomDataFromNbtMixin(NbtCompound nbt, CallbackInfo info) {
 		for (int i = 0; i < nbt.getInt("JobCount"); ++i) {
@@ -99,7 +96,13 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
 		while (iter.hasNext()) {
 			Integer integer = (Integer) iter.next();
 			TradeOffers.Factory factory = tradePool[integer];
-			TradeOffer tradeOffer = factory.create(this, this.random);
+			TradeOffer tradeOffer;
+			if (factory instanceof BuySupplyFactory && random.nextInt(1) == 0) {
+				tradeOffer = ((BuySupplyFactory)factory).createBuySupply(this, this.random);
+				((TradeOfferRebalanced)tradeOffer).setTemporary();
+			} else {
+				tradeOffer = factory.create(this, this.random);
+			}
 			if (tradeOffer != null) {
 				tradeList.add(tradeOffer);
 			}
@@ -113,6 +116,7 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
 			TradeOffer tradeOffer = factory.create(this, this.random);
 			if (tradeOffer != null && this.random.nextFloat() <= knowledgeBookTrade.getRight()) {
 				tradeList.add(tradeOffer);
+				((TradeOfferRebalanced) tradeOffer).setTemporary();
 			}
 		}
 
@@ -120,7 +124,7 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
 
 	@Inject(method = "afterUsing", at = @At("RETURN"))
 	protected void afterUsing(TradeOffer offer, CallbackInfo ci) {
-		if (offer.getSellItem().isOf(Items.KNOWLEDGE_BOOK)) {
+		if (((TradeOfferRebalanced) offer).isTemporary() && offer.getUses() == offer.getMaxUses()) {
 			this.offers.remove(offer);
 		}
 	}

@@ -22,8 +22,13 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.BaseText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.Util;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import nl.tettelaar.rebalanced.RebalancedClient;
 import nl.tettelaar.rebalanced.util.RecipeUtil;
@@ -43,22 +48,16 @@ public class KnowledgeBookItemMixin extends Item {
 		NbtCompound compoundTag = itemStack.getTag();
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
 			if (!world.isClient) {
-
 				ServerPlayerEntity player = (ServerPlayerEntity) user;
-
-				// THIS CODE MAKES SURE THAT THE PLAYER IS COMPENSATED FOR THE RECIPES THAT THEY
-				// ALREADY HAVE
-
-				for (Recipe<?> recipe : RecipeUtil.getRecipes(compoundTag, world)) {
-					ItemStack item = recipe.getOutput();
-					PacketByteBuf buf = PacketByteBufs.create();
-					ServerPlayNetworking.send((ServerPlayerEntity) user, RebalancedClient.SHOW_FLOATING_ITEM_ID, buf.writeItemStack(item));
-					if (player.getRecipeBook().contains(recipe)) {
+				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);
+				if (output != null) {
+					System.out.println(RecipeUtil.playerHasAllRecipes(compoundTag, world, player));
+					if (RecipeUtil.playerHasAllRecipes(compoundTag, world, player)) {
 						user.incrementStat(Stats.USED.getOrCreateStat(this));
 						user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.PLAYERS, 1f, 1f);
 						Random random = user.world.getRandom();
 						int ranInt = random.nextInt(7) + 3;
-						switch (item.getRarity()) {
+						switch (output.getRarity()) {
 						case UNCOMMON:
 							ranInt *= 2;
 							break;
@@ -76,7 +75,12 @@ public class KnowledgeBookItemMixin extends Item {
 							ExperienceOrbEntity.spawn((ServerWorld) user.world, user.getPos(), random.nextInt(3));
 						}
 
+					} else {
+						PacketByteBuf buf = PacketByteBufs.create();
+						ServerPlayNetworking.send((ServerPlayerEntity) user, RebalancedClient.SHOW_FLOATING_ITEM_ID, buf.writeItemStack(output));
 					}
+				} else {
+					cir.setReturnValue(TypedActionResult.fail(itemStack));
 				}
 
 			} else {
@@ -93,8 +97,5 @@ public class KnowledgeBookItemMixin extends Item {
 
 		user.setStackInHand(hand, ItemStack.EMPTY);
 	}
-
-
-
 
 }

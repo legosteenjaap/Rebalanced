@@ -48,6 +48,7 @@
 	    
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
+    "village.TradeOfferMixin",
 
 	"enchantment.LuckEnchantMixin",
 	"enchantment.SilkTouchEnchantMixin",
@@ -56,13 +57,16 @@
 	"foliage.OakSaplingGeneratorMixin",
 
     "ai.AttackGoalMixin",
+	"ai.LivingEntityMixin",
 
     "ai.animal.EscapeDangerGoalMixin",
     "ai.animal.MoreRabbitMixin",
+    
+    "ai.monster.SkeletonEntityMixin",
 
 	"sleep.BedBlockMixin",
     "sleep.ServerWorldMixin",
-    "sleep.LongerDayCycleServerMixin",
+    //"sleep.LongerDayCycleServerMixin",
 
     "elytra.FireworkItemMixin",
     "elytra.ElytraMixin",
@@ -77,10 +81,10 @@
   "client": [
   	"recipe.StonecutterScreenHandlerMixin",
 	"recipe.SmithingScreenHandlerMixin",
-	"recipe.KnowledgeBookItemClientMixin",
+	"recipe.KnowledgeBookItemClientMixin"
 	
 	//"sleep.DeathScreenMixin",
-	"sleep.LongerDayCycleClientMixin"
+	//"sleep.LongerDayCycleClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

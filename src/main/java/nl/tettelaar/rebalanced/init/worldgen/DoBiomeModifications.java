@@ -154,7 +154,6 @@ public class DoBiomeModifications {
 		});
 
 		BiomeModifications.create(new Identifier(modid, "savanna_biome_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.categories(Biome.Category.SAVANNA), (s) -> {
-			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.SHEEP);
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.CHICKEN);
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.PIG);
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.COW);
@@ -223,7 +222,6 @@ public class DoBiomeModifications {
 	}
 
 	public static void snowyExtremeHills(BiomeModificationContext s, boolean plateau) {
-		s.getGenerationSettings().setBuiltInSurfaceBuilder(ConfiguredSurfaceBuilders.MOUNTAIN);
 		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
 		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_WATER);
 		s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.POLAR_BEAR);

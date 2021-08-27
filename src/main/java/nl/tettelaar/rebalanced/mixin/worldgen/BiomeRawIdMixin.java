@@ -21,7 +21,7 @@ public class BiomeRawIdMixin {
 
 	@Shadow
 	@Final
-	private static Int2ObjectMap<RegistryKey<Biome>> BY_RAW_ID = new Int2ObjectArrayMap<RegistryKey<Biome>>();
+	private static final Int2ObjectMap<RegistryKey<Biome>> BY_RAW_ID = new Int2ObjectArrayMap<RegistryKey<Biome>>();
 
 	@Inject(method = "fromRawId", at = @At("HEAD"), cancellable = true)
 	private static void fromRawId(int rawId, CallbackInfoReturnable<RegistryKey<Biome>> cir) {

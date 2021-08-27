@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import org.spongepowered.asm.mixin.Unique;
-
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.world.ClientWorld;
@@ -17,6 +15,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -46,9 +45,7 @@ public class RecipeUtil {
 	
 	// THIS CODE GETS LIST OF RECIPES
 
-	@Unique
-	public
-	static List<Recipe<?>> getRecipes(NbtCompound compoundTag, World world) {
+	public static List<Recipe<?>> getRecipes(NbtCompound compoundTag, World world) {
 		NbtList listTag = compoundTag.getList("Recipes", 8);
 		List<Recipe<?>> list = Lists.newArrayList();
 		RecipeManager recipeManager = null;
@@ -66,6 +63,27 @@ public class RecipeUtil {
 			}
 		}
 		return list;
+	}
+	
+	//Returns null if there are recipes with other outputs
+	public static ItemStack getRecipeOutput(NbtCompound compoundTag, World world) {
+		ItemStack output = null;
+		for (Recipe<?> recipe : RecipeUtil.getRecipes(compoundTag, world)) {
+			if (output == null || recipe.getOutput().isOf(output.getItem())) {
+				output = recipe.getOutput();
+			} else {
+				return null;
+			}
+		}
+		System.out.println(output);
+		return output;
+	}
+	
+	public static boolean playerHasAllRecipes (NbtCompound compoundTag, World world, ServerPlayerEntity player) {
+		for (Recipe<?> recipe : RecipeUtil.getRecipes(compoundTag, world)) {
+			if (!player.getRecipeBook().contains(recipe)) return false;
+		}
+		return true;
 	}
 
 }
