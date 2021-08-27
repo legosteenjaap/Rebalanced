@@ -60,6 +60,10 @@ public class Biomes {
 	public static final RegistryKey<Biome> DESERT_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "desert_river"));
 	
+	private static final Biome DARK_RIVER = BiomeCreator.createDarkRiver(-1f, 0.2f, false);
+	public static final RegistryKey<Biome> DARK_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
+			new Identifier(modid, "dark_river"));
+	
 	private static final Biome BIRCH_RIVER = BiomeCreator.createBirchRiver(-0.75f, 0.1f, false);
 	public static final RegistryKey<Biome> BIRCH_RIVER_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "birch_river"));
@@ -106,6 +110,8 @@ public class Biomes {
 	public static final RegistryKey<Biome> SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY = RegistryKey.of(Registry.BIOME_KEY,
 			new Identifier(modid, "snowy_giant_spruce_taiga_hills"));
 	
+	
+	
 	public static void init() {
 		registerBiomes();
 		addBiomeVariants();
@@ -131,6 +137,7 @@ public class Biomes {
 		Registry.register(BuiltinRegistries.BIOME, TAIGA_RIVER_KEY.getValue(), TAIGA_RIVER);
 		Registry.register(BuiltinRegistries.BIOME, SNOWY_TAIGA_RIVER_KEY.getValue(), SNOWY_TAIGA_RIVER);
 		Registry.register(BuiltinRegistries.BIOME, BIRCH_RIVER_KEY.getValue(), BIRCH_RIVER );
+		Registry.register(BuiltinRegistries.BIOME, DARK_RIVER_KEY.getValue(), DARK_RIVER );
 
 		
 		
@@ -179,6 +186,9 @@ public class Biomes {
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_HILLS, DESERT_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.DESERT_LAKES, DESERT_RIVER_KEY);
 			
+			OverworldBiomes.setRiverBiome(BiomeKeys.DARK_FOREST, DARK_RIVER_KEY);
+			OverworldBiomes.setRiverBiome(BiomeKeys.DARK_FOREST_HILLS, DARK_RIVER_KEY);
+			
 			OverworldBiomes.setRiverBiome(BiomeKeys.BIRCH_FOREST, BIRCH_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.BIRCH_FOREST_HILLS, BIRCH_RIVER_KEY);
 			OverworldBiomes.setRiverBiome(BiomeKeys.TALL_BIRCH_FOREST, BIRCH_RIVER_KEY);
@@ -211,6 +221,7 @@ public class Biomes {
 			OverworldBiomes.setRiverBiome(BiomeKeys.GIANT_TREE_TAIGA, TAIGA_RIVER_KEY);
 			
 
+			
 			OverworldBiomes.setRiverBiome(BiomeKeys.SWAMP, BiomeKeys.SWAMP);
 			OverworldBiomes.setRiverBiome(BiomeKeys.SWAMP_HILLS, BiomeKeys.SWAMP_HILLS);
 			
@@ -255,6 +266,7 @@ public class Biomes {
 		OverworldBiomes.addBiomeVariant(BiomeKeys.MOUNTAINS, BiomeKeys.WOODED_MOUNTAINS, 0.2);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.SNOWY_TUNDRA, BiomeKeys.FROZEN_OCEAN, 0.2f);
 		OverworldBiomes.addBiomeVariant(BiomeKeys.SNOWY_BEACH, BiomeKeys.FROZEN_OCEAN, 0.2);*/
+		
 		OverworldBiomes.addHillsBiome(BiomeKeys.DARK_FOREST, BiomeKeys.DARK_FOREST_HILLS, 1f);
 		
 		OverworldBiomes.addShoreBiome(SNOWY_GIANT_SPRUCE_TAIGA_KEY, BiomeKeys.SNOWY_BEACH, 1f);
