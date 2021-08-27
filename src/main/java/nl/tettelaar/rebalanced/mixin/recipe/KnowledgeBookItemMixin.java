@@ -51,7 +51,6 @@ public class KnowledgeBookItemMixin extends Item {
 				ServerPlayerEntity player = (ServerPlayerEntity) user;
 				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);
 				if (output != null) {
-					System.out.println(RecipeUtil.playerHasAllRecipes(compoundTag, world, player));
 					if (RecipeUtil.playerHasAllRecipes(compoundTag, world, player)) {
 						user.incrementStat(Stats.USED.getOrCreateStat(this));
 						user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.PLAYERS, 1f, 1f);

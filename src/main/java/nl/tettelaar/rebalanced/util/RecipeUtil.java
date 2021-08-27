@@ -75,7 +75,6 @@ public class RecipeUtil {
 				return null;
 			}
 		}
-		System.out.println(output);
 		return output;
 	}
 	
