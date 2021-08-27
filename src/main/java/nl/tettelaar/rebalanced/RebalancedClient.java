@@ -10,6 +10,7 @@ public class RebalancedClient implements ClientModInitializer {
 	public static final String modid = Rebalanced.modid;
 	public static final Identifier SHOW_FLOATING_ITEM_ID = new Identifier(modid, "show_floating_item");
 	public static final Identifier RECEIVE_HAS_SPAWNPOINT_ID = new Identifier(modid, "receive_has_spawnpoint");
+	public static Boolean hasSpawnPoint = null;
 	public static final long latestRespawnTime = 10000;
 	public static final long earliestRespawnTime = 22000;
 
@@ -20,6 +21,13 @@ public class RebalancedClient implements ClientModInitializer {
 		    ItemStack item = buf.readItemStack();
 			client.execute(() -> {
 		    	client.gameRenderer.showFloatingItem(item);
+		    });
+		});
+		
+		ClientPlayNetworking.registerGlobalReceiver(RECEIVE_HAS_SPAWNPOINT_ID, (client, handler, buf, responseSender) -> {
+			boolean hasSpawnPoint = buf.readBoolean();
+			client.execute(() -> {
+		    	RebalancedClient.hasSpawnPoint = hasSpawnPoint;
 		    });
 		});
 	}

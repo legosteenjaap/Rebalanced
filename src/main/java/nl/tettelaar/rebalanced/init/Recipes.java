@@ -47,6 +47,9 @@ public class Recipes {
 				Arrays.asList("stone_sword", "stone_pickaxe", "stone_axe", "stone_shovel", "stone_hoe"),
 				Arrays.asList("chests/ruined_portal", "chests/bastion_bridge", "chests/bastion_other", "chests/nether_bridge"),	1);
 		
+		// WANDERING TRADER
+		RecipeAPI.registerWanderingTraderKnowledgeBook(Arrays.asList("compass"), 8, 12, 0.7f, 2);
+
 		// VILLAGERS
 		RecipeAPI.registerKnowledgeBook(Arrays.asList(""), 3, 10, 0.5f, VillagerProfession.ARMORER, 1, 1);
 		RecipeAPI.registerKnowledgeBook(Arrays.asList(""), 3, 10, 0.5f, VillagerProfession.ARMORER, 2, 1);

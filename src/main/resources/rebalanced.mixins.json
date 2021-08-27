@@ -49,6 +49,7 @@
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
     "village.TradeOfferMixin",
+    "village.WanderingTraderEntityMixin",
 
 	"enchantment.LuckEnchantMixin",
 	"enchantment.SilkTouchEnchantMixin",
@@ -81,9 +82,9 @@
   "client": [
   	"recipe.StonecutterScreenHandlerMixin",
 	"recipe.SmithingScreenHandlerMixin",
-	"recipe.KnowledgeBookItemClientMixin"
+	"recipe.KnowledgeBookItemClientMixin",
 	
-	//"sleep.DeathScreenMixin",
+	"sleep.DeathScreenMixin"
 	//"sleep.LongerDayCycleClientMixin"
   ],
   "injectors": {

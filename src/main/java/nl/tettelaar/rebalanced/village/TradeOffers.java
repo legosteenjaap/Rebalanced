@@ -760,7 +760,7 @@ public class TradeOffers {
 		}
 	}
 
-	static class SellItemFactory implements TradeOffers.Factory {
+	public static class SellItemFactory implements TradeOffers.Factory {
 		private final ItemStack sell;
 		private final int price;
 		private final int count;
@@ -791,6 +791,11 @@ public class TradeOffers {
 			this.maxUses = maxUses;
 			this.experience = experience;
 			this.multiplier = multiplier;
+		}
+		
+		public TradeOffer createWanderingTraderDeal (Entity entity, Random random) {
+			return new TradeOffer(new ItemStack(this.sell.getItem(), this.count), new ItemStack(Items.EMERALD, this.price),
+					this.maxUses, this.experience, this.multiplier);
 		}
 
 		public TradeOffer create(Entity entity, Random random) {

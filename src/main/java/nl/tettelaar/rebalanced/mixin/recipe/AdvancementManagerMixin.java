@@ -11,9 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import com.google.common.collect.Maps;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementManager;
@@ -30,8 +28,13 @@ public class AdvancementManagerMixin {
 
 		List<Identifier> advancements = new ArrayList<Identifier>(hashMap.keySet());
 		for (Identifier idAdvancement : advancements) {
-			JsonElement rewards = hashMap.get(idAdvancement).toJson().get("rewards");
-			if (rewards.isJsonObject()) {
+			JsonElement rewards = null;
+			try {
+				rewards = hashMap.get(idAdvancement).toJson().get("rewards");
+			} catch (NullPointerException e) {
+				
+			}
+			if (rewards != null && rewards.isJsonObject()) {
 				JsonElement recipes = rewards.getAsJsonObject().get("recipes");
 				if (recipes != null && recipes.isJsonArray()) {
 					Iterator<JsonElement> iterator = recipes.getAsJsonArray().iterator();

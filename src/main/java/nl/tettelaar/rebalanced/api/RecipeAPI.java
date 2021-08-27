@@ -25,25 +25,46 @@ public class RecipeAPI {
 	private static HashMap<VillagerProfession, HashMap<Integer, List<Pair<TradeOffers.Factory, Float>>>> KnowledgeBooksVillagerTrades = new HashMap<>();
 	private static List<Identifier> blockRecipeList = new ArrayList<>();
 	private static HashMap<Identifier, List<Identifier>> requiredRecipesMap = new HashMap<>();
-	
-	public static void registerRequiredRecipe (Identifier recipe, List<Identifier> requiredRecipes) {
+	private static List<Pair<TradeOffers.Factory, Float>> wanderingTraderKnowledgeBooks = new ArrayList<>();
+
+	public static void registerWanderingTraderKnowledgeBookID(List<List<Identifier>> recipes, int minPrice, int maxPrice, float chance) {
+		wanderingTraderKnowledgeBooks.add(new Pair<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
+	}
+
+	public static void registerWanderingTraderKnowledgeBook(List<String> recipes, int minPrice, int maxPrice, float chance, int weight) {
+		ArrayList<List<Identifier>> recipesID = new ArrayList<>();
+		for (String recipe : recipes) {
+
+			List<String> splitRecipes = Arrays.asList(recipe.split(";"));
+			ArrayList<Identifier> RecipesToId = new ArrayList<>();
+			for (String RecipeId : splitRecipes) {
+				RecipesToId.add(new Identifier(RecipeId));
+			}
+			recipesID.add(RecipesToId);
+
+		}
+		for (int i = 0; i < weight; i++) {
+			registerWanderingTraderKnowledgeBookID(recipesID, minPrice, maxPrice, chance);
+		}
+	}
+
+	public static void registerRequiredRecipe(Identifier recipe, List<Identifier> requiredRecipes) {
 		requiredRecipesMap.put(recipe, requiredRecipes);
 	}
-	
-	public static void registerBlockRecipe (Identifier name) {
+
+	public static void registerBlockRecipe(Identifier name) {
 		blockRecipeList.add(name);
 	}
-	
+
 	private static void registerKnowledgeBookID(List<List<Identifier>> recipes, List<Identifier> loottables) {
 		knowledgeBooksLootTable.add(new Pair<List<List<Identifier>>, List<Identifier>>(recipes, loottables));
 		for (List<Identifier> e : recipes) {
 			removedRecipeAdvancements.addAll(e);
 		}
-		
+
 	}
 
 	public static void registerKnowledgeBook(List<String> recipes, List<String> loottables, int weight) {
-
 		ArrayList<List<Identifier>> recipesID = new ArrayList<>();
 		ArrayList<Identifier> loottablesID = new ArrayList<>();
 
@@ -64,14 +85,14 @@ public class RecipeAPI {
 			registerKnowledgeBookID(recipesID, loottablesID);
 		}
 	}
-	
+
 	private static void registerKnowledgeBookID(List<List<Identifier>> recipes, int minPrice, int maxPrice, float chance, VillagerProfession villager, int level) {
 		if (KnowledgeBooksVillagerTrades.get(villager) == null) {
 			HashMap<Integer, List<Pair<TradeOffers.Factory, Float>>> tradesMap = new HashMap<>();
-			tradesMap.put(level, Arrays.asList(new Pair<TradeOffers.Factory, Float> (new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance)));
+			tradesMap.put(level, Arrays.asList(new Pair<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance)));
 			KnowledgeBooksVillagerTrades.put(villager, tradesMap);
 		} else if (KnowledgeBooksVillagerTrades.get(villager).get(level) == null) {
-			KnowledgeBooksVillagerTrades.get(villager).put(level, Arrays.asList(new Pair<TradeOffers.Factory, Float> (new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance)));
+			KnowledgeBooksVillagerTrades.get(villager).put(level, Arrays.asList(new Pair<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance)));
 		} else {
 			ArrayList<Pair<TradeOffers.Factory, Float>> trades = new ArrayList<>(KnowledgeBooksVillagerTrades.get(villager).get(level));
 			trades.add(new Pair<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
@@ -90,7 +111,7 @@ public class RecipeAPI {
 			ArrayList<Identifier> RecipesToId = new ArrayList<>();
 			for (String RecipeId : splitRecipes) {
 				RecipesToId.add(new Identifier(RecipeId));
-				
+
 			}
 			recipesID.add(RecipesToId);
 		}
@@ -99,11 +120,15 @@ public class RecipeAPI {
 			registerKnowledgeBookID(recipesID, minPrice, maxPrice, chance, villager, level);
 		}
 	}
-	
-	public static List<Identifier> getRequiredRecipes (Identifier recipe) {
+
+	public static List<Pair<TradeOffers.Factory, Float>> getWanderingTraderBooks() {
+		return wanderingTraderKnowledgeBooks;
+	}
+
+	public static List<Identifier> getRequiredRecipes(Identifier recipe) {
 		return requiredRecipesMap.get(recipe);
 	}
-	
+
 	public static List<Identifier> getRemovedRecipeAdvancements() {
 		return RecipeAPI.removedRecipeAdvancements;
 	}
@@ -111,35 +136,35 @@ public class RecipeAPI {
 	public static ArrayList<Pair<List<List<Identifier>>, List<Identifier>>> getKnowledgeBooksLootTable() {
 		return knowledgeBooksLootTable;
 	}
-	
+
 	public static List<Pair<TradeOffers.Factory, Float>> getKnowledgeBooksVillagerTrades(VillagerProfession villager, int level) {
 		HashMap<Integer, List<Pair<TradeOffers.Factory, Float>>> map = KnowledgeBooksVillagerTrades.get(villager);
-		if (map != null) return map.get(level);
+		if (map != null)
+			return map.get(level);
 		return null;
 	}
 
-	public static List<Identifier> getBlockRecipeList () {
+	public static List<Identifier> getBlockRecipeList() {
 		return blockRecipeList;
 	}
 
 	public static class KnowledgeBookTrade implements TradeOffers.Factory {
-		
+
 		private final int minPrice;
 		private final int maxPrice;
 		private final List<List<Identifier>> recipes;
-		
+
 		private KnowledgeBookTrade(int minPrice, int maxPrice, List<List<Identifier>> recipes) {
 			this.minPrice = minPrice;
 			this.maxPrice = maxPrice;
 			this.recipes = recipes;
 		}
-		
+
 		@Override
 		public @Nullable TradeOffer create(Entity entity, Random random) {
-			return new TradeOffer(new ItemStack(Items.EMERALD, random.nextInt(maxPrice - minPrice) + minPrice), RecipeUtil.createKnowledgeBook(recipes.get(random.nextInt(recipes.size()))), 1, 15,
-					0.05f);
+			return new TradeOffer(new ItemStack(Items.EMERALD, random.nextInt(maxPrice - minPrice) + minPrice), RecipeUtil.createKnowledgeBook(recipes.get(random.nextInt(recipes.size()))), 1, 15, 0.05f);
 		}
-		
+
 	}
-	
+
 }
