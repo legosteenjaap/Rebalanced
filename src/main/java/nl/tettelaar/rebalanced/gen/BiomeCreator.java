@@ -125,7 +125,7 @@ public class BiomeCreator {
 	}
 
 	public static Biome createExtremeHillsRiver() {
-		SpawnSettings.Builder builder = new SpawnSettings.Builder();
+		SpawnSettings.Builder builder = new SpawnSettings.Builder().spawn(SpawnGroup.WATER_CREATURE, new SpawnSettings.SpawnEntry(EntityType.SQUID, 2, 1, 4)).spawn(SpawnGroup.WATER_AMBIENT, new SpawnSettings.SpawnEntry(EntityType.SALMON, 5, 1, 5));;
 		DefaultBiomeFeatures.addFarmAnimals(builder);
 		builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.LLAMA, 5, 4, 6));
 		DefaultBiomeFeatures.addBatsAndMonsters(builder);
@@ -190,7 +190,7 @@ public class BiomeCreator {
 	}
 
 	public static Biome createBirchRiver(float depth, float scale, boolean tallTrees) {
-		SpawnSettings.Builder builder = new SpawnSettings.Builder();
+		SpawnSettings.Builder builder = new SpawnSettings.Builder().spawn(SpawnGroup.WATER_CREATURE, new SpawnSettings.SpawnEntry(EntityType.SQUID, 2, 1, 4)).spawn(SpawnGroup.WATER_AMBIENT, new SpawnSettings.SpawnEntry(EntityType.SALMON, 5, 1, 5));;
 		DefaultBiomeFeatures.addFarmAnimals(builder);
 		DefaultBiomeFeatures.addBatsAndMonsters(builder);
 		GenerationSettings.Builder builder2 = (new GenerationSettings.Builder()).surfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
@@ -220,7 +220,7 @@ public class BiomeCreator {
 	// MAKE THIS BIOME CATEGORY RIVER
 
 	public static Biome createJungleRiver() {
-		SpawnSettings.Builder builder = new SpawnSettings.Builder();
+		SpawnSettings.Builder builder = new SpawnSettings.Builder().spawn(SpawnGroup.WATER_CREATURE, new SpawnSettings.SpawnEntry(EntityType.TROPICAL_FISH, 2, 1, 4));
 		DefaultBiomeFeatures.addJungleMobs(builder);
 		builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.PARROT, 40, 1, 2)).spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.OCELOT, 2, 1, 3)).spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.PANDA, 1, 1, 2));
 		builder.playerSpawnFriendly();
@@ -260,7 +260,7 @@ public class BiomeCreator {
 	}
 
 	public static Biome createTaigaRiver(boolean frozen) {
-		SpawnSettings.Builder builder = new SpawnSettings.Builder();
+		SpawnSettings.Builder builder = new SpawnSettings.Builder().spawn(SpawnGroup.WATER_CREATURE, new SpawnSettings.SpawnEntry(EntityType.SQUID, 2, 1, 4)).spawn(SpawnGroup.WATER_AMBIENT, new SpawnSettings.SpawnEntry(EntityType.SALMON, 5, 1, 5));;
 		DefaultBiomeFeatures.addFarmAnimals(builder);
 		builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.WOLF, 8, 4, 4)).spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.RABBIT, 4, 2, 3)).spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.FOX, 8, 2, 4)).spawn(SpawnGroup.CREATURE,
 				new SpawnSettings.SpawnEntry(EntityType.SALMON, 5, 2, 6));
@@ -328,9 +328,10 @@ public class BiomeCreator {
 	}
 
 	public static Biome createDarkForestRiver() {
-		SpawnSettings.Builder builder = new SpawnSettings.Builder();
+		SpawnSettings.Builder builder = new SpawnSettings.Builder().spawn(SpawnGroup.WATER_CREATURE, new SpawnSettings.SpawnEntry(EntityType.SQUID, 2, 1, 4)).spawn(SpawnGroup.WATER_AMBIENT, new SpawnSettings.SpawnEntry(EntityType.SALMON, 5, 1, 5));;
 		DefaultBiomeFeatures.addFarmAnimals(builder);
 		DefaultBiomeFeatures.addBatsAndMonsters(builder);
+		
 		GenerationSettings.Builder builder2 = (new GenerationSettings.Builder()).surfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 		builder2.structureFeature(ConfiguredStructureFeatures.MANSION);
 		DefaultBiomeFeatures.addDefaultUndergroundStructures(builder2);

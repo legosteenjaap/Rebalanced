@@ -48,8 +48,16 @@ public class RecipeAPI {
 		}
 	}
 
-	public static void registerRequiredRecipe(Identifier recipe, List<Identifier> requiredRecipes) {
+	public static void registerRequiredRecipesID(Identifier recipe, List<Identifier> requiredRecipes) {
 		requiredRecipesMap.put(recipe, requiredRecipes);
+	}
+	
+	public static void registerRequiredRecipes(String recipe, List<String> requiredRecipes) {
+		ArrayList<Identifier> requiredRecipesID = new ArrayList<>();
+		for (String requiredRecipe : requiredRecipes) {
+			requiredRecipesID.add(new Identifier(requiredRecipe));
+		}
+		registerRequiredRecipesID(new Identifier(recipe), requiredRecipesID);
 	}
 
 	public static void registerBlockRecipe(Identifier name) {
@@ -126,7 +134,9 @@ public class RecipeAPI {
 	}
 
 	public static List<Identifier> getRequiredRecipes(Identifier recipe) {
-		return requiredRecipesMap.get(recipe);
+		 List<Identifier> requiredRecipes = requiredRecipesMap.get(recipe);
+		 if(requiredRecipes != null) return requiredRecipes;
+		 return null;
 	}
 
 	public static List<Identifier> getRemovedRecipeAdvancements() {

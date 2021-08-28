@@ -23,6 +23,41 @@ public class Recipes {
 	public static void init() {
 		initKnowledgeBooks();
 		initGolems();
+		initRequiredRecipes();
+	}
+	
+	public static void initRequiredRecipes () {
+		RecipeAPI.registerRequiredRecipes("iron_sword", Arrays.asList("stone_sword"));
+		RecipeAPI.registerRequiredRecipes("iron_pickaxe", Arrays.asList("stone_pickaxe"));
+		RecipeAPI.registerRequiredRecipes("iron_axe", Arrays.asList("stone_axe"));
+		RecipeAPI.registerRequiredRecipes("iron_shovel", Arrays.asList("stone_shovel"));
+		RecipeAPI.registerRequiredRecipes("iron_hoe", Arrays.asList("stone_hoe"));
+		
+		RecipeAPI.registerRequiredRecipes("gold_sword", Arrays.asList("stone_sword"));
+		RecipeAPI.registerRequiredRecipes("gold_pickaxe", Arrays.asList("stone_pickaxe"));
+		RecipeAPI.registerRequiredRecipes("gold_axe", Arrays.asList("stone_axe"));
+		RecipeAPI.registerRequiredRecipes("gold_shovel", Arrays.asList("stone_shovel"));
+		RecipeAPI.registerRequiredRecipes("gold_hoe", Arrays.asList("stone_hoe"));
+		
+		RecipeAPI.registerRequiredRecipes("diamond_sword", Arrays.asList("iron_sword"));
+		RecipeAPI.registerRequiredRecipes("diamond_pickaxe", Arrays.asList("iron_pickaxe"));
+		RecipeAPI.registerRequiredRecipes("diamond_axe", Arrays.asList("iron_axe"));
+		RecipeAPI.registerRequiredRecipes("diamond_shovel", Arrays.asList("iron_shovel"));
+		RecipeAPI.registerRequiredRecipes("diamond_hoe", Arrays.asList("iron_hoe"));
+		
+		RecipeAPI.registerRequiredRecipes("netherite_sword_smithing", Arrays.asList("diamond_sword"));
+		RecipeAPI.registerRequiredRecipes("netherite_pickaxe_smithing", Arrays.asList("diamond_pickaxe"));
+		RecipeAPI.registerRequiredRecipes("netherite_axe_smithing", Arrays.asList("diamond_axe"));
+		RecipeAPI.registerRequiredRecipes("netherite_shovel_smithing", Arrays.asList("diamond_shovel"));
+		RecipeAPI.registerRequiredRecipes("netherite_hoe_smithing", Arrays.asList("diamond_hoe"));
+		
+		RecipeAPI.registerRequiredRecipes("rabbit_stew", Arrays.asList("cooked_rabbit", "cooked_rabbit_from_campfire_cooking", "cooked_rabbit_from_smoking", "baked_potato", "baked_potato_from_campfire_cooking", "baked_potato_from_smoking"));
+		RecipeAPI.registerRequiredRecipes("ender_chest", Arrays.asList("eye_of_ender"));
+		RecipeAPI.registerRequiredRecipes("enchanting_table", Arrays.asList("book"));
+		RecipeAPI.registerRequiredRecipes("lodestone", Arrays.asList("compass"));
+
+
+
 	}
 
 	private static void initKnowledgeBooks() {

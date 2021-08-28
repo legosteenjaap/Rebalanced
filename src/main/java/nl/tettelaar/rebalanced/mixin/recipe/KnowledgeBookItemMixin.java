@@ -50,10 +50,8 @@ public class KnowledgeBookItemMixin extends Item {
 			if (!world.isClient) {
 				ServerPlayerEntity player = (ServerPlayerEntity) user;
 				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);
-				if (output != null) {
+				if (output != null && RecipeUtil.playerCanUnlockRecipe(compoundTag, world, player)) {
 					if (RecipeUtil.playerHasAllRecipes(compoundTag, world, player)) {
-						user.incrementStat(Stats.USED.getOrCreateStat(this));
-						user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.PLAYERS, 1f, 1f);
 						Random random = user.world.getRandom();
 						int ranInt = random.nextInt(7) + 3;
 						switch (output.getRarity()) {
@@ -83,14 +81,15 @@ public class KnowledgeBookItemMixin extends Item {
 				}
 
 			} else {
-				user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.BLOCKS, 1f, 1f);
 				cir.setReturnValue(TypedActionResult.fail(itemStack));
 			}
+			
 		}
+		user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.PLAYERS, 1f, 1f);
 	}
 
 	@Inject(method = "use", at = @At("RETURN"), cancellable = true)
-	public void useReturn(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult> cir) {
+	public void useReturn(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
 
 		// THIS CODE REMOVES THE RECIPE BOOK FROM THE PLAYER
 
