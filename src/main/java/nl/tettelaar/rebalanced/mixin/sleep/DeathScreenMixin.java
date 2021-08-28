@@ -19,8 +19,8 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import nl.tettelaar.rebalanced.Rebalanced;
-import nl.tettelaar.rebalanced.RebalancedClient;
+import nl.tettelaar.rebalanced.network.NetworkingClient;
+import nl.tettelaar.rebalanced.network.NetworkingServer;
 import nl.tettelaar.rebalanced.screens.ConfirmRespawnNightScreen;
 import nl.tettelaar.rebalanced.util.TimeUtil;
 
@@ -66,7 +66,7 @@ public class DeathScreenMixin extends Screen {
 
 	public void checkRespawn() {
 		PacketByteBuf buf = PacketByteBufs.empty();
-		ClientPlayNetworking.send(Rebalanced.PLAYER_HAS_SPAWNPOINT_ID , buf);
+		ClientPlayNetworking.send(NetworkingServer.PLAYER_HAS_SPAWNPOINT_ID , buf);
 		checkIfHasSpawn = true;
 	}
 	
@@ -77,16 +77,16 @@ public class DeathScreenMixin extends Screen {
 	
 	@Inject(method = "tick", at = @At("HEAD"), cancellable = true)
 	public void tick(CallbackInfo ci) {
-		if (checkIfHasSpawn && RebalancedClient.hasSpawnPoint != null) {
+		if (checkIfHasSpawn && NetworkingClient.hasSpawnPoint != null) {
 			checkIfHasSpawn = false;
-			System.out.println(RebalancedClient.hasSpawnPoint);
-			if (!RebalancedClient.hasSpawnPoint) {
+			System.out.println(NetworkingClient.hasSpawnPoint);
+			if (!NetworkingClient.hasSpawnPoint) {
 				ConfirmRespawnNightScreen confirmRespawnNightScreen = new ConfirmRespawnNightScreen(this::onConfirm);
 				this.client.openScreen(confirmRespawnNightScreen);
 			} else {
 				respawn();
 			}
-			RebalancedClient.hasSpawnPoint = null;
+			NetworkingClient.hasSpawnPoint = null;
 		}
 	}
 

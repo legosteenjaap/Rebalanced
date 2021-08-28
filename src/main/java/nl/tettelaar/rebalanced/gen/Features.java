@@ -7,7 +7,6 @@ import net.minecraft.util.collection.DataPool;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.gen.CountConfig;
 import net.minecraft.world.gen.decorator.ConfiguredDecorator;
 import net.minecraft.world.gen.decorator.CountExtraDecoratorConfig;
 import net.minecraft.world.gen.decorator.Decorator;
@@ -15,7 +14,6 @@ import net.minecraft.world.gen.decorator.HeightmapDecoratorConfig;
 import net.minecraft.world.gen.decorator.NopeDecoratorConfig;
 import net.minecraft.world.gen.decorator.WaterDepthThresholdDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.feature.RandomPatchFeatureConfig;
@@ -31,13 +29,13 @@ public class Features {
 	}
 
 	private static <FC extends FeatureConfig> ConfiguredFeature<FC, ?> register(Identifier id, ConfiguredFeature<FC, ?> configuredFeature) {
-		return (ConfiguredFeature) Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, id, configuredFeature);
+		return (ConfiguredFeature<FC, ?>) Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, id, configuredFeature);
 	}
 
 	public static ConfiguredFeature<?, ?> SAPLING_FOREST_DEFAULT = null;
 
 	public static void init () {
-		SAPLING_FOREST_DEFAULT = register(new Identifier(Rebalanced.modid, "sapling_forest_default"), (ConfiguredFeature) Feature.FLOWER.configure(Features.Configs.SAPLING_FOREST_CONFIG).decorate(Features.Decorators.SQUARE_HEIGHTMAP_OCEAN_FLOOR_NO_WATER)/*.decorate(Decorator.COUNT.configure(new CountConfig(1)))*/.decorate(Decorator.COUNT_EXTRA.configure(new CountExtraDecoratorConfig(5, 0.1F, 1))));/*.decorate(Features.Decorators.SPREAD_32_ABOVE)/*.decorate(Features.Decorators.SQUARE_HEIGHTMAP)*/
+		SAPLING_FOREST_DEFAULT = register(new Identifier(Rebalanced.modid, "sapling_forest_default"), (ConfiguredFeature<?, ?>) Feature.FLOWER.configure(Features.Configs.SAPLING_FOREST_CONFIG).decorate(Features.Decorators.SQUARE_HEIGHTMAP_OCEAN_FLOOR_NO_WATER)/*.decorate(Decorator.COUNT.configure(new CountConfig(1)))*/.decorate(Decorator.COUNT_EXTRA.configure(new CountExtraDecoratorConfig(5, 0.1F, 1))));/*.decorate(Features.Decorators.SPREAD_32_ABOVE)/*.decorate(Features.Decorators.SQUARE_HEIGHTMAP)*/
 	}
 
 	protected static final class Decorators {
@@ -64,10 +62,10 @@ public class Features {
 			HEIGHTMAP_SPREAD_DOUBLE = Decorator.HEIGHTMAP_SPREAD_DOUBLE.configure(new HeightmapDecoratorConfig(Heightmap.Type.MOTION_BLOCKING));
 			SPREAD_32_ABOVE = Decorator.SPREAD_32_ABOVE.configure(NopeDecoratorConfig.INSTANCE);
 			HEIGHTMAP_OCEAN_FLOOR_NO_WATER = HEIGHTMAP_OCEAN_FLOOR.decorate(Decorator.WATER_DEPTH_THRESHOLD.configure(new WaterDepthThresholdDecoratorConfig(0)));
-			SQUARE_HEIGHTMAP_OCEAN_FLOOR_NO_WATER = (ConfiguredDecorator) HEIGHTMAP_OCEAN_FLOOR_NO_WATER.spreadHorizontally();
-			SQUARE_HEIGHTMAP = (ConfiguredDecorator) HEIGHTMAP.spreadHorizontally();
-			SQUARE_HEIGHTMAP_SPREAD_DOUBLE = (ConfiguredDecorator) HEIGHTMAP_SPREAD_DOUBLE.spreadHorizontally();
-			SQUARE_TOP_SOLID_HEIGHTMAP = (ConfiguredDecorator) TOP_SOLID_HEIGHTMAP.spreadHorizontally();
+			SQUARE_HEIGHTMAP_OCEAN_FLOOR_NO_WATER = (ConfiguredDecorator<?>) HEIGHTMAP_OCEAN_FLOOR_NO_WATER.spreadHorizontally();
+			SQUARE_HEIGHTMAP = (ConfiguredDecorator<?>) HEIGHTMAP.spreadHorizontally();
+			SQUARE_HEIGHTMAP_SPREAD_DOUBLE = (ConfiguredDecorator<?>) HEIGHTMAP_SPREAD_DOUBLE.spreadHorizontally();
+			SQUARE_TOP_SOLID_HEIGHTMAP = (ConfiguredDecorator<?>) TOP_SOLID_HEIGHTMAP.spreadHorizontally();
 		}
 	}
 

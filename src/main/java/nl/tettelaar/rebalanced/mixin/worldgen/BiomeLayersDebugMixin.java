@@ -6,10 +6,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.world.biome.layer.AddBambooJungleLayer;
 import net.minecraft.world.biome.layer.AddBaseBiomesLayer;
 import net.minecraft.world.biome.layer.AddClimateLayers;
-import net.minecraft.world.biome.layer.AddDeepOceanLayer;
 import net.minecraft.world.biome.layer.AddEdgeBiomesLayer;
 import net.minecraft.world.biome.layer.AddHillsLayer;
 import net.minecraft.world.biome.layer.AddIslandLayer;

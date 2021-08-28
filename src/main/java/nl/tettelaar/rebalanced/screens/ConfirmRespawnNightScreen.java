@@ -71,7 +71,7 @@ public class ConfirmRespawnNightScreen extends Screen {
 		this.buttonEnableTimer = ticks;
 
 		ButtonWidget buttonWidget;
-		for (Iterator var2 = this.buttons.iterator(); var2.hasNext(); buttonWidget.active = false) {
+		for (Iterator<ButtonWidget> var2 = this.buttons.iterator(); var2.hasNext(); buttonWidget.active = false) {
 			buttonWidget = (ButtonWidget) var2.next();
 		}
 
@@ -85,7 +85,7 @@ public class ConfirmRespawnNightScreen extends Screen {
 			this.confirmRespawn.accept(true);
 		}
 		if (--this.buttonEnableTimer == 0) {
-			for (Iterator var1 = this.buttons.iterator(); var1.hasNext(); buttonWidget.active = true) {
+			for (Iterator<ButtonWidget> var1 = this.buttons.iterator(); var1.hasNext(); buttonWidget.active = true) {
 				buttonWidget = (ButtonWidget) var1.next();
 			}
 		}

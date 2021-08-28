@@ -1,7 +1,6 @@
 package nl.tettelaar.rebalanced.gen.biomelayers;
 
 import net.minecraft.world.biome.BiomeIds;
-import net.minecraft.world.biome.layer.BiomeLayers;
 import net.minecraft.world.biome.layer.type.MergingLayer;
 import net.minecraft.world.biome.layer.util.IdentityCoordinateTransformer;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;

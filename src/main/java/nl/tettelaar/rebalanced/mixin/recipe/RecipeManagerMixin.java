@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.google.gson.JsonElement;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -30,12 +31,11 @@ public class RecipeManagerMixin {
 
 	@Shadow private Map<RecipeType<?>, Map<Identifier, Recipe<?>>> recipes;
 	
-	
 	@Inject(method = "apply", at = @At("RETURN"))
 	protected void apply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo ci) {
-		HashMap<RecipeType<?>, Map<Identifier, Recipe<?>>> newRecipes = new HashMap(this.recipes);
+		HashMap<RecipeType<?>, Map<Identifier, Recipe<?>>> newRecipes = new HashMap<>(this.recipes);
 
-		HashMap<Identifier, Recipe<?>> craftingRecipes = new HashMap(newRecipes.get(RecipeType.CRAFTING));
+		HashMap<Identifier, Recipe<? extends Inventory>> craftingRecipes = new HashMap<>(newRecipes.get(RecipeType.CRAFTING));
 
 		
 		for (Identifier blockRecipe : RecipeAPI.getBlockRecipeList()) {

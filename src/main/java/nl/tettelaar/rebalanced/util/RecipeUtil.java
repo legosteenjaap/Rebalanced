@@ -1,6 +1,5 @@
 package nl.tettelaar.rebalanced.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,6 @@ public class RecipeUtil {
 			index++;
 		}
 
-		NbtCompound tag = (NbtCompound) new NbtCompound().put("Recipes", listTag);
 		ItemStack itemStack = new ItemStack(Items.KNOWLEDGE_BOOK.asItem());
 		itemStack.getOrCreateTag().put("Recipes", listTag);
 		return itemStack;

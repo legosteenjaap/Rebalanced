@@ -1,11 +1,8 @@
 package nl.tettelaar.rebalanced.mixin.worldgen;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.Slice;
-
 import net.minecraft.world.gen.surfacebuilder.WoodedBadlandsSurfaceBuilder;
 
 @Mixin(WoodedBadlandsSurfaceBuilder.class)

@@ -16,21 +16,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.KnowledgeBookItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
-import net.minecraft.text.BaseText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.Util;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import nl.tettelaar.rebalanced.RebalancedClient;
+import nl.tettelaar.rebalanced.network.NetworkingClient;
 import nl.tettelaar.rebalanced.util.RecipeUtil;
 
 @Mixin(KnowledgeBookItem.class)
@@ -74,7 +67,7 @@ public class KnowledgeBookItemMixin extends Item {
 
 					} else {
 						PacketByteBuf buf = PacketByteBufs.create();
-						ServerPlayNetworking.send((ServerPlayerEntity) user, RebalancedClient.SHOW_FLOATING_ITEM_ID, buf.writeItemStack(output));
+						ServerPlayNetworking.send((ServerPlayerEntity) user, NetworkingClient.SHOW_FLOATING_ITEM_ID, buf.writeItemStack(output));
 					}
 				} else {
 					cir.setReturnValue(TypedActionResult.fail(itemStack));

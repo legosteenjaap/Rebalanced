@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.KnowledgeBookItem;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.text.BaseText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -27,7 +26,8 @@ public class KnowledgeBookItemClientMixin extends Item {
 	@Override
 	public Text getName(ItemStack stack) {
 		NbtCompound compoundTag = stack.getTag();
-		World world = MinecraftClient.getInstance().world;
+		MinecraftClient client = MinecraftClient.getInstance();
+		World world = client.world;
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
 			if (world != null && world.isClient) {
 				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);
@@ -43,7 +43,8 @@ public class KnowledgeBookItemClientMixin extends Item {
 	public Rarity getRarity(ItemStack stack) {
 
 		NbtCompound compoundTag = stack.getTag();
-		World world = MinecraftClient.getInstance().world;
+		MinecraftClient client = MinecraftClient.getInstance();
+		World world = client.world;
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
 			if (world != null && world.isClient) {
 				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);

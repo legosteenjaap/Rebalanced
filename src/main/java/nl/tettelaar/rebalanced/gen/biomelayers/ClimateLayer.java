@@ -1,10 +1,8 @@
 package nl.tettelaar.rebalanced.gen.biomelayers;
 
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.PerlinNoiseSampler;
 import net.minecraft.world.biome.BiomeIds;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
-import nl.tettelaar.rebalanced.init.RebalancedWorldGen;
 
 public enum ClimateLayer implements RandomnessSourceLayer {
 	INSTANCE;

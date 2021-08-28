@@ -2,10 +2,7 @@ package nl.tettelaar.rebalanced.init;
 
 import java.util.Arrays;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.village.VillagerProfession;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
 

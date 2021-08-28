@@ -1,8 +1,6 @@
 package nl.tettelaar.rebalanced.gen.biomelayers;
 
 import net.minecraft.util.math.noise.PerlinNoiseSampler;
-import net.minecraft.world.biome.BiomeIds;
-import net.minecraft.world.biome.layer.type.IdentitySamplingLayer;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
 
 public enum SpecialBiomesLayer implements RandomnessSourceLayer {

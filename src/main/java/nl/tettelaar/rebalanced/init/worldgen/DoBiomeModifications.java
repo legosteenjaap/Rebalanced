@@ -14,7 +14,6 @@ import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
-import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
 import nl.tettelaar.rebalanced.Rebalanced;
 import nl.tettelaar.rebalanced.gen.BiomeCreator;
 import nl.tettelaar.rebalanced.init.RebalancedWorldGen;

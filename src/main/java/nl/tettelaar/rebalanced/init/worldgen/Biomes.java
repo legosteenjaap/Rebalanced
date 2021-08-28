@@ -1,7 +1,6 @@
 package nl.tettelaar.rebalanced.init.worldgen;
 
 import net.fabricmc.fabric.api.biome.v1.OverworldBiomes;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -15,6 +14,7 @@ import nl.tettelaar.rebalanced.gen.BiomeCreator;
 import nl.tettelaar.rebalanced.init.RebalancedWorldGen;
 import nl.tettelaar.rebalanced.mixin.worldgen.DefaultBiomeInvoker;
 
+@SuppressWarnings("deprecation")
 public class Biomes {
 
 	private final static String modid = Rebalanced.modid;
@@ -147,7 +147,6 @@ public class Biomes {
 
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void addBiomeVariants() {
 		
 		//PLATEAUS

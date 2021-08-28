@@ -2,16 +2,12 @@ package nl.tettelaar.rebalanced.mixin.worldgen;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.world.biome.BiomeIds;
 import net.minecraft.world.biome.layer.AddBaseBiomesLayer;
-import net.minecraft.world.biome.layer.BiomeLayers;
 import net.minecraft.world.biome.layer.util.LayerRandomnessSource;
 
 @Mixin(AddBaseBiomesLayer.class)
