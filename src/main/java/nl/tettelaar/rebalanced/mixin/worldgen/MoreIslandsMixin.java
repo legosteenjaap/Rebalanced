@@ -21,7 +21,7 @@ public class MoreIslandsMixin {
 	    	  break;
 	      case BiomeIds.DEEP_LUKEWARM_OCEAN:
 	      case BiomeIds.LUKEWARM_OCEAN:
-	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(25) == 0) cir.setReturnValue(context.nextInt(3) == 0 ? BiomeIds.SAVANNA_PLATEAU : BiomeIds.SAVANNA);
+	    	  //if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(25) == 0) cir.setReturnValue(context.nextInt(3) == 0 ? BiomeIds.SAVANNA_PLATEAU : BiomeIds.SAVANNA);
 	    	  if (isIslandPossible(sw, se, ne, nw, center, center) && context.nextInt(50) == 0) cir.setReturnValue(context.nextInt(3) == 0 ? BiomeIds.SHATTERED_SAVANNA_PLATEAU : BiomeIds.SHATTERED_SAVANNA);
 	    	  break;
 	      case BiomeIds.DEEP_OCEAN:

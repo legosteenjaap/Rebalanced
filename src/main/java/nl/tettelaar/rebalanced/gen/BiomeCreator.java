@@ -19,17 +19,21 @@ import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.GravellySurfaceBuilder;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.HeightDependSurfaceBuilder;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.SavannaBeachSurfaceBuilder;
+import nl.tettelaar.rebalanced.gen.surfacebuilders.SavannaPlateauSurfaceBuilder;
 import nl.tettelaar.rebalanced.init.RebalancedWorldGen;
+import nl.tettelaar.rebalanced.init.worldgen.SurfaceBuilders;
 import nl.tettelaar.rebalanced.mixin.worldgen.DefaultBiomeInvoker;
 
 public class BiomeCreator {
 
 	public static SavannaBeachSurfaceBuilder SAVANNA_BEACH_SURFACE = new SavannaBeachSurfaceBuilder(TernarySurfaceConfig.CODEC);
+	public static SavannaPlateauSurfaceBuilder SAVANNA_PLATEAU_SURFACE = new SavannaPlateauSurfaceBuilder(TernarySurfaceConfig.CODEC);
 	public static GravellySurfaceBuilder GRAVELLY_SURFACE = new GravellySurfaceBuilder(TernarySurfaceConfig.CODEC);
 
-	public static HeightDependSurfaceBuilder STONE_SHORE_SURFACE = new HeightDependSurfaceBuilder(TernarySurfaceConfig.CODEC, 96);
+	public static HeightDependSurfaceBuilder STONE_SHORE_SURFACE = new HeightDependSurfaceBuilder(TernarySurfaceConfig.CODEC, 96, false);
+	public static HeightDependSurfaceBuilder SNOWY_STONE_SHORE_SURFACE = new HeightDependSurfaceBuilder(TernarySurfaceConfig.CODEC, 90, true);
 
-	public static HeightDependSurfaceBuilder ELEVATED_EXTREME_HILLS_SURFACE = new HeightDependSurfaceBuilder(TernarySurfaceConfig.CODEC, 90);
+	public static HeightDependSurfaceBuilder ELEVATED_EXTREME_HILLS_SURFACE = new HeightDependSurfaceBuilder(TernarySurfaceConfig.CODEC, 90, false);
 
 	private static final TernarySurfaceConfig SAVANNA_BEACH_CONFIG = new TernarySurfaceConfig(Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState());
 	private static final TernarySurfaceConfig GRAVELLY_CONFIG = new TernarySurfaceConfig(Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState());
@@ -39,14 +43,17 @@ public class BiomeCreator {
 	public static final TernarySurfaceConfig NORMAL_UNDERWATER_CONFIG = new TernarySurfaceConfig(Blocks.GRAVEL.getDefaultState(), Blocks.GRAVEL.getDefaultState(), Blocks.GRAVEL.getDefaultState());
 
 	public static final TernarySurfaceConfig STONE_SHORE_CONFIG = new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.STONE.getDefaultState());
+	public static final TernarySurfaceConfig SNOWY_STONE_SHORE_CONFIG = new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.SNOW_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState());
 
 	public static final TernarySurfaceConfig ELEVATED_EXTREME_HILLS_CONFIG = new TernarySurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.STONE.getDefaultState());
 
 	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_SAVANNA_BEACH_SURFACE = SAVANNA_BEACH_SURFACE.withConfig(SAVANNA_BEACH_CONFIG);
-	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_GRAVELLY_SURFACE = GRAVELLY_SURFACE.withConfig(GRAVELLY_CONFIG);
+	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_SAVANNA_PLATEAU_SURFACE = SAVANNA_PLATEAU_SURFACE.withConfig(SurfaceBuilder.GRASS_CONFIG);
+	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_GRAVELLY_SURFACE = GRAVELLY_SURFACE.withConfig(SNOWY_STONE_SHORE_CONFIG);
 	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_SANDSTONE_RIVER_SURFACE = SurfaceBuilder.DEFAULT.withConfig(SAND_STONE_CONFIG);
 
 	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_STONE_SHORE_SURFACE = STONE_SHORE_SURFACE.withConfig(STONE_SHORE_CONFIG);
+	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_SNOWY_STONE_SHORE_SURFACE = SNOWY_STONE_SHORE_SURFACE.withConfig(STONE_SHORE_CONFIG);
 
 	public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> CONFIGURED_ELEVATED_EXTREME_HILLS_SURFACE = ELEVATED_EXTREME_HILLS_SURFACE.withConfig(ELEVATED_EXTREME_HILLS_CONFIG);
 

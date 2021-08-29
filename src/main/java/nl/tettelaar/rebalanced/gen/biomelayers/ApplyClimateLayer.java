@@ -22,6 +22,7 @@ public enum ApplyClimateLayer implements MergingLayer, IdentityCoordinateTransfo
 			case BiomeIds.DESERT:
 				return BiomeIds.DEEP_LUKEWARM_OCEAN;
 			case BiomeIds.PLAINS:
+			case 666:
 				return BiomeIds.DEEP_OCEAN;
 			case BiomeIds.TAIGA:
 			case BiomeIds.SNOWY_TAIGA:
@@ -39,6 +40,7 @@ public enum ApplyClimateLayer implements MergingLayer, IdentityCoordinateTransfo
 			case BiomeIds.DESERT:
 				return BiomeIds.LUKEWARM_OCEAN;
 			case BiomeIds.PLAINS:
+			case 666:
 				return BiomeIds.OCEAN;
 			case BiomeIds.TAIGA:
 			case BiomeIds.SNOWY_TAIGA:

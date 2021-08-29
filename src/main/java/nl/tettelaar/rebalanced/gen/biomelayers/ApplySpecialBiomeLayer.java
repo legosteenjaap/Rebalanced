@@ -26,14 +26,30 @@ public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTr
 			if (specialBiome == 2) return context.nextInt(2) == 0 ? BiomeIds.WOODED_BADLANDS_PLATEAU : BiomeIds.BADLANDS_PLATEAU;
 			break;
 		case BiomeIds.SAVANNA:
-			if (specialBiome == 1) return context.nextInt(3) == 0 ? BiomeIds.SHATTERED_SAVANNA : BiomeIds.SHATTERED_SAVANNA_PLATEAU;
+			switch (specialBiome) {
+			case 2:
+				return context.nextInt(3) == 0 ? BiomeIds.SHATTERED_SAVANNA : BiomeIds.SHATTERED_SAVANNA_PLATEAU;
+			case 3:
+				return BiomeIds.SAVANNA_PLATEAU;
+			}
+
 			break;
 		case BiomeIds.JUNGLE:
-			if (specialBiome == 2) return BiomeIds.BAMBOO_JUNGLE;
+			switch (specialBiome) {
+			case 2:
+				return BiomeIds.BAMBOO_JUNGLE;
+			case 4:
+				return BuiltinRegistries.BIOME.getRawId(Biomes.JUNGLE_PLATEAU);
+			}
 			break;
 		case BiomeIds.PLAINS:
-			if (specialBiome == 2) {
-				return BiomeIds.SWAMP;	
+			switch (specialBiome) {
+			case 4:
+				return BiomeIds.SWAMP;
+			case 3:
+				return BiomeIds.WOODED_MOUNTAINS;
+			case 1:
+				return BiomeIds.TAIGA;
 			}
 			break;
 		case BiomeIds.TAIGA:
@@ -56,6 +72,9 @@ public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTr
 				return BiomeIds.SNOWY_MOUNTAINS;
 			}
 			break;
+		case 2187:
+			return BiomeIds.PLAINS;
+
 		}
 		
 		switch (continent) {

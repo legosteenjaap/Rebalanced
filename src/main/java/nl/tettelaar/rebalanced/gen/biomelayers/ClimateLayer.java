@@ -11,6 +11,7 @@ public enum ClimateLayer implements RandomnessSourceLayer {
 	private final static double desertEndBorder = 0.55;
 	private final static double desertBeginBorder = 0.4;
 	private final static double lukewarmBorder = 0.3;
+	private final static double swampAndExtremeHillsBorder = 0.1;
 	private final static double coldBorder = -0.1;
 	private final static double frozenBorder = -0.2;
 	private final static double treeBorder = -0.35;
@@ -29,7 +30,9 @@ public enum ClimateLayer implements RandomnessSourceLayer {
 			}
 		}
 		
-		if (noise > lukewarmBorder && noise <= desertBeginBorder) {
+		if (noise > swampAndExtremeHillsBorder && noise <= lukewarmBorder) {
+			return 2187;
+		} else if (noise > lukewarmBorder && noise <= desertBeginBorder) {
 			return BiomeIds.SAVANNA;
 		} else if (noise > desertBeginBorder && noise <= desertEndBorder) {
 			return BiomeIds.DESERT;
