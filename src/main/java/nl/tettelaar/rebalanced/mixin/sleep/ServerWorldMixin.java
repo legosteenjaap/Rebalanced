@@ -10,12 +10,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.packet.s2c.play.PlaySoundIdS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 
 @Mixin(ServerWorld.class)
 public class ServerWorldMixin {
@@ -31,6 +33,8 @@ public class ServerWorldMixin {
 					player.setExperienceLevel(player.experienceLevel - 10);
 					player.networkHandler.sendPacket(new PlaySoundIdS2CPacket(SoundEvents.ENTITY_PLAYER_LEVELUP.getId(), SoundCategory.BLOCKS, player.getPos(), 1f, 1f));
 					player.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 1f, 1f);
+		            player.incrementStat(Stats.SLEEP_IN_BED);
+		            Criteria.SLEPT_IN_BED.trigger(player);
 				});
 	}
 }
