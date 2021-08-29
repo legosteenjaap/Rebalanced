@@ -68,7 +68,7 @@
 	"sleep.BedBlockMixin",
     "sleep.ServerWorldMixin",
     "sleep.ServerPlayerEntityMixin",
-    //"sleep.LongerDayCycleServerMixin",
+    "sleep.LongerDayCycleServerMixin",
 
     "elytra.FireworkItemMixin",
     "elytra.ElytraMixin",
@@ -77,7 +77,9 @@
     "WrittenBookMixin",
     "BeaconBlockEntityMixin",
     "ReplaceBlockMixin",
-    "DisableEndPortalMixin"
+    "DisableEndPortalMixin",
+    "BoatEntityMixin",
+    "HorseBaseEntityMixin"
 
   ],
   "client": [
@@ -85,8 +87,8 @@
 	"recipe.SmithingScreenHandlerMixin",
 	"recipe.KnowledgeBookItemClientMixin",
 	
-	"sleep.DeathScreenMixin"
-	//"sleep.LongerDayCycleClientMixin"
+	"sleep.DeathScreenMixin",
+	"sleep.LongerDayCycleClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
