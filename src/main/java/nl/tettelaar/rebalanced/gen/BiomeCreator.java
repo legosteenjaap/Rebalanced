@@ -227,7 +227,7 @@ public class BiomeCreator {
 	// MAKE THIS BIOME CATEGORY RIVER
 
 	public static Biome createJungleRiver() {
-		SpawnSettings.Builder builder = new SpawnSettings.Builder().spawn(SpawnGroup.WATER_CREATURE, new SpawnSettings.SpawnEntry(EntityType.TROPICAL_FISH, 2, 1, 4));
+		SpawnSettings.Builder builder = new SpawnSettings.Builder().spawn(SpawnGroup.WATER_AMBIENT, new SpawnSettings.SpawnEntry(EntityType.TROPICAL_FISH, 1, 1, 4));
 		DefaultBiomeFeatures.addJungleMobs(builder);
 		builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.PARROT, 40, 1, 2)).spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.OCELOT, 2, 1, 3)).spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.PANDA, 1, 1, 2));
 		builder.playerSpawnFriendly();
