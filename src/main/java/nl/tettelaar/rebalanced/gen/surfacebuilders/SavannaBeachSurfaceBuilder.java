@@ -10,6 +10,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import nl.tettelaar.rebalanced.gen.BiomeCreator;
+import nl.tettelaar.rebalanced.init.worldgen.SurfaceBuilders;
 
 public class SavannaBeachSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig> {
 	public SavannaBeachSurfaceBuilder(Codec<TernarySurfaceConfig> codec) {
@@ -27,7 +28,7 @@ public class SavannaBeachSurfaceBuilder extends SurfaceBuilder<TernarySurfaceCon
 			SurfaceBuilder.DEFAULT.generate(random, chunk, biome, x, z, height, noise, defaultBlock, defaultFluid, seaLevel, i, l,
 					SurfaceBuilder.GRASS_CONFIG);
 		} else if (height > seaLevel + 7) {
-			BiomeCreator.SAVANNA_PLATEAU_SURFACE.generate(random, chunk, biome, x, z, height, noise, defaultBlock, defaultFluid, seaLevel, i, l,
+			SurfaceBuilders.SAVANNA_PLATEAU_SURFACE.generate(random, chunk, biome, x, z, height, noise, defaultBlock, defaultFluid, seaLevel, i, l,
 					SurfaceBuilder.GRASS_CONFIG);
 		}
 		else {

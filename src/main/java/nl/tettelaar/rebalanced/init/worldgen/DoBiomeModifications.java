@@ -88,16 +88,19 @@ public class DoBiomeModifications {
 			s.setCategory(Biome.Category.RIVER);
 		});
 
+		BiomeModifications.create(new Identifier(modid, "jungle_river_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(Biomes.BADLANDS_RIVER_KEY, Biomes.JUNGLE_RIVER_KEY), (s) -> {
+			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.SEAGRASS_RIVER);
+		});
+
 		BiomeModifications.create(new Identifier(modid, "beach_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.BEACH), (s) -> {
 			s.setDepth(RebalancedWorldGen.beachDepth);
 			s.setScale(RebalancedWorldGen.beachScale);
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.TURTLE);
-			s.getSpawnSettings().addSpawn(SpawnGroup.CREATURE, new SpawnEntry(EntityType.TURTLE, 1, 0, 1));
 		});
 
 		BiomeModifications.create(new Identifier(modid, "savanna_plateau")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.SAVANNA_PLATEAU), (s) -> {
 			s.setDepth(4F);
-			s.getGenerationSettings().setBuiltInSurfaceBuilder(BiomeCreator.CONFIGURED_SAVANNA_PLATEAU_SURFACE);
+			s.getGenerationSettings().setBuiltInSurfaceBuilder(SurfaceBuilders.CONFIGURED_SAVANNA_PLATEAU_SURFACE);
 		});
 
 		BiomeModifications.create(new Identifier(modid, "stone_shore")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.STONE_SHORE), (s) -> {
@@ -175,19 +178,19 @@ public class DoBiomeModifications {
 	}
 
 	public static void normalOcean(BiomeModificationContext s) {
-		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_OCEAN_SURFACE).get());
+		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(SurfaceBuilders.CONFIGURED_OCEAN_SURFACE).get());
 		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE);
 		s.setScale(0.03f);
 	}
 
 	public static void warmOcean(BiomeModificationContext s) {
-		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_SAND_OCEAN_SURFACE).get());
+		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(SurfaceBuilders.CONFIGURED_SAND_OCEAN_SURFACE).get());
 		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE);
 		s.setScale(0.03f);
 	}
 
 	public static void frozenOcean(BiomeModificationContext s) {
-		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_FROZEN_OCEAN_SURFACE).get());
+		s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(SurfaceBuilders.CONFIGURED_FROZEN_OCEAN_SURFACE).get());
 		s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE);
 		s.setScale(0.03f);
 	}
@@ -261,9 +264,9 @@ public class DoBiomeModifications {
 			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_NORMAL);
 			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_FOREST);
 			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_TAIGA);
-			s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_STONE_SHORE_SURFACE).get());
+			s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(SurfaceBuilders.CONFIGURED_STONE_SHORE_SURFACE).get());
 		} else {
-			s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(BiomeCreator.CONFIGURED_SNOWY_STONE_SHORE_SURFACE).get());
+			s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(SurfaceBuilders.CONFIGURED_SNOWY_STONE_SHORE_SURFACE).get());
 		}
 	}
 
