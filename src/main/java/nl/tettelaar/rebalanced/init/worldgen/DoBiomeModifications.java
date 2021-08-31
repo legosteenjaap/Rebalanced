@@ -38,27 +38,30 @@ public class DoBiomeModifications {
 		// SPAWNING STUFF
 		BiomeModifications.create(new Identifier("wither_skeleton")).add(ModificationPhase.ADDITIONS, BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY), context -> context.getSpawnSettings().addSpawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.WITHER_SKELETON, 1, 1, 1)));
 
-		BiomeModifications.create(new Identifier(modid, "no_forest_wolfs")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.categories(Biome.Category.FOREST), (s) -> {
-			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.WOLF);
-		});
-
 		// GENERATION STUFF
 		BiomeModifications.create(new Identifier(modid, "forest_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.FOREST, BiomeKeys.WOODED_HILLS), (s) -> {
 			// s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
 			// Features.SAPLING_FOREST_DEFAULT);
+			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.WOLF);
 		});
 
 		BiomeModifications.create(new Identifier(modid, "plains_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.PLAINS), (s) -> {
 			s.setScale(0f);
 		});
 
-		// why?
+		BiomeModifications.create(new Identifier(modid, "swamp_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.SWAMP, BiomeKeys.SWAMP_HILLS), (s) -> {
+			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.SHEEP);
+			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.PIG);
+			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.COW);
+			s.getSpawnSettings().addSpawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.RABBIT, 4, 2, 3));
+		});
+
 		BiomeModifications.create(new Identifier(modid, "badlands_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.BADLANDS), (s) -> {
-			s.setDepth(0.1F);
+			s.setDepth(0.2F);
 		});
 
 		BiomeModifications.create(new Identifier(modid, "badlands_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.BADLANDS_PLATEAU, BiomeKeys.WOODED_BADLANDS_PLATEAU), (s) -> {
-			s.setDepth(8F);
+			s.setDepth(6F);
 		});
 
 		BiomeModifications.create(new Identifier(modid, "hills_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.WOODED_HILLS, BiomeKeys.BIRCH_FOREST_HILLS, BiomeKeys.TALL_BIRCH_HILLS, BiomeKeys.JUNGLE_HILLS, BiomeKeys.DARK_FOREST_HILLS, BiomeKeys.TAIGA_HILLS,
@@ -75,15 +78,10 @@ public class DoBiomeModifications {
 
 		BiomeModifications.create(new Identifier(modid, "river_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.RIVER), (s) -> {
 			s.setDepth(RebalancedWorldGen.normalRiverDepth);
-			s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
-			s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PROTOTYPE_SPRING_WATER);
-			s.getWeather().setPrecipitation(Biome.Precipitation.RAIN);
 		});
 
 		BiomeModifications.create(new Identifier(modid, "frozen_river_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.FROZEN_RIVER), (s) -> {
 			s.setDepth(RebalancedWorldGen.frozenRiverDepth);
-			s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.SPRING_LAVA);
-			s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PROTOTYPE_SPRING_WATER);
 		});
 
 		BiomeModifications.create(new Identifier(modid, "change_to_river_category")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(Biomes.BADLANDS_RIVER_KEY, Biomes.JUNGLE_RIVER_KEY), (s) -> {
@@ -91,8 +89,8 @@ public class DoBiomeModifications {
 		});
 
 		BiomeModifications.create(new Identifier(modid, "beach_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.BEACH), (s) -> {
-			s.setDepth(0.05F);
-			s.setScale(0f);
+			s.setDepth(RebalancedWorldGen.beachDepth);
+			s.setScale(RebalancedWorldGen.beachScale);
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.TURTLE);
 			s.getSpawnSettings().addSpawn(SpawnGroup.CREATURE, new SpawnEntry(EntityType.TURTLE, 1, 0, 1));
 		});
@@ -142,7 +140,7 @@ public class DoBiomeModifications {
 				});
 
 		BiomeModifications.create(new Identifier(modid, "desert_biome_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.categories(Biome.Category.DESERT), (s) -> {
-			s.setDepth(0.3f);
+			s.setDepth(0.2f);
 			s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE_DESERT);
 			s.getGenerationSettings().removeBuiltInFeature(ConfiguredFeatures.PATCH_SUGAR_CANE);
 		});
@@ -247,12 +245,8 @@ public class DoBiomeModifications {
 	}
 
 	public static void hillsBiome(BiomeModificationContext s) {
-		s.setDepth(0.11F);
-		if (isSimplyImprovedTerrainLoaded) {
-			s.setScale(1.2f);
-		} else {
-			s.setScale(0.6f);
-		}
+		s.setDepth(RebalancedWorldGen.hillDepth);
+		s.setScale(RebalancedWorldGen.hillScale);
 	}
 
 	public static void stoneShore(BiomeModificationContext s, boolean snowy) {
