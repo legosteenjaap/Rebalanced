@@ -59,6 +59,7 @@
 
     "ai.AttackGoalMixin",
 	"ai.LivingEntityMixin",
+    "ai.MobEntityMixin",
 
     "ai.animal.EscapeDangerGoalMixin",
     "ai.animal.MoreRabbitMixin",

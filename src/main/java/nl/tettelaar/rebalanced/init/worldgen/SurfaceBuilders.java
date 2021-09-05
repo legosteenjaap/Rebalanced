@@ -8,9 +8,8 @@ import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 import nl.tettelaar.rebalanced.Rebalanced;
-import nl.tettelaar.rebalanced.gen.BiomeCreator;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.GravellySurfaceBuilder;
-import nl.tettelaar.rebalanced.gen.surfacebuilders.HeightDependSurfaceBuilder;
+import nl.tettelaar.rebalanced.gen.surfacebuilders.StoneShoreSurfaceBuilder;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.SavannaBeachSurfaceBuilder;
 import nl.tettelaar.rebalanced.gen.surfacebuilders.SavannaPlateauSurfaceBuilder;
 
@@ -22,8 +21,8 @@ public class SurfaceBuilders {
 	public static SavannaBeachSurfaceBuilder SAVANNA_BEACH_SURFACE = new SavannaBeachSurfaceBuilder(TernarySurfaceConfig.CODEC);
 	public static SavannaPlateauSurfaceBuilder SAVANNA_PLATEAU_SURFACE = new SavannaPlateauSurfaceBuilder(TernarySurfaceConfig.CODEC);
 	public static GravellySurfaceBuilder GRAVELLY_SURFACE = new GravellySurfaceBuilder(TernarySurfaceConfig.CODEC);
-	public static HeightDependSurfaceBuilder STONE_SHORE_SURFACE = new HeightDependSurfaceBuilder(TernarySurfaceConfig.CODEC, 96, false);
-	public static HeightDependSurfaceBuilder SNOWY_STONE_SHORE_SURFACE = new HeightDependSurfaceBuilder(TernarySurfaceConfig.CODEC, 90, true);
+	public static StoneShoreSurfaceBuilder STONE_SHORE_SURFACE = new StoneShoreSurfaceBuilder(TernarySurfaceConfig.CODEC, 96, false);
+	public static StoneShoreSurfaceBuilder SNOWY_STONE_SHORE_SURFACE = new StoneShoreSurfaceBuilder(TernarySurfaceConfig.CODEC, 90, true);
 
 	//SURFACE BUILDER CONFIGS
 	public static final TernarySurfaceConfig SAVANNA_BEACH_CONFIG = new TernarySurfaceConfig(Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState());

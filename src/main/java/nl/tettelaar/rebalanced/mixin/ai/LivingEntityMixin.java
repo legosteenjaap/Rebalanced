@@ -24,14 +24,14 @@ public abstract class LivingEntityMixin extends Entity {
 	@Inject(method = "getAttributeBaseValue", at = @At("HEAD"), cancellable = true)
 	public void getAttributeBaseValue(EntityAttribute attribute, CallbackInfoReturnable<Double> cir) {
 		if (this.getType() != EntityType.PLAYER && (attribute.getTranslationKey().equals("attribute.name.generic.attack_damage") || attribute.getTranslationKey().equals("attribute.name.generic.max_health"))) {
-			cir.setReturnValue(this.getAttributes().getBaseValue(attribute) * 1.5);
+			cir.setReturnValue(this.getAttributes().getBaseValue(attribute) * 1.2);
 		}
 	}
 	
 	@Inject(method = "getAttributeValue", at = @At("HEAD"), cancellable = true)
 	public void getAttributeValue(EntityAttribute attribute, CallbackInfoReturnable<Double> cir) {
 		if (this.getType() != EntityType.PLAYER && (attribute.getTranslationKey().equals("attribute.name.generic.attack_damage") || attribute.getTranslationKey().equals("attribute.name.generic.max_health"))) {
-			cir.setReturnValue(this.getAttributes().getValue(attribute) * 1.5);
+			cir.setReturnValue(this.getAttributes().getValue(attribute) * 1.2);
 		}
 	}
 

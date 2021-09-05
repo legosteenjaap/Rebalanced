@@ -107,7 +107,7 @@ public class DoBiomeModifications {
 			stoneShore(s, false);
 		});
 
-		BiomeModifications.create(new Identifier(modid, "stone_shore")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(Biomes.SNOWY_STONE_SHORE_KEY), (s) -> {
+		BiomeModifications.create(new Identifier(modid, "snowy_stone_shore")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(Biomes.SNOWY_STONE_SHORE_KEY), (s) -> {
 			stoneShore(s, true);
 		});
 
@@ -259,14 +259,15 @@ public class DoBiomeModifications {
 		} else {
 			s.setScale(0.25f);
 		}
-		s.getWeather().setTemperature(0.4f);
 		if (!snowy) {
 			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_NORMAL);
 			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_FOREST);
 			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.PATCH_GRASS_TAIGA);
 			s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(SurfaceBuilders.CONFIGURED_STONE_SHORE_SURFACE).get());
+			s.getWeather().setTemperature(0.4f);
 		} else {
 			s.getGenerationSettings().setSurfaceBuilder(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER.getKey(SurfaceBuilders.CONFIGURED_SNOWY_STONE_SHORE_SURFACE).get());
+			s.getWeather().setTemperature(0f);
 		}
 	}
 

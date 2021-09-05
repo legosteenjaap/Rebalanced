@@ -25,6 +25,8 @@ public abstract class EscapeDangerGoalMixin extends Goal {
 
 	final double distance = 30D;
 
+	private static final float speedMultiplier = 1.2f;
+
 	private int timer;
 
 	@Shadow	@Final protected PathAwareEntity mob;
@@ -44,7 +46,7 @@ public abstract class EscapeDangerGoalMixin extends Goal {
 		timer++;
 		if (this.mob.getNavigation().isIdle()) {
 			this.findTarget();
-			this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed);
+			this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed * speedMultiplier);
 		}
 	}
 
@@ -55,7 +57,7 @@ public abstract class EscapeDangerGoalMixin extends Goal {
 
 	@Inject(method = "findTarget", at = @At("HEAD"), cancellable = true)
 	protected void findTarget(CallbackInfoReturnable<Boolean> cir) {
-		Vec3d vec3d = NoPenaltyTargeting.find(this.mob, 100, 8);
+		Vec3d vec3d = NoPenaltyTargeting.find(this.mob, 12, 6);
 
 		if (vec3d == null) {
 			cir.setReturnValue(false);
@@ -93,7 +95,7 @@ public abstract class EscapeDangerGoalMixin extends Goal {
 		} catch (ClassCastException e) {
 
 		}
-		this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed);
+		this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed * speedMultiplier);
 		this.active = true;
 		ci.cancel();
 

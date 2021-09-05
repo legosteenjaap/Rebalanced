@@ -1,6 +1,5 @@
 package nl.tettelaar.rebalanced.gen;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.sound.BiomeMoodSound;
@@ -12,14 +11,7 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeatures;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
-import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
-import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
-import nl.tettelaar.rebalanced.gen.surfacebuilders.GravellySurfaceBuilder;
-import nl.tettelaar.rebalanced.gen.surfacebuilders.HeightDependSurfaceBuilder;
-import nl.tettelaar.rebalanced.gen.surfacebuilders.SavannaBeachSurfaceBuilder;
-import nl.tettelaar.rebalanced.gen.surfacebuilders.SavannaPlateauSurfaceBuilder;
 import nl.tettelaar.rebalanced.init.RebalancedWorldGen;
 import nl.tettelaar.rebalanced.init.worldgen.SurfaceBuilders;
 import nl.tettelaar.rebalanced.mixin.worldgen.DefaultBiomeInvoker;

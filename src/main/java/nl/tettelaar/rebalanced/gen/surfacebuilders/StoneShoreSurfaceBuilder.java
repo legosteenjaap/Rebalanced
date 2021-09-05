@@ -12,12 +12,12 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 
-public class HeightDependSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig> {
+public class StoneShoreSurfaceBuilder extends SurfaceBuilder<TernarySurfaceConfig> {
 
 	private final int minHeight;
 	private final boolean snowy;
 
-	public HeightDependSurfaceBuilder(Codec<TernarySurfaceConfig> codec, int minHeight, boolean snowy) {
+	public StoneShoreSurfaceBuilder(Codec<TernarySurfaceConfig> codec, int minHeight, boolean snowy) {
 		super(codec);
 		this.minHeight = minHeight;
 		this.snowy = snowy;
@@ -34,17 +34,14 @@ public class HeightDependSurfaceBuilder extends SurfaceBuilder<TernarySurfaceCon
 		}
 		y++;
 		if (height > this.minHeight + (int)(noise * 2) || (height > this.minHeight + (int) noise && snowy)) {
+			chunk.setBlockState(new BlockPos(x, y, z), Blocks.GRASS_BLOCK.getDefaultState(), false);
+		} else {
 			if (snowy) {
 				chunk.setBlockState(new BlockPos(x, y, z), Blocks.SNOW_BLOCK.getDefaultState(), false);
 				chunk.setBlockState(new BlockPos(x, y + 1, z), Blocks.SNOW.getDefaultState(), false);
 			} else {
-				chunk.setBlockState(new BlockPos(x, y, z), Blocks.GRASS_BLOCK.getDefaultState(), false);
+				chunk.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), false);
 			}
-
-		} else {
-			chunk.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), false);
 		}
-		
 	}
-
 }
