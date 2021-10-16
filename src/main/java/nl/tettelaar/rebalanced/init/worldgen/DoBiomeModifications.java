@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModificationContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
+import net.fabricmc.fabric.impl.biome.modification.BiomeSelectionContextImpl;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
@@ -43,6 +44,10 @@ public class DoBiomeModifications {
 			// s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION,
 			// Features.SAPLING_FOREST_DEFAULT);
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.WOLF);
+		});
+
+		BiomeModifications.create(new Identifier(modid, "seagrass_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.excludeByKey(BiomeKeys.SNOWY_TAIGA, BiomeKeys.SNOWY_TAIGA_HILLS, BiomeKeys.SNOWY_TAIGA_MOUNTAINS, BiomeKeys.SNOWY_MOUNTAINS, Biomes.SNOWY_GIANT_SPRUCE_TAIGA_KEY,  Biomes.SNOWY_GIANT_SPRUCE_TAIGA_HILLS_KEY, Biomes.SNOWY_GIANT_TREE_TAIGA_KEY ,Biomes.SNOWY_GIANT_TREE_TAIGA_HILLS_KEY).and(BiomeSelectors.categories(Biome.Category.PLAINS, Biome.Category.JUNGLE, Biome.Category.EXTREME_HILLS, Biome.Category.FOREST, Biome.Category.SWAMP, Biome.Category.TAIGA)), (s) -> {
+			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Feature.VEGETAL_DECORATION, ConfiguredFeatures.SEAGRASS_NORMAL);
 		});
 
 		BiomeModifications.create(new Identifier(modid, "plains_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.includeByKey(BiomeKeys.PLAINS), (s) -> {

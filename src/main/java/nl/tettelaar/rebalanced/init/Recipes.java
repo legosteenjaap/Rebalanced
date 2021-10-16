@@ -18,6 +18,7 @@ public class Recipes {
 	private static final String MUTTON = "cooked_mutton;cooked_mutton_from_campfire_cooking;cooked_mutton_from_smoking";
 	
 	public static void init() {
+		initXPCost();
 		initKnowledgeBooks();
 		initGolems();
 		initRequiredRecipes();
@@ -162,6 +163,10 @@ public class Recipes {
 		RecipeAPI.registerKnowledgeBook(Arrays.asList(""), 3, 10, 0.5f, VillagerProfession.WEAPONSMITH, 3, 1);
 		RecipeAPI.registerKnowledgeBook(Arrays.asList(""), 3, 10, 0.5f, VillagerProfession.WEAPONSMITH, 4, 1);
 		RecipeAPI.registerKnowledgeBook(Arrays.asList("grindstone"), 20, 40, 0.7f, VillagerProfession.WEAPONSMITH, 5, 1);
+	}
+
+	public static void initXPCost () {
+		RecipeAPI.setRecipeXPCost("stone_pickaxe", 15);
 	}
 
 	private static void initGolems() {

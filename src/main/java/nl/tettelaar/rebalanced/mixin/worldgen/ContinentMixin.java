@@ -27,7 +27,7 @@ public class ContinentMixin {
 		if (x == 0 && y == 0 && noise < 0.15) {
 			return BiomeIds.PLAINS;
 		}
-		
+
 		if (noise > 0.15) {
 			return BiomeIds.PLAINS;
 		} else if (noise < -0.4) {

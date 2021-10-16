@@ -16,65 +16,65 @@ public enum ApplySpecialBiomeLayer implements MergingLayer, IdentityCoordinateTr
 		int specialBiome = specialBiomeSamp.sample(this.transformX(x), this.transformZ(z));
 		
 		switch (continent) {
-		case BiomeIds.SNOWY_TUNDRA:
-			switch (specialBiome) {
-			case 3:
-				return BiomeIds.SNOWY_MOUNTAINS;
-			}
-			break;
-		case BiomeIds.DESERT:
-			if (specialBiome == 2) return context.nextInt(2) == 0 ? BiomeIds.WOODED_BADLANDS_PLATEAU : BiomeIds.BADLANDS_PLATEAU;
-			break;
-		case BiomeIds.SAVANNA:
-			switch (specialBiome) {
-			case 2:
-				return context.nextInt(3) == 0 ? BiomeIds.SHATTERED_SAVANNA : BiomeIds.SHATTERED_SAVANNA_PLATEAU;
-			case 3:
-				return BiomeIds.SAVANNA_PLATEAU;
-			}
+			case BiomeIds.SNOWY_TUNDRA:
+				switch (specialBiome) {
+					case 3:
+						return BiomeIds.SNOWY_MOUNTAINS;
+				}
+				break;
+			case BiomeIds.DESERT:
+				if (specialBiome == 2)
+					return context.nextInt(2) == 0 ? BiomeIds.WOODED_BADLANDS_PLATEAU : BiomeIds.BADLANDS_PLATEAU;
+				break;
+			case BiomeIds.SAVANNA:
+				switch (specialBiome) {
+					case 2:
+						return context.nextInt(3) == 0 ? BiomeIds.SHATTERED_SAVANNA : BiomeIds.SHATTERED_SAVANNA_PLATEAU;
+					case 3:
+						return BiomeIds.SAVANNA_PLATEAU;
+				}
 
-			break;
-		case BiomeIds.JUNGLE:
-			switch (specialBiome) {
-			case 2:
-				return BiomeIds.BAMBOO_JUNGLE;
-			case 4:
-				return BuiltinRegistries.BIOME.getRawId(Biomes.JUNGLE_PLATEAU);
-			}
-			break;
-		case BiomeIds.PLAINS:
-			switch (specialBiome) {
-			case 4:
-				return BiomeIds.SWAMP;
-			case 3:
-				return BiomeIds.WOODED_MOUNTAINS;
-			case 1:
-				return BiomeIds.TAIGA;
-			}
-			break;
-		case BiomeIds.TAIGA:
-			switch (specialBiome) {
-			case 1:
-				return BiomeIds.GIANT_SPRUCE_TAIGA;
-			case 2:
-				return BiomeIds.GIANT_TREE_TAIGA;
-			case 3:
-				return BiomeIds.MOUNTAINS;
-			}
-			break;
-		case BiomeIds.SNOWY_TAIGA:
-			switch (specialBiome) {
-			case 1:
-				return BuiltinRegistries.BIOME.getRawId(Biomes.SNOWY_GIANT_SPRUCE_TAIGA);
-			case 2:
-				return BuiltinRegistries.BIOME.getRawId(Biomes.SNOWY_GIANT_TREE_TAIGA);
-			case 3:
-				return BiomeIds.SNOWY_MOUNTAINS;
-			}
-			break;
-		case 2187:
-			return BiomeIds.PLAINS;
-
+				break;
+			case BiomeIds.JUNGLE:
+				switch (specialBiome) {
+					case 2:
+						return BiomeIds.BAMBOO_JUNGLE;
+					case 4:
+						return BuiltinRegistries.BIOME.getRawId(Biomes.JUNGLE_PLATEAU);
+				}
+				break;
+			case BiomeIds.PLAINS:
+				switch (specialBiome) {
+					case 4:
+						return BiomeIds.SWAMP;
+					case 3:
+						return BiomeIds.WOODED_MOUNTAINS;
+					case 1:
+						return BiomeIds.TAIGA;
+				}
+				break;
+			case BiomeIds.TAIGA:
+				switch (specialBiome) {
+					case 1:
+						return BiomeIds.GIANT_SPRUCE_TAIGA;
+					case 2:
+						return BiomeIds.GIANT_TREE_TAIGA;
+					case 3:
+						return BiomeIds.MOUNTAINS;
+				}
+				break;
+			case BiomeIds.SNOWY_TAIGA:
+				switch (specialBiome) {
+					case 1:
+						return BuiltinRegistries.BIOME.getRawId(Biomes.SNOWY_GIANT_SPRUCE_TAIGA);
+					case 2:
+						return BuiltinRegistries.BIOME.getRawId(Biomes.SNOWY_GIANT_TREE_TAIGA);
+					case 3:
+						return BiomeIds.SNOWY_MOUNTAINS;
+				}
+				break;
+			case 2718:
+				return BiomeIds.PLAINS;
 		}
 		
 		switch (continent) {

@@ -44,6 +44,9 @@
 	"recipe.AbstractFireBlockMixin",
 	//"recipe.FlintAndSteelMixin",
 	//"recipe.FireChargeMixin",
+    //"recipe.CraftingScreenMixin",
+    //"recipe.RecipeBookWidgetInvoker",
+    //"recipe.CraftingScreenHandlerInvoker",
 	"recipe.CarvedPumpkinBlockMixin",
 	    
   	"village.GolemProtectChestMixin",
@@ -80,8 +83,9 @@
     "ReplaceBlockMixin",
     "DisableEndPortalMixin",
     "BoatEntityMixin",
-    "HorseBaseEntityMixin"
-
+    "HorseBaseEntityMixin",
+    "ItemMixin"
+  //test
   ],
   "client": [
   	"recipe.StonecutterScreenHandlerMixin",

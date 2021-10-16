@@ -19,7 +19,7 @@ public enum SpecialBiomesLayer implements RandomnessSourceLayer {
 			return 2;
 		} else if (noise < 0.1 && noise > -0.1) {
 			return 3;
-		} else if (noise > 0.15 && noise < 0.25) {
+		} else if (noise > 0.15 && noise < 0.2) {
 			return 4;
 		}
 		return 0;

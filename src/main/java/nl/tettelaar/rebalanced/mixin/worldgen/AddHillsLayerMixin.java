@@ -18,7 +18,7 @@ import net.minecraft.world.biome.layer.util.NorthWestCoordinateTransformer;
 @Mixin(AddHillsLayer.class)
 public abstract class AddHillsLayerMixin implements MergingLayer, NorthWestCoordinateTransformer {
 
-	private static final int plateauValleyChance = 18;
+	private static final int plateauValleyChance = 27;
 
 	@Inject(method = "sample", at = @At("HEAD"), cancellable = true)
 	public void sampleHead(LayerRandomnessSource context, LayerSampler sampler1, LayerSampler sampler2, int x, int z, CallbackInfoReturnable<Integer> cir) {

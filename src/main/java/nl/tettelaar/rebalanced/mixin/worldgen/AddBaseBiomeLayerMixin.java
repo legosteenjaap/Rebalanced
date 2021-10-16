@@ -59,7 +59,9 @@ public class AddBaseBiomeLayerMixin {
 					cir.setReturnValue(BiomeIds.TAIGA);
 				}
 				break;
-			
+			case 2187:
+				cir.setReturnValue(BiomeIds.PLAINS);
+				break;
 			default:
 				cir.setReturnValue(value);
 			}

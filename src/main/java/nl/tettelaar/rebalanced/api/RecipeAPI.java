@@ -26,6 +26,7 @@ public class RecipeAPI {
 	private static List<Identifier> blockRecipeList = new ArrayList<>();
 	private static HashMap<Identifier, List<Identifier>> requiredRecipesMap = new HashMap<>();
 	private static List<Pair<TradeOffers.Factory, Float>> wanderingTraderKnowledgeBooks = new ArrayList<>();
+	private static HashMap<Identifier, Float> RecipeXPCost = new HashMap<>();
 
 	public static void registerWanderingTraderKnowledgeBookID(List<List<Identifier>> recipes, int minPrice, int maxPrice, float chance) {
 		wanderingTraderKnowledgeBooks.add(new Pair<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
@@ -63,6 +64,11 @@ public class RecipeAPI {
 	public static void registerBlockRecipe(Identifier name) {
 		blockRecipeList.add(name);
 	}
+
+	public static void setRecipeXPCost(String item, float cost) {
+		RecipeXPCost.put(new Identifier(item), cost);
+	}
+
 
 	private static void registerKnowledgeBookID(List<List<Identifier>> recipes, List<Identifier> loottables) {
 		knowledgeBooksLootTable.add(new Pair<List<List<Identifier>>, List<Identifier>>(recipes, loottables));
@@ -156,6 +162,10 @@ public class RecipeAPI {
 
 	public static List<Identifier> getBlockRecipeList() {
 		return blockRecipeList;
+	}
+
+	public static float getRecipeXPCost(Identifier item) {
+		return RecipeXPCost.get(item);
 	}
 
 	public static class KnowledgeBookTrade implements TradeOffers.Factory {
