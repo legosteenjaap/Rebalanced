@@ -2,7 +2,14 @@ package nl.tettelaar.rebalanced.mixin.sleep;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.network.protocol.game.ClientboundCustomSoundPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -10,31 +17,22 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.network.packet.s2c.play.PlaySoundIdS2CPacket;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
-
-@Mixin(ServerWorld.class)
+@Mixin(ServerLevel.class)
 public class ServerWorldMixin {
 
 	@Shadow
 	@Final
-	private List<ServerPlayerEntity> players;
+	private List<ServerPlayer> players;
 
-	@Inject(method = "wakeSleepingPlayers", at = @At("HEAD"))
-	public void wakeSleepingPlayers(CallbackInfo ci) {
-		((List<ServerPlayerEntity>) this.players.stream().filter(LivingEntity::isSleeping).collect(Collectors.toList()))
+	@Inject(method = "wakeUpAllPlayers", at = @At("HEAD"))
+	public void wakeUpAllPlayers(CallbackInfo ci) {
+		((List<ServerPlayer>) this.players.stream().filter(LivingEntity::isSleeping).collect(Collectors.toList()))
 				.forEach((player) -> {
-					player.setExperienceLevel(player.experienceLevel - 10);
-					player.networkHandler.sendPacket(new PlaySoundIdS2CPacket(SoundEvents.ENTITY_PLAYER_LEVELUP.getId(), SoundCategory.BLOCKS, player.getPos(), 1f, 1f));
-					player.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 1f, 1f);
-		            player.incrementStat(Stats.SLEEP_IN_BED);
-		            Criteria.SLEPT_IN_BED.trigger(player);
+					player.setExperienceLevels(player.experienceLevel - 10);
+					player.connection.send(new ClientboundCustomSoundPacket(SoundEvents.PLAYER_LEVELUP.getLocation(), SoundSource.BLOCKS, player.position(), 1f, 1f));
+					player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 1f, 1f);
+		            player.awardStat(Stats.SLEEP_IN_BED);
+		            CriteriaTriggers.SLEPT_IN_BED.trigger(player);
 				});
 	}
 }

@@ -9,78 +9,77 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.WitherSkullBlock;
-import net.minecraft.block.entity.SkullBlockEntity;
-import net.minecraft.block.pattern.BlockPattern;
-import net.minecraft.block.pattern.CachedBlockPosition;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.block.WitherSkullBlock;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
+import net.minecraft.world.level.block.state.pattern.BlockPattern;
 
 @Mixin(WitherSkullBlock.class)
 public class WitherSkullBlockMixin {
 
-	@Inject(method = "onPlaced", at = @At("HEAD"), cancellable = true)
-	private void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {
-		if (placer instanceof ServerPlayerEntity && (!((ServerPlayerEntity) placer).getRecipeBook().contains(new Identifier("wither")) && world.getGameRules().getBoolean(GameRules.DO_LIMITED_CRAFTING))) {
+	@Inject(method = "setPlacedBy", at = @At("HEAD"), cancellable = true)
+	private void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {
+		if (placer instanceof ServerPlayer && (!((ServerPlayer) placer).getRecipeBook().contains(new ResourceLocation("wither")) && world.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING))) {
 			ci.cancel();
 		}
 	}
 
-	@Inject(method = "onPlaced(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/SkullBlockEntity;)V", at = @At("HEAD"), cancellable = true)
-	private static void onPlaced(World world, BlockPos pos, SkullBlockEntity blockEntity, CallbackInfo ci) {
+	@Inject(method = "checkSpawn", at = @At("HEAD"), cancellable = true)
+	private static void checkSpawn(Level world, BlockPos pos, SkullBlockEntity blockEntity, CallbackInfo ci) {
 		ci.cancel();
 	}
 
 	
-	@Redirect(method = "onPlaced(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/WitherSkullBlock;onPlaced(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/SkullBlockEntity;)V"))
-	private void replaceOnPlaced(World world, BlockPos pos, SkullBlockEntity blockEntity) {
-		if (!world.isClient) {
-			BlockState blockState = blockEntity.getCachedState();
-			boolean bl = blockState.isOf(Blocks.WITHER_SKELETON_SKULL) || blockState.isOf(Blocks.WITHER_SKELETON_WALL_SKULL);
-			if (bl && pos.getY() >= world.getBottomY() && world.getDifficulty() != Difficulty.PEACEFUL) {
-				BlockPattern blockPattern = getWitherBossPattern();
-				BlockPattern.Result result = blockPattern.searchAround(world, pos);
+	@Redirect(method = "setPlacedBy	", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/WitherSkullBlock;checkSpawn(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/SkullBlockEntity;)V"))
+	private void replaceCheckSpawn(Level level, BlockPos pos, SkullBlockEntity blockEntity) {
+		if (!level.isClientSide) {
+			BlockState blockState = blockEntity.getBlockState();
+			boolean bl = blockState.is(Blocks.WITHER_SKELETON_SKULL) || blockState.is(Blocks.WITHER_SKELETON_WALL_SKULL);
+			if (bl && pos.getY() >= level.getMinBuildHeight() && level.getDifficulty() != Difficulty.PEACEFUL) {
+				BlockPattern blockPattern = getOrCreateWitherFull();
+				BlockPattern.BlockPatternMatch result = blockPattern.find(level, pos);
 				if (result != null) {
 					for (int i = 0; i < blockPattern.getWidth(); ++i) {
 						for (int j = 0; j < blockPattern.getHeight(); ++j) {
-							CachedBlockPosition cachedBlockPosition = result.translate(i, j, 0);
-							world.setBlockState(cachedBlockPosition.getBlockPos(), Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
-							world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, cachedBlockPosition.getBlockPos(), Block.getRawIdFromState(cachedBlockPosition.getBlockState()));
+							BlockInWorld cachedBlockPosition = result.getBlock(i, j, 0);
+							level.setBlock(cachedBlockPosition.getPos(), Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+							level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, cachedBlockPosition.getPos(), Block.getId(cachedBlockPosition.getState()));
 						}
 					}
 
-					WitherEntity witherEntity = (WitherEntity) EntityType.WITHER.create(world);
-					BlockPos blockPos = result.translate(1, 2, 0).getBlockPos();
-					witherEntity.refreshPositionAndAngles((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.55D, (double) blockPos.getZ() + 0.5D, result.getForwards().getAxis() == Direction.Axis.X ? 0.0F : 90.0F, 0.0F);
-					witherEntity.bodyYaw = result.getForwards().getAxis() == Direction.Axis.X ? 0.0F : 90.0F;
-					witherEntity.onSummoned();
-					Iterator var13 = world.getNonSpectatingEntities(ServerPlayerEntity.class, witherEntity.getBoundingBox().expand(50.0D)).iterator();
+					WitherBoss witherEntity = (WitherBoss) EntityType.WITHER.create(level);
+					BlockPos blockPos = result.getBlock(1, 2, 0).getPos();
+					witherEntity.moveTo((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.55D, (double) blockPos.getZ() + 0.5D, result.getForwards().getAxis() == Direction.Axis.X ? 0.0F : 90.0F, 0.0F);
+					witherEntity.yBodyRot = result.getForwards().getAxis() == Direction.Axis.X ? 0.0F : 90.0F;
+					witherEntity.makeInvulnerable();
+					Iterator var13 = level.getEntitiesOfClass(ServerPlayer.class, witherEntity.getBoundingBox().inflate(50.0D)).iterator();
 
 					while (var13.hasNext()) {
-						ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) var13.next();
-						Criteria.SUMMONED_ENTITY.trigger(serverPlayerEntity, witherEntity);
+						ServerPlayer serverPlayerEntity = (ServerPlayer) var13.next();
+						CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayerEntity, witherEntity);
 					}
 
-					world.spawnEntity(witherEntity);
+					level.addFreshEntity(witherEntity);
 
 					for (int k = 0; k < blockPattern.getWidth(); ++k) {
 						for (int l = 0; l < blockPattern.getHeight(); ++l) {
-							world.updateNeighbors(result.translate(k, l, 0).getBlockPos(), Blocks.AIR);
+							level.blockUpdated(result.getBlock(k, l, 0).getPos(), Blocks.AIR);
 						}
 					}
 
@@ -90,7 +89,7 @@ public class WitherSkullBlockMixin {
 	}
 
 	@Shadow
-	private static BlockPattern getWitherBossPattern() {
+	private static BlockPattern getOrCreateWitherFull() {
 		return null;
 	}
 

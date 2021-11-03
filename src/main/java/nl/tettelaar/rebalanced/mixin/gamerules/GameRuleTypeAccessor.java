@@ -1,14 +1,12 @@
 package nl.tettelaar.rebalanced.mixin.gamerules;
 
 import java.util.function.Function;
-
+import net.minecraft.world.level.GameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.world.GameRules;
-
 @Mixin(GameRules.Type.class)
-public interface GameRuleTypeAccessor <T extends GameRules.Rule<T>>{
+public interface GameRuleTypeAccessor <T extends GameRules.Value<T>>{
 	@Accessor
-	Function<GameRules.Type<T>, T> getRuleFactory();
+	Function<GameRules.Type<T>, T> getConstructor();
 }

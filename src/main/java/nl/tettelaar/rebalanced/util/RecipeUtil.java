@@ -4,30 +4,28 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.Level;
 import com.google.common.collect.Lists;
-
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeManager;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
 
 public class RecipeUtil {
 
-	public static ItemStack createKnowledgeBook(List<Identifier> recipes) {
-		NbtList listTag = new NbtList();
+	public static ItemStack createKnowledgeBook(List<ResourceLocation> recipes) {
+		ListTag listTag = new ListTag();
 		int index = 0;
-		for (Identifier recipe : recipes) {
-			listTag.add(index, NbtString.of(recipe.toString()));
+		for (ResourceLocation recipe : recipes) {
+			listTag.add(index, StringTag.valueOf(recipe.toString()));
 			index++;
 		}
 
@@ -36,29 +34,29 @@ public class RecipeUtil {
 		return itemStack;
 	}
 
-	public static ItemStack createKnowledgeBook(List<Identifier> recipes, Random random) {
+	public static ItemStack createKnowledgeBook(List<ResourceLocation> recipes, Random random) {
 		return createKnowledgeBook(recipes.get(random.nextInt(recipes.size())));
 	}
 
-	public static ItemStack createKnowledgeBook(Identifier recipe) {
+	public static ItemStack createKnowledgeBook(ResourceLocation recipe) {
 		return createKnowledgeBook(Arrays.asList(recipe));
 	}
 
 	// THIS CODE GETS LIST OF RECIPES
 
-	public static List<Recipe<?>> getRecipes(NbtCompound compoundTag, World world) {
-		NbtList listTag = compoundTag.getList("Recipes", 8);
+	public static List<Recipe<?>> getRecipes(CompoundTag compoundTag, Level world) {
+		ListTag listTag = compoundTag.getList("Recipes", 8);
 		List<Recipe<?>> list = Lists.newArrayList();
 		RecipeManager recipeManager = null;
-		if (!world.isClient()) {
+		if (!world.isClientSide()) {
 			recipeManager = world.getServer().getRecipeManager();
 		} else {
-			recipeManager = ((ClientWorld) world).getRecipeManager();
+			recipeManager = ((ClientLevel) world).getRecipeManager();
 		}
 
 		for (int i = 0; i < listTag.size(); ++i) {
 			String string = listTag.getString(i);
-			Optional<? extends Recipe<?>> optional = recipeManager.get(new Identifier(string));
+			Optional<? extends Recipe<?>> optional = recipeManager.byKey(new ResourceLocation(string));
 			if (optional.isPresent()) {
 				list.add(optional.get());
 			}
@@ -67,11 +65,11 @@ public class RecipeUtil {
 	}
 
 	// Returns null if there are recipes with other outputs
-	public static ItemStack getRecipeOutput(NbtCompound compoundTag, World world) {
+	public static ItemStack getRecipeOutput(CompoundTag compoundTag, Level world) {
 		ItemStack output = null;
 		for (Recipe<?> recipe : RecipeUtil.getRecipes(compoundTag, world)) {
-			if (output == null || recipe.getOutput().isOf(output.getItem())) {
-				output = recipe.getOutput();
+			if (output == null || recipe.getResultItem().is(output.getItem())) {
+				output = recipe.getResultItem();
 			} else {
 				return null;
 			}
@@ -79,10 +77,10 @@ public class RecipeUtil {
 		return output;
 	}
 
-	public static boolean playerCanUnlockRecipe(NbtCompound compoundTag, World world, ServerPlayerEntity player) {
-		List<Identifier> recipesID = RecipeAPI.getRequiredRecipes(Registry.ITEM.getId((getRecipeOutput(compoundTag, world).getItem())));
+	public static boolean playerCanUnlockRecipe(CompoundTag compoundTag, Level world, ServerPlayer player) {
+		List<ResourceLocation> recipesID = RecipeAPI.getRequiredRecipes(Registry.ITEM.getKey((getRecipeOutput(compoundTag, world).getItem())));
 		if (recipesID != null) {
-			for (Identifier recipeID : recipesID) {
+			for (ResourceLocation recipeID : recipesID) {
 				if (!player.getRecipeBook().contains(recipeID))
 					return false;
 			}
@@ -90,7 +88,7 @@ public class RecipeUtil {
 		return true;
 	}
 
-	public static boolean playerHasAllRecipes(NbtCompound compoundTag, World world, ServerPlayerEntity player) {
+	public static boolean playerHasAllRecipes(CompoundTag compoundTag, Level world, ServerPlayer player) {
 		for (Recipe<?> recipe : RecipeUtil.getRecipes(compoundTag, world)) {
 			if (!player.getRecipeBook().contains(recipe))
 				return false;

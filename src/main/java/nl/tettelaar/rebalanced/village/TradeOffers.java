@@ -5,7 +5,41 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
-
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.npc.VillagerDataHolder;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerType;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.DyeableArmorItem;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.SuspiciousStewItem;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionBrewing;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMap;
@@ -14,41 +48,6 @@ import com.google.common.collect.Maps;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.DyeItem;
-import net.minecraft.item.DyeableArmorItem;
-import net.minecraft.item.DyeableItem;
-import net.minecraft.item.EnchantedBookItem;
-import net.minecraft.item.FilledMapItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.SuspiciousStewItem;
-import net.minecraft.item.map.MapIcon;
-import net.minecraft.item.map.MapState;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtil;
-import net.minecraft.recipe.BrewingRecipeRegistry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.VillagerDataContainer;
-import net.minecraft.village.VillagerProfession;
-import net.minecraft.village.VillagerType;
-import net.minecraft.world.gen.feature.StructureFeature;
 import nl.tettelaar.rebalanced.util.RecipeUtil;
 
 public class TradeOffers {
@@ -77,12 +76,12 @@ public class TradeOffers {
 						4,
 						new TradeOffers.Factory[] { 
 								new TradeOffers.SellItemFactory(Items.PUMPKIN_PIE, 1, 1, 12, 15),
-								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.NIGHT_VISION, 100, 15),
-								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.JUMP_BOOST, 160, 15),
-								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.WEAKNESS, 140, 15),
-								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.BLINDNESS, 120, 15),
-								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.POISON, 280, 15),
-								new TradeOffers.SellSuspiciousStewFactory(StatusEffects.SATURATION, 7, 15) },
+								new TradeOffers.SellSuspiciousStewFactory(MobEffects.NIGHT_VISION, 100, 15),
+								new TradeOffers.SellSuspiciousStewFactory(MobEffects.JUMP, 160, 15),
+								new TradeOffers.SellSuspiciousStewFactory(MobEffects.WEAKNESS, 140, 15),
+								new TradeOffers.SellSuspiciousStewFactory(MobEffects.BLINDNESS, 120, 15),
+								new TradeOffers.SellSuspiciousStewFactory(MobEffects.POISON, 280, 15),
+								new TradeOffers.SellSuspiciousStewFactory(MobEffects.SATURATION, 7, 15) },
 						5, new TradeOffers.Factory[] { 
 								new TradeOffers.SellItemFactory(Items.GOLDEN_CARROT, 3, 3, 30),
 								new TradeOffers.SellItemFactory(Items.GLISTERING_MELON_SLICE, 4, 3, 30) })));
@@ -257,11 +256,11 @@ public class TradeOffers {
 						2,
 						new TradeOffers.Factory[] {
 								new TradeOffers.BuySupplyFactory(Items.GLASS_PANE, 11, 16, 10),
-								new TradeOffers.SellMapFactory(13, StructureFeature.MONUMENT, MapIcon.Type.MONUMENT, 12,
+								new TradeOffers.SellMapFactory(13, StructureFeature.OCEAN_MONUMENT, MapDecoration.Type.MONUMENT, 12,
 										5) },
 						3,
 						new TradeOffers.Factory[] { new TradeOffers.BuySupplyFactory(Items.COMPASS, 1, 12, 20),
-								new TradeOffers.SellMapFactory(14, StructureFeature.MANSION, MapIcon.Type.MANSION, 12,
+								new TradeOffers.SellMapFactory(14, StructureFeature.WOODLAND_MANSION, MapDecoration.Type.MANSION, 12,
 										10) },
 						4,
 						new TradeOffers.Factory[] { new TradeOffers.SellItemFactory(Items.ITEM_FRAME, 7, 1, 15),
@@ -546,12 +545,12 @@ public class TradeOffers {
 		private final int experience;
 		private final float multiplier;
 
-		public ProcessItemFactory(ItemConvertible item, int secondCount, Item sellItem, int sellCount, int maxUses,
+		public ProcessItemFactory(ItemLike item, int secondCount, Item sellItem, int sellCount, int maxUses,
 				int experience) {
 			this(item, secondCount, 1, sellItem, sellCount, maxUses, experience);
 		}
 
-		public ProcessItemFactory(ItemConvertible item, int secondCount, int price, Item sellItem, int sellCount,
+		public ProcessItemFactory(ItemLike item, int secondCount, int price, Item sellItem, int sellCount,
 				int maxUses, int experience) {
 			this.secondBuy = new ItemStack(item);
 			this.secondCount = secondCount;
@@ -564,8 +563,8 @@ public class TradeOffers {
 		}
 
 		@Nullable
-		public TradeOffer create(Entity entity, Random random) {
-			return new TradeOffer(new ItemStack(Items.EMERALD, this.price),
+		public MerchantOffer create(Entity entity, Random random) {
+			return new MerchantOffer(new ItemStack(Items.EMERALD, this.price),
 					new ItemStack(this.secondBuy.getItem(), this.secondCount),
 					new ItemStack(this.sell.getItem(), this.sellCount), this.maxUses, this.experience, this.multiplier);
 		}
@@ -574,11 +573,11 @@ public class TradeOffers {
 	static class SellMapFactory implements TradeOffers.Factory {
 		private final int price;
 		private final StructureFeature<?> structure;
-		private final MapIcon.Type iconType;
+		private final MapDecoration.Type iconType;
 		private final int maxUses;
 		private final int experience;
 
-		public SellMapFactory(int price, StructureFeature<?> feature, MapIcon.Type iconType, int maxUses,
+		public SellMapFactory(int price, StructureFeature<?> feature, MapDecoration.Type iconType, int maxUses,
 				int experience) {
 			this.price = price;
 			this.structure = feature;
@@ -588,20 +587,20 @@ public class TradeOffers {
 		}
 
 		@Nullable
-		public TradeOffer create(Entity entity, Random random) {
-			if (!(entity.world instanceof ServerWorld)) {
+		public MerchantOffer create(Entity entity, Random random) {
+			if (!(entity.level instanceof ServerLevel)) {
 				return null;
 			} else {
-				ServerWorld serverWorld = (ServerWorld) entity.world;
-				BlockPos blockPos = serverWorld.locateStructure(this.structure, entity.getBlockPos(), 100, true);
+				ServerLevel serverWorld = (ServerLevel) entity.level;
+				BlockPos blockPos = serverWorld.findNearestMapFeature(this.structure, entity.blockPosition(), 100, true);
 				if (blockPos != null) {
-					ItemStack itemStack = FilledMapItem.createMap(serverWorld, blockPos.getX(), blockPos.getZ(),
+					ItemStack itemStack = MapItem.create(serverWorld, blockPos.getX(), blockPos.getZ(),
 							(byte) 2, true, true);
-					FilledMapItem.fillExplorationMap(serverWorld, itemStack);
-					MapState.addDecorationsNbt(itemStack, blockPos, "+", this.iconType);
-					itemStack.setCustomName(
-							new TranslatableText("filled_map." + this.structure.getName().toLowerCase(Locale.ROOT)));
-					return new TradeOffer(new ItemStack(Items.EMERALD, this.price), new ItemStack(Items.COMPASS),
+					MapItem.renderBiomePreviewMap(serverWorld, itemStack);
+					MapItemSavedData.addTargetDecoration(itemStack, blockPos, "+", this.iconType);
+					itemStack.setHoverName(
+							new TranslatableComponent("filled_map." + this.structure.getFeatureName().toLowerCase(Locale.ROOT)));
+					return new MerchantOffer(new ItemStack(Items.EMERALD, this.price), new ItemStack(Items.COMPASS),
 							itemStack, this.maxUses, this.experience, 0.2F);
 				} else {
 					return null;
@@ -617,20 +616,20 @@ public class TradeOffers {
 			this.experience = experience;
 		}
 
-		public TradeOffer create(Entity entity, Random random) {
+		public MerchantOffer create(Entity entity, Random random) {
 			@SuppressWarnings("unchecked")
 
-			List<Enchantment> list = (List) Registry.ENCHANTMENT.stream().filter(Enchantment::isTreasure)
+			List<Enchantment> list = (List) Registry.ENCHANTMENT.stream().filter(Enchantment::isTreasureOnly)
 					.collect(Collectors.toList());
 			Enchantment enchantment = (Enchantment) list.get(random.nextInt(list.size()));
-			int i = MathHelper.nextInt(random, enchantment.getMinLevel(), enchantment.getMaxLevel());
-			ItemStack itemStack = EnchantedBookItem.forEnchantment(new EnchantmentLevelEntry(enchantment, i));
+			int i = Mth.nextInt(random, enchantment.getMinLevel(), enchantment.getMaxLevel());
+			ItemStack itemStack = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, i));
 			int j = 2 + random.nextInt(5 + i * 10) + 3 * i;
 			if (j > 64) {
 				j = 64;
 			}
 
-			return new TradeOffer(new ItemStack(Items.EMERALD, j), new ItemStack(Items.BOOK), itemStack, 12,
+			return new MerchantOffer(new ItemStack(Items.EMERALD, j), new ItemStack(Items.BOOK), itemStack, 12,
 					this.experience, 0.2F);
 		}
 	}
@@ -652,7 +651,7 @@ public class TradeOffers {
 			this.experience = experience;
 		}
 
-		public TradeOffer create(Entity entity, Random random) {
+		public MerchantOffer create(Entity entity, Random random) {
 			ItemStack itemStack = new ItemStack(Items.EMERALD, this.price);
 			ItemStack itemStack2 = new ItemStack(this.sell);
 			if (this.sell instanceof DyeableArmorItem) {
@@ -666,10 +665,10 @@ public class TradeOffers {
 					list.add(getDye(random));
 				}
 
-				itemStack2 = DyeableItem.blendAndSetColor(itemStack2, list);
+				itemStack2 = DyeableLeatherItem.dyeArmor(itemStack2, list);
 			}
 
-			return new TradeOffer(itemStack, itemStack2, this.maxUses, this.experience, 0.2F);
+			return new MerchantOffer(itemStack, itemStack2, this.maxUses, this.experience, 0.2F);
 		}
 
 		private static DyeItem getDye(Random random) {
@@ -699,14 +698,14 @@ public class TradeOffers {
 			this.priceMultiplier = 0.05F;
 		}
 
-		public TradeOffer create(Entity entity, Random random) {
+		public MerchantOffer create(Entity entity, Random random) {
 			ItemStack itemStack = new ItemStack(Items.EMERALD, this.price);
 			List<Potion> list = (List) Registry.POTION.stream().filter((potionx) -> {
-				return !potionx.getEffects().isEmpty() && BrewingRecipeRegistry.isBrewable(potionx);
+				return !potionx.getEffects().isEmpty() && PotionBrewing.isBrewablePotion(potionx);
 			}).collect(Collectors.toList());
 			Potion potion = (Potion) list.get(random.nextInt(list.size()));
-			ItemStack itemStack2 = PotionUtil.setPotion(new ItemStack(this.sell.getItem(), this.sellCount), potion);
-			return new TradeOffer(itemStack, new ItemStack(this.secondBuy, this.secondCount), itemStack2, this.maxUses,
+			ItemStack itemStack2 = PotionUtils.setPotion(new ItemStack(this.sell.getItem(), this.sellCount), potion);
+			return new MerchantOffer(itemStack, new ItemStack(this.secondBuy, this.secondCount), itemStack2, this.maxUses,
 					this.experience, this.priceMultiplier);
 		}
 	}
@@ -730,22 +729,22 @@ public class TradeOffers {
 			this.multiplier = multiplier;
 		}
 
-		public TradeOffer create(Entity entity, Random random) {
+		public MerchantOffer create(Entity entity, Random random) {
 			int i = 5 + random.nextInt(15);
-			ItemStack itemStack = EnchantmentHelper.enchant(random, new ItemStack(this.tool.getItem()), i, false);
+			ItemStack itemStack = EnchantmentHelper.enchantItem(random, new ItemStack(this.tool.getItem()), i, false);
 			int j = Math.min(this.basePrice + i, 64);
 			ItemStack itemStack2 = new ItemStack(Items.EMERALD, j);
-			return new TradeOffer(itemStack2, itemStack, this.maxUses, this.experience, this.multiplier);
+			return new MerchantOffer(itemStack2, itemStack, this.maxUses, this.experience, this.multiplier);
 		}
 	}
 
 	static class SellSuspiciousStewFactory implements TradeOffers.Factory {
-		final StatusEffect effect;
+		final MobEffect effect;
 		final int duration;
 		final int experience;
 		private final float multiplier;
 
-		public SellSuspiciousStewFactory(StatusEffect effect, int duration, int experience) {
+		public SellSuspiciousStewFactory(MobEffect effect, int duration, int experience) {
 			this.effect = effect;
 			this.duration = duration;
 			this.experience = experience;
@@ -753,10 +752,10 @@ public class TradeOffers {
 		}
 
 		@Nullable
-		public TradeOffer create(Entity entity, Random random) {
+		public MerchantOffer create(Entity entity, Random random) {
 			ItemStack itemStack = new ItemStack(Items.SUSPICIOUS_STEW, 1);
-			SuspiciousStewItem.addEffectToStew(itemStack, this.effect, this.duration);
-			return new TradeOffer(new ItemStack(Items.EMERALD, 1), itemStack, 12, this.experience, this.multiplier);
+			SuspiciousStewItem.saveMobEffect(itemStack, this.effect, this.duration);
+			return new MerchantOffer(new ItemStack(Items.EMERALD, 1), itemStack, 12, this.experience, this.multiplier);
 		}
 	}
 
@@ -793,13 +792,13 @@ public class TradeOffers {
 			this.multiplier = multiplier;
 		}
 		
-		public TradeOffer createWanderingTraderDeal (Entity entity, Random random) {
-			return new TradeOffer(new ItemStack(this.sell.getItem(), this.count), new ItemStack(Items.EMERALD, this.price),
+		public MerchantOffer createWanderingTraderDeal (Entity entity, Random random) {
+			return new MerchantOffer(new ItemStack(this.sell.getItem(), this.count), new ItemStack(Items.EMERALD, this.price),
 					this.maxUses, this.experience, this.multiplier);
 		}
 
-		public TradeOffer create(Entity entity, Random random) {
-			return new TradeOffer(new ItemStack(Items.EMERALD, this.price),
+		public MerchantOffer create(Entity entity, Random random) {
+			return new MerchantOffer(new ItemStack(Items.EMERALD, this.price),
 					new ItemStack(this.sell.getItem(), this.count), this.maxUses, this.experience, this.multiplier);
 		}
 	}
@@ -815,7 +814,7 @@ public class TradeOffers {
 				return !map.containsKey(villagerType);
 			}).findAny().ifPresent((villagerType) -> {
 				throw new IllegalStateException(
-						"Missing trade for villager type: " + Registry.VILLAGER_TYPE.getId(villagerType));
+						"Missing trade for villager type: " + Registry.VILLAGER_TYPE.getKey(villagerType));
 			});
 			this.map = map;
 			this.count = count;
@@ -824,12 +823,12 @@ public class TradeOffers {
 		}
 
 		@Nullable
-		public TradeOffer create(Entity entity, Random random) {
-			if (entity instanceof VillagerDataContainer) {
+		public MerchantOffer create(Entity entity, Random random) {
+			if (entity instanceof VillagerDataHolder) {
 				ItemStack itemStack = new ItemStack(
-						(ItemConvertible) this.map.get(((VillagerDataContainer) entity).getVillagerData().getType()),
+						(ItemLike) this.map.get(((VillagerDataHolder) entity).getVillagerData().getType()),
 						this.count);
-				return new TradeOffer(new ItemStack(Items.EMERALD), itemStack, this.maxUses, this.experience, 0.05F);
+				return new MerchantOffer(new ItemStack(Items.EMERALD), itemStack, this.maxUses, this.experience, 0.05F);
 			} else {
 				return null;
 			}
@@ -843,7 +842,7 @@ public class TradeOffers {
 		private final int experience;
 		private final float multiplier;
 
-		public BuySupplyFactory(ItemConvertible item, int price, int maxUses, int experience) {
+		public BuySupplyFactory(ItemLike item, int price, int maxUses, int experience) {
 			this.buy = item.asItem();
 			this.price = price;
 			this.maxUses = maxUses;
@@ -851,12 +850,12 @@ public class TradeOffers {
 			this.multiplier = 0.05F;
 		}
 
-		public TradeOffer createBuySupply(Entity entity, Random random) {
-			return new TradeOffer(new ItemStack(this.buy, this.price), new ItemStack(Items.EMERALD), this.maxUses, this.experience, this.multiplier);
+		public MerchantOffer createBuySupply(Entity entity, Random random) {
+			return new MerchantOffer(new ItemStack(this.buy, this.price), new ItemStack(Items.EMERALD), this.maxUses, this.experience, this.multiplier);
 		}
 		
-		public TradeOffer create(Entity entity, Random random) {
-			return new TradeOffer(new ItemStack(Items.EMERALD),
+		public MerchantOffer create(Entity entity, Random random) {
+			return new MerchantOffer(new ItemStack(Items.EMERALD),
 					new ItemStack(this.buy, this.price), this.maxUses, this.experience, this.multiplier);
 		}
 	}
@@ -868,7 +867,7 @@ public class TradeOffers {
 		private final int experience;
 		private final float multiplier;
 
-		public BuyForOneEmeraldFactory(ItemConvertible item, int price, int maxUses, int experience) {
+		public BuyForOneEmeraldFactory(ItemLike item, int price, int maxUses, int experience) {
 			this.buy = item.asItem();
 			this.price = price;
 			this.maxUses = maxUses;
@@ -876,9 +875,9 @@ public class TradeOffers {
 			this.multiplier = 0.05F;
 		}
 
-		public TradeOffer create(Entity entity, Random random) {
+		public MerchantOffer create(Entity entity, Random random) {
 			ItemStack itemStack = new ItemStack(this.buy, this.price);
-			return new TradeOffer(itemStack, new ItemStack(Items.EMERALD), this.maxUses, this.experience,
+			return new MerchantOffer(itemStack, new ItemStack(Items.EMERALD), this.maxUses, this.experience,
 					this.multiplier);
 		}
 	}
@@ -893,6 +892,6 @@ public class TradeOffers {
 		 * @return a new trade offer, or {@code null} if none should be created
 		 */
 		@Nullable
-		TradeOffer create(Entity entity, Random random);
+		MerchantOffer create(Entity entity, Random random);
 	}
 }

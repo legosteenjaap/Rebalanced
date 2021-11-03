@@ -6,24 +6,23 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.village.TradeOffer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.trading.MerchantOffer;
 import nl.tettelaar.rebalanced.village.TradeOfferRebalanced;
 
-@Mixin(TradeOffer.class)
+@Mixin(MerchantOffer.class)
 public class TradeOfferMixin implements TradeOfferRebalanced {
 
 	@Shadow private int uses;
 	
-	@Inject(method = "<init>(Lnet/minecraft/nbt/NbtCompound;)V", at = @At("RETURN"))
-	public void InitNbt(NbtCompound nbt, CallbackInfo ci) {
+	@Inject(method = "<init>", at = @At("RETURN"))
+	public void InitNbt(CompoundTag nbt, CallbackInfo ci) {
 		this.isTemporary = nbt.getBoolean("isTemporary");
 	}
 
-	@Inject(method = "toNbt", at = @At("RETURN"), cancellable = true)
-	public void toNbt(CallbackInfoReturnable<NbtCompound> cir) {
-		NbtCompound nbtCompound = cir.getReturnValue();
+	@Inject(method = "createTag", at = @At("RETURN"), cancellable = true)
+	public void createTag(CallbackInfoReturnable<CompoundTag> cir) {
+		CompoundTag nbtCompound = cir.getReturnValue();
 		nbtCompound.putBoolean("isTemporary", this.isTemporary);
 		cir.setReturnValue(nbtCompound);
 	}

@@ -1,21 +1,20 @@
 package nl.tettelaar.rebalanced.mixin.enchantment;
 
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.LootBonusEnchantment;
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.enchantment.LuckEnchantment;
-import net.minecraft.entity.EquipmentSlot;
-
-@Mixin(LuckEnchantment.class)
+@Mixin(LootBonusEnchantment.class)
 public class LuckEnchantMixin extends Enchantment {
 
-	protected LuckEnchantMixin(Rarity weight, EnchantmentTarget type, EquipmentSlot[] slotTypes) {
+	protected LuckEnchantMixin(Rarity weight, EnchantmentCategory type, EquipmentSlot[] slotTypes) {
 		super(weight, type, slotTypes);
 		// TODO Auto-generated constructor stub
 	}
 
-	public boolean isTreasure() {
+	public boolean isTreasureOnly() {
 		return true;
 	}
 

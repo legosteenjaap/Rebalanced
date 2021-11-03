@@ -2,50 +2,49 @@ package nl.tettelaar.rebalanced.mixin.recipe;
 
 import java.util.Random;
 
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.KnowledgeBookItem;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.ExperienceOrbEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.KnowledgeBookItem;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
 import nl.tettelaar.rebalanced.network.NetworkingClient;
 import nl.tettelaar.rebalanced.util.RecipeUtil;
 
 @Mixin(KnowledgeBookItem.class)
 public class KnowledgeBookItemMixin extends Item {
 
-	public KnowledgeBookItemMixin(Settings settings) {
+	public KnowledgeBookItemMixin(Properties settings) {
 		super(settings);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
-	public void useHead(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-		ItemStack itemStack = user.getStackInHand(hand);
+	public void useHead(Level world, Player user, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
+		ItemStack itemStack = user.getItemInHand(hand);
 
-		NbtCompound compoundTag = itemStack.getTag();
+		CompoundTag compoundTag = itemStack.getTag();
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
-			if (!world.isClient) {
-				ServerPlayerEntity player = (ServerPlayerEntity) user;
+			if (!world.isClientSide) {
+				ServerPlayer player = (ServerPlayer) user;
 				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);
 				if (output != null && RecipeUtil.playerCanUnlockRecipe(compoundTag, world, player)) {
 					if (RecipeUtil.playerHasAllRecipes(compoundTag, world, player)) {
-						Random random = user.world.getRandom();
+						Random random = user.level.getRandom();
 						int ranInt = random.nextInt(7) + 3;
 						switch (output.getRarity()) {
 						case UNCOMMON:
@@ -62,31 +61,31 @@ public class KnowledgeBookItemMixin extends Item {
 
 						}
 						for (int i = 0; i < ranInt; i++) {
-							ExperienceOrbEntity.spawn((ServerWorld) user.world, user.getPos(), random.nextInt(3));
+							ExperienceOrb.award((ServerLevel) user.level, user.position(), random.nextInt(3));
 						}
 
 					} else {
-						PacketByteBuf buf = PacketByteBufs.create();
-						ServerPlayNetworking.send((ServerPlayerEntity) user, NetworkingClient.SHOW_FLOATING_ITEM_ID, buf.writeItemStack(output));
+						FriendlyByteBuf buf = PacketByteBufs.create();
+						ServerPlayNetworking.send((ServerPlayer) user, NetworkingClient.SHOW_FLOATING_ITEM_ID, buf.writeItem(output));
 					}
 				} else {
-					cir.setReturnValue(TypedActionResult.fail(itemStack));
+					cir.setReturnValue(InteractionResultHolder.fail(itemStack));
 				}
 
 			} else {
-				cir.setReturnValue(TypedActionResult.fail(itemStack));
+				cir.setReturnValue(InteractionResultHolder.fail(itemStack));
 			}
 			
 		}
-		user.playSound(SoundEvents.ENTITY_VILLAGER_WORK_LIBRARIAN, SoundCategory.PLAYERS, 1f, 1f);
+		user.playNotifySound(SoundEvents.VILLAGER_WORK_LIBRARIAN, SoundSource.PLAYERS, 1f, 1f);
 	}
 
 	@Inject(method = "use", at = @At("RETURN"), cancellable = true)
-	public void useReturn(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+	public void useReturn(Level world, Player user, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
 
 		// THIS CODE REMOVES THE RECIPE BOOK FROM THE PLAYER
 
-		user.setStackInHand(hand, ItemStack.EMPTY);
+		user.setItemInHand(hand, ItemStack.EMPTY);
 	}
 
 }

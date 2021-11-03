@@ -1,7 +1,11 @@
 package nl.tettelaar.rebalanced.mixin.sleep;
 
 import java.util.List;
-
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.DeathScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -10,17 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.gui.screen.DeathScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import nl.tettelaar.rebalanced.network.NetworkingClient;
-import nl.tettelaar.rebalanced.network.NetworkingServer;
 import nl.tettelaar.rebalanced.screens.ConfirmRespawnNightScreen;
 import nl.tettelaar.rebalanced.util.TimeUtil;
 
@@ -29,24 +23,24 @@ public class DeathScreenMixin extends Screen {
 
 	@Shadow
 	@Final
-	private boolean isHardcore;
+	private boolean hardcore;
 	@Shadow
 	@Final
-	private Text message;
+	private Component causeOfDeath;
 
 	@Unique private boolean checkIfHasSpawn = false;
 	
-	protected DeathScreenMixin(Text title) {
+	protected DeathScreenMixin(Component title) {
 		super(title);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Redirect(method = "init()V", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0))
-	private boolean replaceRespawnButton(List<ButtonWidget> buttons, Object widget) {
+	private boolean replaceRespawnButton(List<Button> buttons, Object widget) {
 		buttons.remove(widget);
-		this.remove((ButtonWidget) widget);
-		return buttons.add((ButtonWidget) this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 4 + 72, 200, 20, this.isHardcore ? new TranslatableText("deathScreen.spectate") : new TranslatableText("deathScreen.respawn"), (button) -> {
-			if (TimeUtil.isIdealTimeToRespawn(this.client.world)) {
+		this.removeWidget((Button) widget);
+		return buttons.add((Button) this.addRenderableWidget(new Button(this.width / 2 - 100, this.height / 4 + 72, 200, 20, this.hardcore ? new TranslatableComponent("deathScreen.spectate") : new TranslatableComponent("deathScreen.respawn"), (button) -> {
+			if (TimeUtil.isIdealTimeToRespawn(this.minecraft.level)) {
 				respawn();
 			} else {
 				checkRespawn();
@@ -59,20 +53,20 @@ public class DeathScreenMixin extends Screen {
 		if (respawnNow) {
 			respawn();
 		} else {
-			DeathScreen deathScreen = new DeathScreen(this.message, this.isHardcore);
-			this.client.openScreen(deathScreen);
+			DeathScreen deathScreen = new DeathScreen(this.causeOfDeath, this.hardcore);
+			this.minecraft.setScreen(deathScreen);
 		}
 	}
 
 	public void checkRespawn() {
-		PacketByteBuf buf = PacketByteBufs.empty();
-		ClientPlayNetworking.send(NetworkingServer.PLAYER_HAS_SPAWNPOINT_ID , buf);
+		//PacketByteBuf buf = PacketByteBufs.empty();
+		//ClientPlayNetworking.send(NetworkingServer.PLAYER_HAS_SPAWNPOINT_ID , buf);
 		checkIfHasSpawn = true;
 	}
 	
 	private void respawn() {
-		this.client.player.requestRespawn();
-		this.client.openScreen((Screen) null);
+		this.minecraft.player.respawn();
+		this.minecraft.setScreen((Screen) null);
 	}
 	
 	@Inject(method = "tick", at = @At("HEAD"), cancellable = true)
@@ -82,7 +76,7 @@ public class DeathScreenMixin extends Screen {
 			System.out.println(NetworkingClient.hasSpawnPoint);
 			if (!NetworkingClient.hasSpawnPoint) {
 				ConfirmRespawnNightScreen confirmRespawnNightScreen = new ConfirmRespawnNightScreen(this::onConfirm);
-				this.client.openScreen(confirmRespawnNightScreen);
+				this.minecraft.setScreen(confirmRespawnNightScreen);
 			} else {
 				respawn();
 			}

@@ -1,21 +1,20 @@
 package nl.tettelaar.rebalanced.mixin.enchantment;
 
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.ArrowInfiniteEnchantment;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.enchantment.InfinityEnchantment;
-import net.minecraft.entity.EquipmentSlot;
-
-@Mixin(InfinityEnchantment.class)
+@Mixin(ArrowInfiniteEnchantment.class)
 public class InfinityEnchantMixin extends Enchantment{
 	
-	protected InfinityEnchantMixin(Rarity weight, EnchantmentTarget type, EquipmentSlot[] slotTypes) {
+	protected InfinityEnchantMixin(Rarity weight, EnchantmentCategory type, EquipmentSlot[] slotTypes) {
 		super(weight, type, slotTypes);
 		// TODO Auto-generated constructor stub
 	}
 
-	public boolean isTreasure() {
+	public boolean isTreasureOnly() {
 		return true;
 	}
 	

@@ -1,9 +1,8 @@
 package nl.tettelaar.rebalanced.init;
 
 import java.util.Arrays;
-
-import net.minecraft.util.Identifier;
-import net.minecraft.village.VillagerProfession;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
 
 public class Recipes {
@@ -170,10 +169,10 @@ public class Recipes {
 	}
 
 	private static void initGolems() {
-		RecipeAPI.registerBlockRecipe(new Identifier("iron_golem"));
-		RecipeAPI.registerBlockRecipe(new Identifier("snow_golem"));
-		RecipeAPI.registerBlockRecipe(new Identifier("wither"));
-		RecipeAPI.registerBlockRecipe(new Identifier("nether_portal"));
+		RecipeAPI.registerBlockRecipe(new ResourceLocation("iron_golem"));
+		RecipeAPI.registerBlockRecipe(new ResourceLocation("snow_golem"));
+		RecipeAPI.registerBlockRecipe(new ResourceLocation("wither"));
+		RecipeAPI.registerBlockRecipe(new ResourceLocation("nether_portal"));
 	}
 
 }

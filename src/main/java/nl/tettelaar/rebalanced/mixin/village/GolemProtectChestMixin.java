@@ -2,24 +2,23 @@ package nl.tettelaar.rebalanced.mixin.village;
 
 
 import java.util.List;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.util.math.Box;
 
 @Mixin(ChestBlockEntity.class)
 public class GolemProtectChestMixin {
 
 	double distance = 1000;
 
-	@Inject(method = "onOpen", at = @At("HEAD"), cancellable = true)
-	public void onOpen(PlayerEntity player, CallbackInfo ci) {
+	@Inject(method = "startOpen", at = @At("HEAD"), cancellable = true)
+	public void startOpen(Player player, CallbackInfo ci) {
 		if (!player.isSpectator()) {
 
 
@@ -27,14 +26,14 @@ public class GolemProtectChestMixin {
 			double y = player.getY();
 			double z = player.getZ();
 
-			Box box = new Box(x - distance, y - distance, z - distance, x + distance, y + distance, z + distance);
-			List<IronGolemEntity> IronGolems = player.getEntityWorld().getEntitiesByClass(IronGolemEntity.class, box,
-					EntityPredicates.VALID_LIVING_ENTITY);
+			AABB box = new AABB(x - distance, y - distance, z - distance, x + distance, y + distance, z + distance);
+			List<IronGolem> IronGolems = player.getCommandSenderWorld().getEntitiesOfClass(IronGolem.class, box,
+					EntitySelector.LIVING_ENTITY_STILL_ALIVE);
 
-			for (IronGolemEntity irongolem : IronGolems) {
+			for (IronGolem irongolem : IronGolems) {
 				if (!irongolem.isPlayerCreated()) {
-					irongolem.setAngryAt(player.getUuid());
-					irongolem.setAngerTime(30);
+					irongolem.setPersistentAngerTarget(player.getUUID());
+					irongolem.setRemainingPersistentAngerTime(30);
 				}
 			}
 		}

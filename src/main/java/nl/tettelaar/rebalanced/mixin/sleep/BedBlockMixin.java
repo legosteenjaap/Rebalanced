@@ -1,32 +1,31 @@
 package nl.tettelaar.rebalanced.mixin.sleep;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.block.BedBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
 @Mixin(BedBlock.class)
 public class BedBlockMixin {
-	@Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-	public void onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-		if (player.experienceLevel < 10 && world.getDimension().isBedWorking() && !world.isDay() && !world.isThundering()) {
-            if (player instanceof ServerPlayerEntity) {
-            	((ServerPlayerEntity) player).setSpawnPoint(world.getRegistryKey(), pos, 0.0F, false, true);
+	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
+	public void use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
+		if (player.experienceLevel < 10 && world.dimensionType().bedWorks() && !world.isDay() && !world.isThundering()) {
+            if (player instanceof ServerPlayer) {
+            	((ServerPlayer) player).setRespawnPosition(world.dimension(), pos, 0.0F, false, true);
             }
-            TranslatableText text = new TranslatableText("sleep.try.xp");
-			player.sendMessage(text , true);
-			cir.setReturnValue(ActionResult.FAIL);
+            TranslatableComponent text = new TranslatableComponent("sleep.try.xp");
+			player.displayClientMessage(text , true);
+			cir.setReturnValue(InteractionResult.FAIL);
 		}
 	}
 	

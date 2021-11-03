@@ -1,39 +1,37 @@
 package nl.tettelaar.rebalanced.mixin.recipe;
 
 import java.util.Optional;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CampfireCookingRecipe;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CampfireBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.CampfireBlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.CampfireCookingRecipe;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-
 @Mixin(CampfireBlock.class)
 public class CampfireBlockMixin {
 
-	@Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-	public void onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
+	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
+	public void use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 	      if (blockEntity instanceof CampfireBlockEntity) {
 	         CampfireBlockEntity campfireBlockEntity = (CampfireBlockEntity)blockEntity;
-	         ItemStack itemStack = player.getStackInHand(hand);
-	         Optional<CampfireCookingRecipe> optional = campfireBlockEntity.getRecipeFor(itemStack);
-	         if (optional.isPresent() && ((!world.isClient() && !((ServerPlayerEntity) player).getRecipeBook().contains(optional.get())) && world.getGameRules().getBoolean(GameRules.DO_LIMITED_CRAFTING))) {
-	        	 cir.setReturnValue(ActionResult.FAIL);
+	         ItemStack itemStack = player.getItemInHand(hand);
+	         Optional<CampfireCookingRecipe> optional = campfireBlockEntity.getCookableRecipe(itemStack);
+	         if (optional.isPresent() && ((!world.isClientSide() && !((ServerPlayer) player).getRecipeBook().contains(optional.get())) && world.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING))) {
+	        	 cir.setReturnValue(InteractionResult.FAIL);
 	         }
 	      }
 	}

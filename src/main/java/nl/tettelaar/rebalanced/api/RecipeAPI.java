@@ -5,41 +5,39 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.MerchantOffer;
 import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.VillagerProfession;
 import nl.tettelaar.rebalanced.util.RecipeUtil;
 import nl.tettelaar.rebalanced.village.TradeOffers;
 
 public class RecipeAPI {
 
-	private static List<Identifier> removedRecipeAdvancements = new ArrayList<>();
-	private static ArrayList<Pair<List<List<Identifier>>, List<Identifier>>> knowledgeBooksLootTable = new ArrayList<>();
-	private static HashMap<VillagerProfession, HashMap<Integer, List<Pair<TradeOffers.Factory, Float>>>> KnowledgeBooksVillagerTrades = new HashMap<>();
-	private static List<Identifier> blockRecipeList = new ArrayList<>();
-	private static HashMap<Identifier, List<Identifier>> requiredRecipesMap = new HashMap<>();
-	private static List<Pair<TradeOffers.Factory, Float>> wanderingTraderKnowledgeBooks = new ArrayList<>();
-	private static HashMap<Identifier, Float> RecipeXPCost = new HashMap<>();
+	private static List<ResourceLocation> removedRecipeAdvancements = new ArrayList<>();
+	private static ArrayList<Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>> knowledgeBooksLootTable = new ArrayList<>();
+	private static HashMap<VillagerProfession, HashMap<Integer, List<Tuple<TradeOffers.Factory, Float>>>> KnowledgeBooksVillagerTrades = new HashMap<>();
+	private static List<ResourceLocation> blockRecipeList = new ArrayList<>();
+	private static HashMap<ResourceLocation, List<ResourceLocation>> requiredRecipesMap = new HashMap<>();
+	private static List<Tuple<TradeOffers.Factory, Float>> wanderingTraderKnowledgeBooks = new ArrayList<>();
+	private static HashMap<ResourceLocation, Float> RecipeXPCost = new HashMap<>();
 
-	public static void registerWanderingTraderKnowledgeBookID(List<List<Identifier>> recipes, int minPrice, int maxPrice, float chance) {
-		wanderingTraderKnowledgeBooks.add(new Pair<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
+	public static void registerWanderingTraderKnowledgeBookID(List<List<ResourceLocation>> recipes, int minPrice, int maxPrice, float chance) {
+		wanderingTraderKnowledgeBooks.add(new Tuple<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
 	}
 
 	public static void registerWanderingTraderKnowledgeBook(List<String> recipes, int minPrice, int maxPrice, float chance, int weight) {
-		ArrayList<List<Identifier>> recipesID = new ArrayList<>();
+		ArrayList<List<ResourceLocation>> recipesID = new ArrayList<>();
 		for (String recipe : recipes) {
 
 			List<String> splitRecipes = Arrays.asList(recipe.split(";"));
-			ArrayList<Identifier> RecipesToId = new ArrayList<>();
+			ArrayList<ResourceLocation> RecipesToId = new ArrayList<>();
 			for (String RecipeId : splitRecipes) {
-				RecipesToId.add(new Identifier(RecipeId));
+				RecipesToId.add(new ResourceLocation(RecipeId));
 			}
 			recipesID.add(RecipesToId);
 
@@ -49,50 +47,50 @@ public class RecipeAPI {
 		}
 	}
 
-	public static void registerRequiredRecipesID(Identifier recipe, List<Identifier> requiredRecipes) {
+	public static void registerRequiredRecipesID(ResourceLocation recipe, List<ResourceLocation> requiredRecipes) {
 		requiredRecipesMap.put(recipe, requiredRecipes);
 	}
 	
 	public static void registerRequiredRecipes(String recipe, List<String> requiredRecipes) {
-		ArrayList<Identifier> requiredRecipesID = new ArrayList<>();
+		ArrayList<ResourceLocation> requiredRecipesID = new ArrayList<>();
 		for (String requiredRecipe : requiredRecipes) {
-			requiredRecipesID.add(new Identifier(requiredRecipe));
+			requiredRecipesID.add(new ResourceLocation(requiredRecipe));
 		}
-		registerRequiredRecipesID(new Identifier(recipe), requiredRecipesID);
+		registerRequiredRecipesID(new ResourceLocation(recipe), requiredRecipesID);
 	}
 
-	public static void registerBlockRecipe(Identifier name) {
+	public static void registerBlockRecipe(ResourceLocation name) {
 		blockRecipeList.add(name);
 	}
 
 	public static void setRecipeXPCost(String item, float cost) {
-		RecipeXPCost.put(new Identifier(item), cost);
+		RecipeXPCost.put(new ResourceLocation(item), cost);
 	}
 
 
-	private static void registerKnowledgeBookID(List<List<Identifier>> recipes, List<Identifier> loottables) {
-		knowledgeBooksLootTable.add(new Pair<List<List<Identifier>>, List<Identifier>>(recipes, loottables));
-		for (List<Identifier> e : recipes) {
+	private static void registerKnowledgeBookID(List<List<ResourceLocation>> recipes, List<ResourceLocation> loottables) {
+		knowledgeBooksLootTable.add(new Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>(recipes, loottables));
+		for (List<ResourceLocation> e : recipes) {
 			removedRecipeAdvancements.addAll(e);
 		}
 
 	}
 
 	public static void registerKnowledgeBook(List<String> recipes, List<String> loottables, int weight) {
-		ArrayList<List<Identifier>> recipesID = new ArrayList<>();
-		ArrayList<Identifier> loottablesID = new ArrayList<>();
+		ArrayList<List<ResourceLocation>> recipesID = new ArrayList<>();
+		ArrayList<ResourceLocation> loottablesID = new ArrayList<>();
 
 		for (String recipe : recipes) {
 			List<String> splitRecipes = Arrays.asList(recipe.split(";"));
-			ArrayList<Identifier> RecipesToId = new ArrayList<>();
+			ArrayList<ResourceLocation> RecipesToId = new ArrayList<>();
 			for (String RecipeId : splitRecipes) {
-				RecipesToId.add(new Identifier(RecipeId));
+				RecipesToId.add(new ResourceLocation(RecipeId));
 			}
 			recipesID.add(RecipesToId);
 		}
 
 		for (String loottable : loottables) {
-			loottablesID.add(new Identifier(loottable));
+			loottablesID.add(new ResourceLocation(loottable));
 		}
 
 		for (int i = 0; i < weight; i++) {
@@ -100,31 +98,31 @@ public class RecipeAPI {
 		}
 	}
 
-	private static void registerKnowledgeBookID(List<List<Identifier>> recipes, int minPrice, int maxPrice, float chance, VillagerProfession villager, int level) {
+	private static void registerKnowledgeBookID(List<List<ResourceLocation>> recipes, int minPrice, int maxPrice, float chance, VillagerProfession villager, int level) {
 		if (KnowledgeBooksVillagerTrades.get(villager) == null) {
-			HashMap<Integer, List<Pair<TradeOffers.Factory, Float>>> tradesMap = new HashMap<>();
-			tradesMap.put(level, Arrays.asList(new Pair<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance)));
+			HashMap<Integer, List<Tuple<TradeOffers.Factory, Float>>> tradesMap = new HashMap<>();
+			tradesMap.put(level, Arrays.asList(new Tuple<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance)));
 			KnowledgeBooksVillagerTrades.put(villager, tradesMap);
 		} else if (KnowledgeBooksVillagerTrades.get(villager).get(level) == null) {
-			KnowledgeBooksVillagerTrades.get(villager).put(level, Arrays.asList(new Pair<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance)));
+			KnowledgeBooksVillagerTrades.get(villager).put(level, Arrays.asList(new Tuple<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance)));
 		} else {
-			ArrayList<Pair<TradeOffers.Factory, Float>> trades = new ArrayList<>(KnowledgeBooksVillagerTrades.get(villager).get(level));
-			trades.add(new Pair<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
+			ArrayList<Tuple<TradeOffers.Factory, Float>> trades = new ArrayList<>(KnowledgeBooksVillagerTrades.get(villager).get(level));
+			trades.add(new Tuple<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
 			KnowledgeBooksVillagerTrades.get(villager).put(level, trades);
 		}
-		for (List<Identifier> recipeList : recipes) {
+		for (List<ResourceLocation> recipeList : recipes) {
 			removedRecipeAdvancements.addAll(recipeList);
 		}
 	}
 
 	public static void registerKnowledgeBook(List<String> recipes, int minPrice, int maxPrice, float chance, VillagerProfession villager, int level, int weight) {
-		ArrayList<List<Identifier>> recipesID = new ArrayList<>();
+		ArrayList<List<ResourceLocation>> recipesID = new ArrayList<>();
 
 		for (String recipe : recipes) {
 			List<String> splitRecipes = Arrays.asList(recipe.split(";"));
-			ArrayList<Identifier> RecipesToId = new ArrayList<>();
+			ArrayList<ResourceLocation> RecipesToId = new ArrayList<>();
 			for (String RecipeId : splitRecipes) {
-				RecipesToId.add(new Identifier(RecipeId));
+				RecipesToId.add(new ResourceLocation(RecipeId));
 
 			}
 			recipesID.add(RecipesToId);
@@ -135,36 +133,36 @@ public class RecipeAPI {
 		}
 	}
 
-	public static List<Pair<TradeOffers.Factory, Float>> getWanderingTraderBooks() {
+	public static List<Tuple<TradeOffers.Factory, Float>> getWanderingTraderBooks() {
 		return wanderingTraderKnowledgeBooks;
 	}
 
-	public static List<Identifier> getRequiredRecipes(Identifier recipe) {
-		 List<Identifier> requiredRecipes = requiredRecipesMap.get(recipe);
+	public static List<ResourceLocation> getRequiredRecipes(ResourceLocation recipe) {
+		 List<ResourceLocation> requiredRecipes = requiredRecipesMap.get(recipe);
 		 if(requiredRecipes != null) return requiredRecipes;
 		 return null;
 	}
 
-	public static List<Identifier> getRemovedRecipeAdvancements() {
+	public static List<ResourceLocation> getRemovedRecipeAdvancements() {
 		return RecipeAPI.removedRecipeAdvancements;
 	}
 
-	public static ArrayList<Pair<List<List<Identifier>>, List<Identifier>>> getKnowledgeBooksLootTable() {
+	public static ArrayList<Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>> getKnowledgeBooksLootTable() {
 		return knowledgeBooksLootTable;
 	}
 
-	public static List<Pair<TradeOffers.Factory, Float>> getKnowledgeBooksVillagerTrades(VillagerProfession villager, int level) {
-		HashMap<Integer, List<Pair<TradeOffers.Factory, Float>>> map = KnowledgeBooksVillagerTrades.get(villager);
+	public static List<Tuple<TradeOffers.Factory, Float>> getKnowledgeBooksVillagerTrades(VillagerProfession villager, int level) {
+		HashMap<Integer, List<Tuple<TradeOffers.Factory, Float>>> map = KnowledgeBooksVillagerTrades.get(villager);
 		if (map != null)
 			return map.get(level);
 		return null;
 	}
 
-	public static List<Identifier> getBlockRecipeList() {
+	public static List<ResourceLocation> getBlockRecipeList() {
 		return blockRecipeList;
 	}
 
-	public static float getRecipeXPCost(Identifier item) {
+	public static float getRecipeXPCost(ResourceLocation item) {
 		return RecipeXPCost.get(item);
 	}
 
@@ -172,17 +170,17 @@ public class RecipeAPI {
 
 		private final int minPrice;
 		private final int maxPrice;
-		private final List<List<Identifier>> recipes;
+		private final List<List<ResourceLocation>> recipes;
 
-		private KnowledgeBookTrade(int minPrice, int maxPrice, List<List<Identifier>> recipes) {
+		private KnowledgeBookTrade(int minPrice, int maxPrice, List<List<ResourceLocation>> recipes) {
 			this.minPrice = minPrice;
 			this.maxPrice = maxPrice;
 			this.recipes = recipes;
 		}
 
 		@Override
-		public @Nullable TradeOffer create(Entity entity, Random random) {
-			return new TradeOffer(new ItemStack(Items.EMERALD, random.nextInt(maxPrice - minPrice) + minPrice), RecipeUtil.createKnowledgeBook(recipes.get(random.nextInt(recipes.size()))), 1, 15, 0.05f);
+		public @Nullable MerchantOffer create(Entity entity, Random random) {
+			return new MerchantOffer(new ItemStack(Items.EMERALD, random.nextInt(maxPrice - minPrice) + minPrice), RecipeUtil.createKnowledgeBook(recipes.get(random.nextInt(recipes.size()))), 1, 15, 0.05f);
 		}
 
 	}

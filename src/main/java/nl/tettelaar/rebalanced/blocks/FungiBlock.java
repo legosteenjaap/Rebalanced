@@ -1,95 +1,94 @@
 package nl.tettelaar.rebalanced.blocks;
 
 import java.util.Random;
-
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.IntProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class FungiBlock extends Block {
    public static final int MAX_DISTANCE = 17;
-   public static final IntProperty DISTANCE;
+   public static final IntegerProperty DISTANCE;
    public static final BooleanProperty PERSISTENT;
    
-   public FungiBlock(AbstractBlock.Settings settings) {
+   public FungiBlock(BlockBehaviour.Properties settings) {
       super(settings);
-      this.setDefaultState((BlockState)((BlockState)((BlockState)this.stateManager.getDefaultState()).with(DISTANCE, 1)).with(PERSISTENT, false));
+      this.registerDefaultState((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue(DISTANCE, 1)).setValue(PERSISTENT, false));
    }
 
-   public boolean hasRandomTicks(BlockState state) {
-      return (Integer)state.get(DISTANCE) == MAX_DISTANCE && !(Boolean)state.get(PERSISTENT);
+   public boolean isRandomlyTicking(BlockState state) {
+      return (Integer)state.getValue(DISTANCE) == MAX_DISTANCE && !(Boolean)state.getValue(PERSISTENT);
    }
 
-   public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-      if (!(Boolean)state.get(PERSISTENT) && (Integer)state.get(DISTANCE) == MAX_DISTANCE) {
-         dropStacks(state, world, pos);
+   public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+      if (!(Boolean)state.getValue(PERSISTENT) && (Integer)state.getValue(DISTANCE) == MAX_DISTANCE) {
+         dropResources(state, world, pos);
          world.removeBlock(pos, false);
       }
 
    }
 
-   public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-      world.setBlockState(pos, updateDistanceFromLogs(state, world, pos), Block.NOTIFY_ALL);
+   public void tick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
+      world.setBlock(pos, updateDistanceFromLogs(state, world, pos), Block.UPDATE_ALL);
    }
 
-   public int getOpacity(BlockState state, BlockView world, BlockPos pos) {
+   public int getLightBlock(BlockState state, BlockGetter world, BlockPos pos) {
       return 1;
    }
 
-   public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+   public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
       int i = getDistanceFromLog(neighborState) + 1;
-      if (i != 1 || (Integer)state.get(DISTANCE) != i) {
-         world.getBlockTickScheduler().schedule(pos, this, 1);
+      if (i != 1 || (Integer)state.getValue(DISTANCE) != i) {
+         world.scheduleTick(pos, this, 1);
       }
 
       return state;
    }
 
-   private static BlockState updateDistanceFromLogs(BlockState state, WorldAccess world, BlockPos pos) {
+   private static BlockState updateDistanceFromLogs(BlockState state, LevelAccessor world, BlockPos pos) {
       int i = MAX_DISTANCE;
-      BlockPos.Mutable mutable = new BlockPos.Mutable();
+      BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
       Direction[] var5 = Direction.values();
       int var6 = var5.length;
 
       for(int var7 = 0; var7 < var6; ++var7) {
          Direction direction = var5[var7];
-         mutable.set(pos, (Direction)direction);
+         mutable.setWithOffset(pos, (Direction)direction);
          i = Math.min(i, getDistanceFromLog(world.getBlockState(mutable)) + 1);
          if (i == 1) {
             break;
          }
       }
 
-      return (BlockState)state.with(DISTANCE, i);
+      return (BlockState)state.setValue(DISTANCE, i);
    }
 
    private static int getDistanceFromLog(BlockState state) {
-      if (state.isIn(BlockTags.LOGS)) {
+      if (state.is(BlockTags.LOGS)) {
          return 0;
       } else {
-         return state.getBlock() instanceof FungiBlock ? (Integer)state.get(DISTANCE) : MAX_DISTANCE;
+         return state.getBlock() instanceof FungiBlock ? (Integer)state.getValue(DISTANCE) : MAX_DISTANCE;
       }
    }
 
-   public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-      if (world.hasRain(pos.up())) {
+   public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+      if (world.isRainingAt(pos.above())) {
          if (random.nextInt(15) == 1) {
-            BlockPos blockPos = pos.down();
+            BlockPos blockPos = pos.below();
             BlockState blockState = world.getBlockState(blockPos);
-            if (!blockState.isOpaque() || !blockState.isSideSolidFullSquare(world, blockPos, Direction.UP)) {
+            if (!blockState.canOcclude() || !blockState.isFaceSturdy(world, blockPos, Direction.UP)) {
                double d = (double)pos.getX() + random.nextDouble();
                double e = (double)pos.getY() - 0.05D;
                double f = (double)pos.getZ() + random.nextDouble();
@@ -99,16 +98,16 @@ public class FungiBlock extends Block {
       }
    }
 
-   protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
       builder.add(DISTANCE, PERSISTENT);
    }
 
-   public BlockState getPlacementState(ItemPlacementContext ctx) {
-      return updateDistanceFromLogs((BlockState)this.getDefaultState().with(PERSISTENT, true), ctx.getWorld(), ctx.getBlockPos());
+   public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+      return updateDistanceFromLogs((BlockState)this.defaultBlockState().setValue(PERSISTENT, true), ctx.getLevel(), ctx.getClickedPos());
    }
 
    static {
-      DISTANCE = IntProperty.of("distance", 1, MAX_DISTANCE);
-      PERSISTENT = Properties.PERSISTENT;
+      DISTANCE = IntegerProperty.create("distance", 1, MAX_DISTANCE);
+      PERSISTENT = BlockStateProperties.PERSISTENT;
    }
 }

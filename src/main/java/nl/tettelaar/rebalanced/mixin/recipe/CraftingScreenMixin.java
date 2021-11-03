@@ -1,47 +1,45 @@
 package nl.tettelaar.rebalanced.mixin.recipe;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.CraftingScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.screen.CraftingScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.GameRules;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.Optional;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CraftingScreen;
+import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.GameRules;
 
 @Mixin(CraftingScreen.class)
-public abstract class CraftingScreenMixin extends HandledScreen<CraftingScreenHandler> implements RecipeBookProvider {
+public abstract class CraftingScreenMixin extends AbstractContainerScreen<CraftingMenu> implements RecipeUpdateListener {
 
-    @Shadow @Final private RecipeBookWidget recipeBook = new RecipeBookWidget();
+    @Shadow @Final private RecipeBookComponent recipeBook = new RecipeBookComponent();
 
-    public CraftingScreenMixin(CraftingScreenHandler handler, PlayerInventory inventory, Text title) {
+    public CraftingScreenMixin(CraftingMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
     }
 
     @Inject(method = "drawBackground", at = @At("RETURN"), cancellable = true)
-    protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY, CallbackInfo ci) {
-        int i = (this.width - this.backgroundWidth) / 2;
-        int j = (this.height - this.backgroundHeight) / 2;
-        MinecraftClient client = ((RecipeBookWidgetInvoker)recipeBook).getClient();
-        CraftingInventory input = ((CraftingScreenHandlerInvoker)this.handler).getInput();
-        Optional<CraftingRecipe> recipe = client.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, input, client.world);
-        if (recipe.isPresent() && !input.isEmpty() && !((RecipeBookWidgetInvoker)recipeBook).getRecipeBook().contains(recipe.get()) && ((RecipeBookWidgetInvoker)recipeBook).getClient().world.getGameRules().getBoolean(GameRules.DO_LIMITED_CRAFTING)) {
+    protected void drawBackground(PoseStack matrices, float delta, int mouseX, int mouseY, CallbackInfo ci) {
+        int i = (this.width - this.imageWidth) / 2;
+        int j = (this.height - this.imageHeight) / 2;
+        Minecraft client = ((RecipeBookWidgetInvoker)recipeBook).getMinecraft();
+        CraftingContainer input = ((CraftingScreenHandlerInvoker)this.menu).getCraftSlots();
+        Optional<CraftingRecipe> recipe = client.level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, input, client.level);
+        if (recipe.isPresent() && !input.isEmpty() && !((RecipeBookWidgetInvoker)recipeBook).getBook().contains(recipe.get()) && ((RecipeBookWidgetInvoker)recipeBook).getMinecraft().level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING)) {
             //this.drawTexture(matrices, i + 87, j + 33, this.backgroundWidth + 1, 0, 28, 21);
-            this.textRenderer.drawWithShadow(matrices, Text.of("TESTTESTTESTTESTTESTTEST"), i + 87f, j + 53f, 8453920);
+            this.font.drawShadow(matrices, Component.nullToEmpty("TESTTESTTESTTESTTESTTEST"), i + 87f, j + 53f, 8453920);
         }
     }
 

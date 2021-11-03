@@ -1,15 +1,5 @@
 package nl.tettelaar.rebalanced.mixin;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.HorseBaseEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.Box;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,22 +7,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.swing.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
-@Mixin(HorseBaseEntity.class)
-public abstract class HorseBaseEntityMixin extends AnimalEntity {
+@Mixin(AbstractHorse.class)
+public abstract class HorseBaseEntityMixin extends Animal {
 
-    protected HorseBaseEntityMixin(EntityType<? extends AnimalEntity> entityType, World world) {
+    protected HorseBaseEntityMixin(EntityType<? extends Animal> entityType, Level world) {
         super(entityType, world);
     }
 
     @Override
-    protected Box calculateBoundingBox() {
-        if (this.hasVehicle() && this.getVehicle() instanceof BoatEntity) {
-            Box box = super.calculateBoundingBox();
-            Box changedBox = box.withMinY(box.minY + this.getVehicle().getHeight());
+    protected AABB makeBoundingBox() {
+        if (this.isPassenger() && this.getVehicle() instanceof Boat) {
+            AABB box = super.makeBoundingBox();
+            AABB changedBox = box.setMinY(box.minY + this.getVehicle().getBbHeight());
             return changedBox;
         }
-        return super.calculateBoundingBox();
+        return super.makeBoundingBox();
     }
 
 }

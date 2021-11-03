@@ -1,7 +1,18 @@
 package nl.tettelaar.rebalanced.mixin.recipe;
 
 import java.util.List;
-
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.ItemCombinerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.SmithingMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.UpgradeRecipe;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,55 +21,42 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.SmithingRecipe;
-import net.minecraft.screen.ForgingScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.SmithingScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
-
-@Mixin(SmithingScreenHandler.class)
-public abstract class SmithingScreenHandlerMixin extends ForgingScreenHandler {
+@Mixin(SmithingMenu.class)
+public abstract class SmithingScreenHandlerMixin extends ItemCombinerMenu {
 
 	@Shadow
 	@Final
-	private World world;
+	private Level level;
 	@Nullable
 	@Shadow
-	private SmithingRecipe currentRecipe;
+	private UpgradeRecipe selectedRecipe;
 	@Shadow
 	@Final
-	private List<SmithingRecipe> recipes;
+	private List<UpgradeRecipe> recipes;
 
-	public SmithingScreenHandlerMixin(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
+	public SmithingScreenHandlerMixin(MenuType<?> type, int syncId, Inventory playerInventory, ContainerLevelAccess context) {
 		super(type, syncId, playerInventory, context);
 		// TODO Auto-generated constructor stub
 	}
 
-	@Inject(method = "updateResult", at = @At("HEAD"), cancellable = true)
-	private void updateResult(CallbackInfo ci) {
-		List<SmithingRecipe> recipes = this.world.getRecipeManager().getAllMatches(RecipeType.SMITHING, this.input, this.world);
+	@Inject(method = "createResult", at = @At("HEAD"), cancellable = true)
+	private void createResult(CallbackInfo ci) {
+		List<UpgradeRecipe> recipes = this.level.getRecipeManager().getRecipesFor(RecipeType.SMITHING, this.inputSlots, this.level);
 
 		boolean foundRecipe = false;
-		for (SmithingRecipe recipe : recipes) {
-			if (!world.getGameRules().getBoolean(GameRules.DO_LIMITED_CRAFTING) || (world.isClient() && ((ClientPlayerEntity) this.player).getRecipeBook().contains(recipe)) || (!world.isClient && ((ServerPlayerEntity) player).getRecipeBook().contains(recipe))) {
-				this.currentRecipe = recipe;
-				ItemStack itemStack = this.currentRecipe.craft(this.input);
-				this.output.setLastRecipe(this.currentRecipe);
-				this.output.setStack(0, itemStack);
+		for (UpgradeRecipe recipe : recipes) {
+			if (!level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || (level.isClientSide() && ((LocalPlayer) this.player).getRecipeBook().contains(recipe)) || (!level.isClientSide && ((ServerPlayer) player).getRecipeBook().contains(recipe))) {
+				this.selectedRecipe = recipe;
+				ItemStack itemStack = this.selectedRecipe.assemble(this.inputSlots);
+				this.resultSlots.setRecipeUsed(this.selectedRecipe);
+				this.resultSlots.setItem(0, itemStack);
 				foundRecipe = true;
 				break;
 			}
 		}
 
 		if (!foundRecipe) {
-	         this.output.setStack(0, ItemStack.EMPTY);
+	         this.resultSlots.setItem(0, ItemStack.EMPTY);
 		}
 		
 		ci.cancel();

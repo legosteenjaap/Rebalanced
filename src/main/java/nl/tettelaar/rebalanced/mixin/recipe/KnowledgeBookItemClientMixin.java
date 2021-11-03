@@ -1,38 +1,37 @@
 package nl.tettelaar.rebalanced.mixin.recipe;
 
 import org.spongepowered.asm.mixin.Mixin;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.KnowledgeBookItem;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.BaseText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Rarity;
-import net.minecraft.world.World;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.BaseComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.KnowledgeBookItem;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.Level;
 import nl.tettelaar.rebalanced.util.RecipeUtil;
 
 @Mixin(KnowledgeBookItem.class)
 public class KnowledgeBookItemClientMixin extends Item {
 
-	public KnowledgeBookItemClientMixin(Settings settings) {
+	public KnowledgeBookItemClientMixin(Properties settings) {
 		super(settings);
 		// TODO Auto-generated constructor stub
 	}
 
 
 	@Override
-	public Text getName(ItemStack stack) {
-		NbtCompound compoundTag = stack.getTag();
-		MinecraftClient client = MinecraftClient.getInstance();
-		World world = client.world;
+	public Component getName(ItemStack stack) {
+		CompoundTag compoundTag = stack.getTag();
+		Minecraft client = Minecraft.getInstance();
+		Level world = client.level;
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
-			if (world != null && world.isClient) {
+			if (world != null && world.isClientSide) {
 				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);
 				if (output != null) {
-					return ((BaseText) output.getName()).append(Text.of(" ")).append(new TranslatableText(this.getTranslationKey(stack)));
+					return ((BaseComponent) output.getHoverName()).append(Component.nullToEmpty(" ")).append(new TranslatableComponent(this.getDescriptionId(stack)));
 				}
 			}
 		}
@@ -42,11 +41,11 @@ public class KnowledgeBookItemClientMixin extends Item {
 	@Override
 	public Rarity getRarity(ItemStack stack) {
 
-		NbtCompound compoundTag = stack.getTag();
-		MinecraftClient client = MinecraftClient.getInstance();
-		World world = client.world;
+		CompoundTag compoundTag = stack.getTag();
+		Minecraft client = Minecraft.getInstance();
+		Level world = client.level;
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
-			if (world != null && world.isClient) {
+			if (world != null && world.isClientSide) {
 				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);
 				if (output != null) {
 					switch (output.getRarity()) {

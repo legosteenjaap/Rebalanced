@@ -1,16 +1,16 @@
 package nl.tettelaar.rebalanced.mixin.recipe;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
-import net.minecraft.client.recipebook.ClientRecipeBook;
+import net.minecraft.client.ClientRecipeBook;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(RecipeBookWidget.class)
+@Mixin(RecipeBookComponent.class)
 public interface RecipeBookWidgetInvoker {
     @Accessor
-    MinecraftClient getClient();
+    Minecraft getMinecraft();
 
     @Accessor
-    ClientRecipeBook getRecipeBook();
+    ClientRecipeBook getBook();
 }

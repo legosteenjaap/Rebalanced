@@ -7,63 +7,66 @@ import java.util.Map;
 
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
-import net.minecraft.item.Items;
-import net.minecraft.loot.condition.AlternativeLootCondition;
-import net.minecraft.loot.condition.EntityPropertiesLootCondition;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.condition.RandomChanceLootCondition;
-import net.minecraft.loot.context.LootContext.EntityTarget;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.function.LootFunction;
-import net.minecraft.loot.function.SetNbtLootFunction;
-import net.minecraft.loot.provider.number.BinomialLootNumberProvider;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
-import net.minecraft.predicate.PlayerPredicate;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.PlayerPredicate;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
+import net.minecraft.world.level.storage.loot.predicates.AlternativeLootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
 
 public class LootTables {
 
 	public static void init() {
-		Map<Identifier,ArrayList<ItemEntry>> lootPools = new HashMap<Identifier,ArrayList<ItemEntry>>();
+		Map<ResourceLocation,ArrayList<LootPoolSingletonContainer>> lootPools = new HashMap<ResourceLocation,ArrayList<LootPoolSingletonContainer>>();
 		
-		for (Pair<List<List<Identifier>>, List<Identifier>> book : RecipeAPI.getKnowledgeBooksLootTable()) {
+		for (Tuple<List<List<ResourceLocation>>, List<ResourceLocation>> book : RecipeAPI.getKnowledgeBooksLootTable()) {
 			
-			ArrayList<ItemEntry> itemEntries = new ArrayList<>();
+			ArrayList<LootPoolSingletonContainer> itemEntries = new ArrayList<>();
 			
-			for (List<Identifier> recipes : book.getLeft()) {
-				NbtList list = new NbtList();
-				for (Identifier recipe : recipes) {
-					list.add(NbtString.of(recipe.toString()));
+			for (List<ResourceLocation> recipes : book.getA()) {
+				ListTag list = new ListTag();
+				for (ResourceLocation recipe : recipes) {
+					list.add(StringTag.valueOf(recipe.toString()));
 				}
-				NbtCompound nbt = new NbtCompound();
+				CompoundTag nbt = new CompoundTag();
 				nbt.put("Recipes", list);
-				LootFunction.Builder lootFunction = SetNbtLootFunction.builder(nbt);
+				LootItemFunction.Builder lootFunction = SetNbtFunction.setTag(nbt);
 				
 				PlayerPredicate.Builder builderPlayerPredicate = new PlayerPredicate.Builder();
-				for (Identifier recipe : recipes) {
-					builderPlayerPredicate = builderPlayerPredicate.recipe(recipe, false);
+				for (ResourceLocation recipe : recipes) {
+					builderPlayerPredicate = builderPlayerPredicate.addRecipe(recipe, false);
 				}
 				PlayerPredicate playerPredicate = builderPlayerPredicate.build();
 				EntityPredicate.Builder builderEntityPredicate = new EntityPredicate.Builder();
 				EntityPredicate entityPredicate = builderEntityPredicate.player(playerPredicate).build();
-				LootCondition.Builder lootCondition = AlternativeLootCondition.builder((EntityPropertiesLootCondition.builder(EntityTarget.THIS, entityPredicate)), RandomChanceLootCondition.builder(0.2f));
-				
-				ItemEntry.Builder<?> itemBuilder = ItemEntry.builder(Items.KNOWLEDGE_BOOK);
+				LootItemCondition.Builder lootCondition = AlternativeLootItemCondition.alternative((LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, entityPredicate)), LootItemRandomChanceCondition.randomChance(0.2f));
+
+				LootPoolSingletonContainer.Builder itemBuilder = LootItem.lootTableItem(Items.KNOWLEDGE_BOOK);
 				itemBuilder.apply(lootFunction);
-				itemBuilder.conditionally(lootCondition);
-				itemEntries.add((ItemEntry) itemBuilder.build());
+				itemBuilder.when(lootCondition);
+				itemEntries.add((LootItem) itemBuilder.build());
 			}
-			for (Identifier loottable : book.getRight()) {
-				ArrayList<ItemEntry> itemEntry = lootPools.get(loottable);
+			for (ResourceLocation loottable : book.getB()) {
+				ArrayList<LootPoolSingletonContainer> itemEntry = lootPools.get(loottable);
 				if (itemEntry == null) {
 					lootPools.put(loottable, itemEntries);
 				} else {
-					List<ItemEntry> itemEntriesCopy = new ArrayList<>(itemEntries);
+					List<LootPoolEntryContainer> itemEntriesCopy = new ArrayList<>(itemEntries);
 			        itemEntriesCopy.removeAll(itemEntry);
 					itemEntry.addAll(itemEntries);
 					lootPools.put(loottable, itemEntry);
@@ -74,9 +77,9 @@ public class LootTables {
 		
 		LootTableLoadingCallback.EVENT.register((((resourceManager, lootManager, id, supplier, setter) -> {
 			if (lootPools.containsKey(id)) {
-				FabricLootPoolBuilder lootPoolBuilder = FabricLootPoolBuilder.builder().rolls(BinomialLootNumberProvider.create(4, 0.17f));
+				FabricLootPoolBuilder lootPoolBuilder = FabricLootPoolBuilder.builder().rolls(BinomialDistributionGenerator.binomial(4, 0.17f));
 	
-				for (ItemEntry entry : lootPools.get(id)) {
+				for (LootPoolEntryContainer entry : lootPools.get(id)) {
 					lootPoolBuilder = lootPoolBuilder.withEntry(entry);
 				}
 				supplier.pool(lootPoolBuilder);
