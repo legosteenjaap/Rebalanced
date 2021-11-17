@@ -6,7 +6,7 @@ import nl.tettelaar.rebalanced.init.worldgen.DoBiomeModifications;
 public class RebalancedWorldGen {
 	
 	public static void init() {
-		DoBiomeModifications.init();
+		//DoBiomeModifications.init();
 	}
 
 	

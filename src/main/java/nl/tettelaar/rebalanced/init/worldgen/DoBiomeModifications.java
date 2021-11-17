@@ -1,10 +1,10 @@
 package nl.tettelaar.rebalanced.init.worldgen;
 
-import net.fabricmc.fabric.api.biome.v1.BiomeModificationContext;
+/*import net.fabricmc.fabric.api.biome.v1.BiomeModificationContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
-import net.minecraft.data.worldgen.Features;
+import net.minecraft.data.worldgen.Features;*/
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -20,7 +20,7 @@ public class DoBiomeModifications {
 
 	private final static String modid = Rebalanced.modid;
 
-	public static void init() {
+/*	public static void init() {
 
 
 		// SPAWNING STUFF
@@ -89,6 +89,6 @@ public class DoBiomeModifications {
 		s.getGenerationSettings().removeBuiltInFeature(Features.FLOWER_FOREST);
 		s.getGenerationSettings().removeBuiltInFeature(Features.FLOWER_PLAIN);
 
-	}
+	}*/
 
 }

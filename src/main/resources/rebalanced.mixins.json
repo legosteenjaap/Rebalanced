@@ -2,14 +2,14 @@
   "required": true,
   "minVersion": "0.8",
   "package": "nl.tettelaar.rebalanced.mixin",
-  "compatibilityLevel": "JAVA_16",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
     //"worldgen.MultiNoiseBiomeSourceMixin",
     //"worldgen.NetherBiomeMixin",
     //"worldgen.MultiNoiseBiomeSourceAccessor",
 
     //"worldgen.NoiseSamplerMixin",
-    "worldgen.NoiseGeneratorSettingsMixin",
+    "worldgen.NoiseDataMixin",
 
     "gamerules.GameRulesMixin",
     "gamerules.BooleanRuleAccessor",
