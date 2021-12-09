@@ -1,14 +1,12 @@
 package nl.tettelaar.rebalanced.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -24,7 +22,7 @@ public class RecipeAPI {
 	private static List<ResourceLocation> blockRecipeList = new ArrayList<>();
 	private static HashMap<ResourceLocation, List<ResourceLocation>> requiredRecipesMap = new HashMap<>();
 	private static List<Tuple<TradeOffers.Factory, Float>> wanderingTraderKnowledgeBooks = new ArrayList<>();
-	private static HashMap<ResourceLocation, Float> RecipeXPCost = new HashMap<>();
+	private static HashMap<Item, Integer> RecipeXPCost = new HashMap<>();
 
 	public static void registerWanderingTraderKnowledgeBookID(List<List<ResourceLocation>> recipes, int minPrice, int maxPrice, float chance) {
 		wanderingTraderKnowledgeBooks.add(new Tuple<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
@@ -63,8 +61,8 @@ public class RecipeAPI {
 		blockRecipeList.add(name);
 	}
 
-	public static void setRecipeXPCost(String item, float cost) {
-		RecipeXPCost.put(new ResourceLocation(item), cost);
+	public static void setRecipeXPCost(Item item, int cost) {
+		RecipeXPCost.put(item, cost);
 	}
 
 
@@ -162,8 +160,8 @@ public class RecipeAPI {
 		return blockRecipeList;
 	}
 
-	public static float getRecipeXPCost(ResourceLocation item) {
-		return RecipeXPCost.get(item);
+	public static Optional<Integer> getRecipeXPCost(Item item) {
+		return Optional.ofNullable(RecipeXPCost.get(item));
 	}
 
 	public static class KnowledgeBookTrade implements TradeOffers.Factory {

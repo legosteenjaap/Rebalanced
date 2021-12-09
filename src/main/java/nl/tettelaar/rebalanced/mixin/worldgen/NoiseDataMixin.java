@@ -10,11 +10,16 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 public class NoiseDataMixin {
     @ModifyConstant(method = "bootstrap", constant = @Constant(intValue = 0, ordinal = 0))
     private static int changeBiomeSizeNormalNoise(int value) {
-        return -3;
+        return -2;
     }
 
     @ModifyConstant(method = "bootstrap", constant = @Constant(intValue = -2, ordinal = 0))
     private static int changeBiomeSizeLargeNoise(int value) {
-        return -4;
+        return -3;
+    }
+
+    @ModifyConstant(method = "bootstrap", constant = @Constant(intValue = -7, ordinal = 0))
+    private static int changeRidgeSize(int value) {
+        return -9;
     }
 }

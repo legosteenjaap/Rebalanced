@@ -9,7 +9,10 @@
     //"worldgen.MultiNoiseBiomeSourceAccessor",
 
     //"worldgen.NoiseSamplerMixin",
-    "worldgen.NoiseDataMixin",
+    //"worldgen.NoiseDataMixin",
+    //"worldgen.TerrainShaperMixin",
+    //"worldgen.NoiseGeneratorSettingsMixin",
+    //"worldgen.DimensionTypeMixin",
 
     "gamerules.GameRulesMixin",
     "gamerules.BooleanRuleAccessor",
@@ -24,11 +27,25 @@
 	"recipe.AbstractFireBlockMixin",
 	//"recipe.FlintAndSteelMixin",
 	//"recipe.FireChargeMixin",
-    //"recipe.CraftingScreenMixin",
-    //"recipe.RecipeBookWidgetInvoker",
-    //"recipe.CraftingScreenHandlerInvoker",
+    "recipe.CraftingScreenMixin",
+    "recipe.RecipeBookWidgetInvoker",
+    "recipe.CraftingScreenHandlerInvoker",
 	"recipe.CarvedPumpkinBlockMixin",
-	    
+
+    "recipe.discover.RecipeBookMixin",
+    "recipe.discover.ClientboundRecipePacketMixin",
+    "recipe.discover.ServerRecipeBookMixin",
+    "recipe.discover.RecipeCommandMixin",
+    "recipe.discover.ServerRecipeBookMixin",
+    "recipe.discover.ServerPlayerMixin",
+    "recipe.discover.RecipeCollectionMixin",
+    "recipe.discover.ServerPlaceRecipeMixin",
+
+    "recipe.unlock.RecipeHolderMixin",
+    "recipe.unlock.ResultContainerMixin",
+    "recipe.unlock.ResultSlotMixin",
+    "recipe.unlock.CraftingMenuMixin",
+
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
     "village.TradeOfferMixin",
@@ -70,7 +87,10 @@
   	"recipe.StonecutterScreenHandlerMixin",
 	"recipe.SmithingScreenHandlerMixin",
 	"recipe.KnowledgeBookItemClientMixin",
-	
+
+    "recipe.discover.ClientPacketListenerMixin",
+	//"recipe.discover.RecipeButtonMixin",
+
 	"sleep.DeathScreenMixin",
     "sleep.LongerDayCycleClientMixin"
   ],

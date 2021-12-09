@@ -1,5 +1,9 @@
 package nl.tettelaar.rebalanced.mixin.recipe;
 
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.screens.inventory.AnvilScreen;
+import nl.tettelaar.rebalanced.recipe.CraftingMenuInterface;
+import nl.tettelaar.rebalanced.recipe.ResultContainerInterface;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,22 +28,35 @@ import net.minecraft.world.level.GameRules;
 @Mixin(CraftingScreen.class)
 public abstract class CraftingScreenMixin extends AbstractContainerScreen<CraftingMenu> implements RecipeUpdateListener {
 
-    @Shadow @Final private RecipeBookComponent recipeBook = new RecipeBookComponent();
+    @Shadow @Final private RecipeBookComponent recipeBookComponent = new RecipeBookComponent();
 
     public CraftingScreenMixin(CraftingMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
     }
 
-    @Inject(method = "drawBackground", at = @At("RETURN"), cancellable = true)
-    protected void drawBackground(PoseStack matrices, float delta, int mouseX, int mouseY, CallbackInfo ci) {
+    @Inject(method = "renderBg", at = @At("RETURN"), cancellable = true)
+    protected void renderBg(PoseStack matrices, float delta, int mouseX, int mouseY, CallbackInfo ci) {
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
-        Minecraft client = ((RecipeBookWidgetInvoker)recipeBook).getMinecraft();
+        Minecraft client = ((RecipeBookWidgetInvoker)recipeBookComponent).getMinecraft();
         CraftingContainer input = ((CraftingScreenHandlerInvoker)this.menu).getCraftSlots();
         Optional<CraftingRecipe> recipe = client.level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, input, client.level);
-        if (recipe.isPresent() && !input.isEmpty() && !((RecipeBookWidgetInvoker)recipeBook).getBook().contains(recipe.get()) && ((RecipeBookWidgetInvoker)recipeBook).getMinecraft().level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING)) {
-            //this.drawTexture(matrices, i + 87, j + 33, this.backgroundWidth + 1, 0, 28, 21);
-            this.font.drawShadow(matrices, Component.nullToEmpty("TESTTESTTESTTESTTESTTEST"), i + 87f, j + 53f, 8453920);
+        if (recipe.isPresent() && !input.isEmpty() && !((RecipeBookWidgetInvoker)recipeBookComponent).getBook().contains(recipe.get()) && ((RecipeBookWidgetInvoker)recipeBookComponent).getMinecraft().level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING)) {
+            ResultContainerInterface resultContainer = ((ResultContainerInterface)((CraftingMenuInterface)this.menu).getResultContainer());
+            if (!minecraft.player.isCreative()) {
+                if (resultContainer.getXPCost().isPresent()) {
+                    if (resultContainer.isUnlockable(minecraft.player)) {
+                        CraftingScreen.fill(matrices, i + 167 - 2, j + 60 - 2, i + 167 + 42, j + 60 + 10, 0x4F000000);
+                        this.font.drawShadow(matrices, Component.nullToEmpty("Cost: " + resultContainer.getXPCost().get()), i + 167f, j + 60f, 8453920);
+                    } else {
+                        this.blit(matrices, i + 164, j + 33, this.imageWidth + 1, 0, 28, 21);
+                        CraftingScreen.fill(matrices, i + 167 - 2, j + 60 - 2, i + 167 + 42, j + 60 + 10, 0x4F000000);
+                        this.font.drawShadow(matrices, Component.nullToEmpty("Cost: " + resultContainer.getXPCost().get()), i + 167f, j + 60f, 0xFF6060);
+                    }
+                } else {
+                    this.blit(matrices, i + 164, j + 33, this.imageWidth + 1, 0, 28, 21);
+                }
+            }
         }
     }
 

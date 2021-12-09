@@ -3,6 +3,7 @@ package nl.tettelaar.rebalanced.init;
 import java.util.Arrays;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.item.Items;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
 
 public class Recipes {
@@ -165,7 +166,7 @@ public class Recipes {
 	}
 
 	public static void initXPCost () {
-		RecipeAPI.setRecipeXPCost("stone_pickaxe", 15);
+		RecipeAPI.setRecipeXPCost(Items.STONE_PICKAXE, 15);
 	}
 
 	private static void initGolems() {
