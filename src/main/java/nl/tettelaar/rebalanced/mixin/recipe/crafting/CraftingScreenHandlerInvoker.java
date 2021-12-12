@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.crafting;
 
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.CraftingMenu;

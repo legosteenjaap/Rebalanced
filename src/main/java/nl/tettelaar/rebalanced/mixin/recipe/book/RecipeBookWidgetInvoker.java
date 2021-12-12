@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.book;
 
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.Minecraft;

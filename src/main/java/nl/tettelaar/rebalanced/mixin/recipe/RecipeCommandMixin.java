@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe.discover;
+package nl.tettelaar.rebalanced.mixin.recipe;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -17,7 +17,9 @@ import net.minecraft.world.item.crafting.Recipe;
 import nl.tettelaar.rebalanced.recipe.PlayerRecipeInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -49,6 +51,16 @@ public class RecipeCommandMixin {
             commandSourceStack.sendSuccess(new TranslatableComponent("commands.recipe.give.discover.multiple", collection2.size(), collection.size()), true);
         }
         return i;
+    }
+
+    @ModifyConstant(method = "register", constant = @Constant(stringValue = "give"))
+    private static String renameGiveCommand(String original) {
+        return "unlock";
+    }
+
+    @ModifyConstant(method = "register", constant = @Constant(stringValue = "take"))
+    private static String renameTakeCommand(String original) {
+        return "lock";
     }
 
 }

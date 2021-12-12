@@ -18,33 +18,36 @@
     "gamerules.BooleanRuleAccessor",
     "gamerules.IntRuleAccessor",
     "gamerules.GameRuleTypeAccessor",
-    
+
     "recipe.AdvancementManagerMixin",
-	"recipe.KnowledgeBookItemMixin",
-	"recipe.CampfireBlockMixin",
-	"recipe.RecipeManagerMixin",
-	"recipe.WitherSkullBlockMixin",
-	"recipe.AbstractFireBlockMixin",
-	//"recipe.FlintAndSteelMixin",
-	//"recipe.FireChargeMixin",
-    "recipe.CraftingScreenMixin",
-    "recipe.RecipeBookWidgetInvoker",
-    "recipe.CraftingScreenHandlerInvoker",
-	"recipe.CarvedPumpkinBlockMixin",
+    "recipe.RecipeManagerMixin",
+    "recipe.RecipeCommandMixin",
 
-    "recipe.discover.RecipeBookMixin",
-    "recipe.discover.ClientboundRecipePacketMixin",
-    "recipe.discover.ServerRecipeBookMixin",
-    "recipe.discover.RecipeCommandMixin",
-    "recipe.discover.ServerRecipeBookMixin",
-    "recipe.discover.ServerPlayerMixin",
-    "recipe.discover.RecipeCollectionMixin",
-    "recipe.discover.ServerPlaceRecipeMixin",
+    "recipe.block.WitherSkullBlockMixin",
+    "recipe.block.CarvedPumpkinBlockMixin",
+    "recipe.block.AbstractFireBlockMixin",
+    //"recipe.block.FlintAndSteelMixin",
+    //"recipe.block.FireChargeMixin",
 
-    "recipe.unlock.RecipeHolderMixin",
-    "recipe.unlock.ResultContainerMixin",
-    "recipe.unlock.ResultSlotMixin",
-    "recipe.unlock.CraftingMenuMixin",
+    "recipe.book.knowledge.KnowledgeBookItemMixin",
+    "recipe.book.RecipeBookWidgetInvoker",
+    "recipe.book.RecipeBookMixin",
+    "recipe.book.ServerRecipeBookMixin",
+    "recipe.book.ServerRecipeBookMixin",
+    "recipe.book.PlayerDiscoverMixin",
+    "recipe.book.RecipeCollectionMixin",
+    "recipe.book.ServerPlaceRecipeMixin",
+
+    "recipe.book.network.ClientboundRecipePacketMixin",
+
+    "recipe.campfire.CampfireBlockMixin",
+
+    "recipe.crafting.CraftingScreenMixin",
+    "recipe.crafting.CraftingScreenHandlerInvoker",
+    "recipe.crafting.RecipeHolderMixin",
+    "recipe.crafting.ResultContainerMixin",
+    "recipe.crafting.ResultSlotMixin",
+    "recipe.crafting.CraftingMenuMixin",
 
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
@@ -84,12 +87,12 @@
     "ItemMixin"
   ],
   "client": [
-  	"recipe.StonecutterScreenHandlerMixin",
-	"recipe.SmithingScreenHandlerMixin",
-	"recipe.KnowledgeBookItemClientMixin",
+  	"recipe.stonecutter.StonecutterScreenHandlerMixin",
+	"recipe.smithing.SmithingScreenHandlerMixin",
 
-    "recipe.discover.ClientPacketListenerMixin",
-	//"recipe.discover.RecipeButtonMixin",
+    "recipe.book.knowledge.KnowledgeBookItemClientMixin",
+
+    "recipe.book.network.ClientPacketListenerMixin",
 
 	"sleep.DeathScreenMixin",
     "sleep.LongerDayCycleClientMixin"

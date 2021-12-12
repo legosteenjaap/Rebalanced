@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

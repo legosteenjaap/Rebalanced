@@ -164,6 +164,10 @@ public class RecipeAPI {
 		return Optional.ofNullable(RecipeXPCost.get(item));
 	}
 
+	public static boolean isDiscoverable (Item item) {
+		return RecipeXPCost.get(item) != null;
+	}
+
 	public static class KnowledgeBookTrade implements TradeOffers.Factory {
 
 		private final int minPrice;

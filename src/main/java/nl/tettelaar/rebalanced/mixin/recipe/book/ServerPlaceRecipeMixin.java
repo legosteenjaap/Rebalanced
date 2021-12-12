@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe.discover;
+package nl.tettelaar.rebalanced.mixin.recipe.book;
 
 import net.minecraft.network.protocol.game.ClientboundPlaceGhostRecipePacket;
 import net.minecraft.recipebook.PlaceRecipe;
@@ -18,6 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ServerPlaceRecipe.class)
 public abstract class ServerPlaceRecipeMixin <C extends Container> implements PlaceRecipe<Integer> {
@@ -26,13 +28,17 @@ public abstract class ServerPlaceRecipeMixin <C extends Container> implements Pl
     protected Inventory inventory;
     protected RecipeBookMenu<C> menu;
 
-    private static boolean isUnlockedOrDiscovered(Recipe<?> recipe, ServerPlayer serverPlayer) {
-        RecipeBook recipeBook = serverPlayer.getRecipeBook();
-        RecipeBookInterface recipeBookInterface = (RecipeBookInterface) (Object)serverPlayer.getRecipeBook();
+    private static boolean isUnlockedOrDiscovered(Recipe<?> recipe, RecipeBook recipeBook) {
+        RecipeBookInterface recipeBookInterface = (RecipeBookInterface) (Object)recipeBook;
         return recipeBook.contains(recipe) || recipeBookInterface.isDiscovered(recipe);
     }
 
-    @Overwrite
+    @Redirect(method = "recipeClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;contains(Lnet/minecraft/world/item/crafting/Recipe;)Z"))
+    private Boolean redirectContains(RecipeBook recipeBook, Recipe recipe) {
+        return isUnlockedOrDiscovered(recipe, recipeBook);
+    }
+
+    /*@Overwrite
     public void recipeClicked(ServerPlayer serverPlayer, @Nullable Recipe<C> recipe, boolean bl) {
         if (recipe == null || !isUnlockedOrDiscovered(recipe,serverPlayer)){
             return;
@@ -51,7 +57,7 @@ public abstract class ServerPlaceRecipeMixin <C extends Container> implements Pl
             serverPlayer.connection.send(new ClientboundPlaceGhostRecipePacket(serverPlayer.containerMenu.containerId, recipe));
         }
         serverPlayer.getInventory().setChanged();
-    }
+    }*/
 
     @Shadow
     protected void handleRecipeClicked(Recipe<C> recipe, boolean bl) {

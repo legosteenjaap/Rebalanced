@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe.discover;
+package nl.tettelaar.rebalanced.mixin.recipe.book;
 
 import com.google.common.collect.Sets;
 import net.minecraft.network.protocol.game.ClientboundRecipePacket;

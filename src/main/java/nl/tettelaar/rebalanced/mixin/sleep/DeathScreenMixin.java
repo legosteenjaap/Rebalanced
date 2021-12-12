@@ -1,11 +1,17 @@
 package nl.tettelaar.rebalanced.mixin.sleep;
 
 import java.util.List;
+
+import io.netty.buffer.ByteBuf;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import nl.tettelaar.rebalanced.network.NetworkingServer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -59,8 +65,8 @@ public class DeathScreenMixin extends Screen {
 	}
 
 	public void checkRespawn() {
-		//PacketByteBuf buf = PacketByteBufs.empty();
-		//ClientPlayNetworking.send(NetworkingServer.PLAYER_HAS_SPAWNPOINT_ID , buf);
+		FriendlyByteBuf buf = PacketByteBufs.empty();
+		ClientPlayNetworking.send(NetworkingServer.PLAYER_HAS_SPAWNPOINT_ID , buf);
 		checkIfHasSpawn = true;
 	}
 	

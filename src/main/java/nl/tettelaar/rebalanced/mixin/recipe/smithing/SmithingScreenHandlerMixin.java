@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.smithing;
 
 import java.util.List;
 import net.minecraft.client.player.LocalPlayer;

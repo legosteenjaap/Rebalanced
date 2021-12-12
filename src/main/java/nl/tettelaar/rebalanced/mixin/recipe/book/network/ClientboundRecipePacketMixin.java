@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe.discover;
+package nl.tettelaar.rebalanced.mixin.recipe.book.network;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.network.FriendlyByteBuf;

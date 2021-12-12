@@ -1,7 +1,6 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.crafting;
 
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.screens.inventory.AnvilScreen;
+import nl.tettelaar.rebalanced.mixin.recipe.book.RecipeBookWidgetInvoker;
 import nl.tettelaar.rebalanced.recipe.CraftingMenuInterface;
 import nl.tettelaar.rebalanced.recipe.ResultContainerInterface;
 import org.spongepowered.asm.mixin.Final;

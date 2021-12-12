@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.campfire;
 
 import java.util.Optional;
 import net.minecraft.core.BlockPos;

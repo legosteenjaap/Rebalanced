@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.book.knowledge;
 
 import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.client.Minecraft;

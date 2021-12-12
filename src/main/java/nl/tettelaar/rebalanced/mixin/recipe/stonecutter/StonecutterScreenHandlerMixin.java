@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.stonecutter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe.discover;
+package nl.tettelaar.rebalanced.mixin.recipe.book;
 
 import com.google.common.collect.Lists;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Mixin(ServerPlayer.class)
-public class ServerPlayerMixin implements PlayerRecipeInterface {
+public class PlayerDiscoverMixin implements PlayerRecipeInterface {
 
     @Shadow @Final
     private ServerRecipeBook recipeBook = new ServerRecipeBook();

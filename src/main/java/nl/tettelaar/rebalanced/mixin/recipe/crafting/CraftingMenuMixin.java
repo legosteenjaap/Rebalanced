@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe.unlock;
+package nl.tettelaar.rebalanced.mixin.recipe.crafting;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;

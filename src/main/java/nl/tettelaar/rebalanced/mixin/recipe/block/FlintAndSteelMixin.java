@@ -1,11 +1,11 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.block;
 
 import java.util.Optional;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.FireChargeItem;
+import net.minecraft.world.item.FlintAndSteelItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.GameRules;
@@ -16,10 +16,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(FireChargeItem.class)
-public class FireChargeMixin extends Item {
+@Mixin(FlintAndSteelItem.class)
+public class FlintAndSteelMixin extends Item {
 
-	public FireChargeMixin(Properties settings) {
+	public FlintAndSteelMixin(Properties settings) {
 		super(settings);
 		// TODO Auto-generated constructor stub
 	}

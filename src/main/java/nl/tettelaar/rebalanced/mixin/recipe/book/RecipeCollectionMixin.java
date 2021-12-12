@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe.discover;
+package nl.tettelaar.rebalanced.mixin.recipe.book;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -27,17 +27,9 @@ public class RecipeCollectionMixin {
     @Shadow @Final private List<Recipe<?>> recipes;
     private final Set<Recipe<?>> discovered = Sets.newHashSet();
 
-    @Shadow @Final private Set<Recipe<?>> known = Sets.newHashSet();
-    @Shadow @Final private Set<Recipe<?>> craftable = Sets.newHashSet();
+    @Shadow @Final final private Set<Recipe<?>> known = Sets.newHashSet();
+    @Shadow @Final private final Set<Recipe<?>> craftable = Sets.newHashSet();
     @Shadow @Final private final Set<Recipe<?>> fitsDimensions = Sets.newHashSet();
-
-    /*@Inject(method = "updateKnownRecipes", at = @At("RETURN"), cancellable = true)
-    public void updateKnownRecipes(RecipeBook recipeBook, CallbackInfo ci) {
-        for (Recipe<?> recipe : this.recipes) {
-
-        }
-
-    }*/
 
     @Overwrite
     public void updateKnownRecipes(RecipeBook recipeBook) {
@@ -84,27 +76,5 @@ public class RecipeCollectionMixin {
         }
         return list;
     }
-
-    /*@Inject(method = "getRecipes(Z)Ljava/util/List;", at = @At("HEAD"), cancellable = true)
-    public void getRecipes(boolean bl, CallbackInfoReturnable<List<Recipe<?>>> cir) {
-        List<Recipe<?>> recipes = Lists.newArrayList();
-        for (Recipe<?> recipe : this.recipes) {
-            if (known.contains(recipe)) {
-                recipes.add(recipe);
-            }
-        }
-        cir.setReturnValue(recipes);
-    }
-
-    @Inject(method = "getDisplayRecipes(Z)Ljava/util/List;", at = @At("HEAD"), cancellable = true)
-    public void getDisplayRecipes(boolean bl, CallbackInfoReturnable<List<Recipe<?>>> cir) {
-        List<Recipe<?>> recipes = Lists.newArrayList();
-        for (Recipe<?> recipe : this.recipes) {
-            if (known.contains(recipe)) {
-                recipes.add(recipe);
-            }
-        }
-        cir.setReturnValue(recipes);
-    }*/
 
 }
