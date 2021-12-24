@@ -2,7 +2,12 @@ package nl.tettelaar.rebalanced.mixin.recipe.stonecutter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,6 +21,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import nl.tettelaar.rebalanced.network.NetworkingClient;
+import nl.tettelaar.rebalanced.network.NetworkingServer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -45,6 +52,10 @@ public class StonecutterScreenHandlerMixin {
 	@Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At("RETURN"))
 	private void init(int syncId, Inventory playerInventory, final ContainerLevelAccess context, CallbackInfo ci) {
 		this.player = playerInventory.player;
+		FriendlyByteBuf buf = PacketByteBufs.create();
+		buf.writeBoolean(player.getLevel().getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING));
+		NetworkingClient.doLimitedCrafting = true;
+		ClientPlayNetworking.send(NetworkingClient.DO_LIMITEDCRAFTING_ID, buf);
 	}
 
 	@Inject(method = "setupRecipeList", at = @At("HEAD"), cancellable = true)
@@ -56,8 +67,7 @@ public class StonecutterScreenHandlerMixin {
 			ArrayList<StonecutterRecipe> recipes = new ArrayList<StonecutterRecipe>(this.level.getRecipeManager().getRecipesFor(RecipeType.STONECUTTING, input, this.level));
 			ArrayList<StonecutterRecipe> trueRecipes = new ArrayList<>();
 			for (StonecutterRecipe recipe : recipes) {
-				System.out.println(level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING));
-				if ((level.isClientSide() && (((LocalPlayer) player).getRecipeBook().contains(recipe)) || (!level.isClientSide && ((ServerPlayer)player).getRecipeBook().contains(recipe)))) {
+				if ((level.isClientSide() && ((((LocalPlayer) player).getRecipeBook().contains(recipe) || !NetworkingClient.doLimitedCrafting)) || (!level.isClientSide &&(((ServerPlayer)player).getRecipeBook().contains(recipe) || !level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING))))) {
 					trueRecipes.add(recipe);
 				}
 			}

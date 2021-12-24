@@ -10,10 +10,13 @@ public class NetworkingClient {
 	public static final String modid = Rebalanced.modid;
 	
 	public static final ResourceLocation SHOW_FLOATING_ITEM_ID = new ResourceLocation(modid, "show_floating_item");
-	public static final ResourceLocation RECEIVE_HAS_SPAWNPOINT_ID = new ResourceLocation(modid, "receive_has_spawnpoint");
-	
+	public static final ResourceLocation PLAYER_HAS_SPAWNPOINT_ID = new ResourceLocation(modid, "player_has_spawnpoint");
+	public static final ResourceLocation DO_LIMITEDCRAFTING_ID = new ResourceLocation(modid, "do_limitedcrafting");
+
 	public static Boolean hasSpawnPoint = null;
-	
+	public static Boolean doLimitedCrafting = true;
+
+
 	public static void init () {
 		ClientPlayNetworking.registerGlobalReceiver(SHOW_FLOATING_ITEM_ID, (client, handler, buf, responseSender) -> {
 		    ItemStack item = buf.readItem();
@@ -22,12 +25,21 @@ public class NetworkingClient {
 		    });
 		});
 		
-		ClientPlayNetworking.registerGlobalReceiver(RECEIVE_HAS_SPAWNPOINT_ID, (client, handler, buf, responseSender) -> {
+		ClientPlayNetworking.registerGlobalReceiver(NetworkingServer.RETURN_PLAYER_HAS_SPAWNPOINT_ID, (client, handler, buf, responseSender) -> {
 			boolean hasSpawnPoint = buf.readBoolean();
 			client.execute(() -> {
 		    	NetworkingClient.hasSpawnPoint = hasSpawnPoint;
 		    });
 		});
+
+		ClientPlayNetworking.registerGlobalReceiver(NetworkingServer.RETURN_DO_LIMITEDCRAFTING_ID, (client, handler, buf, responseSender) -> {
+			boolean doLimitedCrafting = buf.readBoolean();
+			client.execute(() -> {
+				NetworkingClient.doLimitedCrafting = doLimitedCrafting;
+			});
+		});
+
+
 	}
 	
 }
