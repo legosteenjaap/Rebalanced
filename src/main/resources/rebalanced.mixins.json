@@ -49,6 +49,10 @@
     "recipe.crafting.ResultSlotMixin",
     "recipe.crafting.CraftingMenuMixin",
 
+    "recipe.furnace.AbstractFurnaceBlockEntityMixin",
+    "recipe.furnace.FurnaceBlockMixin",
+    "recipe.furnace.AbstractFurnaceBlockEntityInvoker",
+
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
     "village.TradeOfferMixin",
