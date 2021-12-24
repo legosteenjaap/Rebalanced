@@ -27,7 +27,7 @@ import net.minecraft.world.level.GameRules;
 @Mixin(CraftingScreen.class)
 public abstract class CraftingScreenMixin extends AbstractContainerScreen<CraftingMenu> implements RecipeUpdateListener {
 
-    @Shadow @Final private RecipeBookComponent recipeBookComponent = new RecipeBookComponent();
+    @Shadow @Final private final RecipeBookComponent recipeBookComponent = new RecipeBookComponent();
 
     public CraftingScreenMixin(CraftingMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);

@@ -19,7 +19,9 @@
     "gamerules.IntRuleAccessor",
     "gamerules.GameRuleTypeAccessor",
 
+    "recipe.AdvancementBuilderAccessor",
     "recipe.AdvancementManagerMixin",
+    "recipe.AdvancementRewardsMixin",
     "recipe.RecipeManagerMixin",
     "recipe.RecipeCommandMixin",
 

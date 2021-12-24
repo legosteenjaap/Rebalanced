@@ -5,6 +5,7 @@ import net.minecraft.recipebook.PlaceRecipe;
 import net.minecraft.recipebook.ServerPlaceRecipe;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.RecipeBook;
+import net.minecraft.stats.ServerRecipeBook;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.StackedContents;
@@ -33,8 +34,8 @@ public abstract class ServerPlaceRecipeMixin <C extends Container> implements Pl
         return recipeBook.contains(recipe) || recipeBookInterface.isDiscovered(recipe);
     }
 
-    @Redirect(method = "recipeClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/RecipeBook;contains(Lnet/minecraft/world/item/crafting/Recipe;)Z"))
-    private Boolean redirectContains(RecipeBook recipeBook, Recipe recipe) {
+    @Redirect(method = "recipeClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/stats/ServerRecipeBook;contains(Lnet/minecraft/world/item/crafting/Recipe;)Z"))
+    private boolean redirectContains(ServerRecipeBook recipeBook, Recipe recipe) {
         return isUnlockedOrDiscovered(recipe, recipeBook);
     }
 

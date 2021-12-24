@@ -8,6 +8,8 @@ import java.util.Map;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
 import net.minecraft.resources.ResourceLocation;
+import nl.tettelaar.rebalanced.recipe.AdvancementRewardsInterface;
+import nl.tettelaar.rebalanced.recipe.RecipeStatus;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -39,9 +41,12 @@ public class AdvancementManagerMixin {
 					while (iterator.hasNext()) {
 						JsonElement recipe = iterator.next();
 						ResourceLocation id = new ResourceLocation(recipe.getAsString());
-						List<ResourceLocation> removedRecipes = RecipeAPI.getRemovedRecipeAdvancements();
+						List<ResourceLocation> removedRecipes = RecipeAPI.getDiscoverableRecipeAdvancements();
 						if (removedRecipes != null && removedRecipes.contains(id)) {
-							hashMap.remove(idAdvancement);
+							AdvancementRewardsInterface advancementRewardsInterface = ((AdvancementRewardsInterface)((AdvancementBuilderAccessor)map.get(idAdvancement)).getRewards());
+							if (!advancementRewardsInterface.hasRecipeStatus()) {
+								advancementRewardsInterface.setRecipeStatus(RecipeStatus.DISCOVERED);
+							}
 						}
 					}
 				}

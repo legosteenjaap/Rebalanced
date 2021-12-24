@@ -16,7 +16,7 @@ import nl.tettelaar.rebalanced.village.TradeOffers;
 
 public class RecipeAPI {
 
-	private static List<ResourceLocation> removedRecipeAdvancements = new ArrayList<>();
+	private static List<ResourceLocation> discoverableRecipeAdvancements = new ArrayList<>();
 	private static ArrayList<Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>> knowledgeBooksLootTable = new ArrayList<>();
 	private static HashMap<VillagerProfession, HashMap<Integer, List<Tuple<TradeOffers.Factory, Float>>>> KnowledgeBooksVillagerTrades = new HashMap<>();
 	private static List<ResourceLocation> blockRecipeList = new ArrayList<>();
@@ -69,7 +69,7 @@ public class RecipeAPI {
 	private static void registerKnowledgeBookID(List<List<ResourceLocation>> recipes, List<ResourceLocation> loottables) {
 		knowledgeBooksLootTable.add(new Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>(recipes, loottables));
 		for (List<ResourceLocation> e : recipes) {
-			removedRecipeAdvancements.addAll(e);
+			discoverableRecipeAdvancements.addAll(e);
 		}
 
 	}
@@ -109,7 +109,7 @@ public class RecipeAPI {
 			KnowledgeBooksVillagerTrades.get(villager).put(level, trades);
 		}
 		for (List<ResourceLocation> recipeList : recipes) {
-			removedRecipeAdvancements.addAll(recipeList);
+			discoverableRecipeAdvancements.addAll(recipeList);
 		}
 	}
 
@@ -141,8 +141,8 @@ public class RecipeAPI {
 		 return null;
 	}
 
-	public static List<ResourceLocation> getRemovedRecipeAdvancements() {
-		return RecipeAPI.removedRecipeAdvancements;
+	public static List<ResourceLocation> getDiscoverableRecipeAdvancements() {
+		return RecipeAPI.discoverableRecipeAdvancements;
 	}
 
 	public static ArrayList<Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>> getKnowledgeBooksLootTable() {
