@@ -14,7 +14,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.commands.RecipeCommand;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.crafting.Recipe;
-import nl.tettelaar.rebalanced.recipe.PlayerRecipeInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.PlayerRecipeInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;

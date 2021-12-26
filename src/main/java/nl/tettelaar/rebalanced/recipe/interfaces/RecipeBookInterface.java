@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.recipe;
+package nl.tettelaar.rebalanced.recipe.interfaces;
 
 import com.google.common.collect.Sets;
 import net.minecraft.resources.ResourceLocation;

@@ -1,10 +1,14 @@
 package nl.tettelaar.rebalanced.init.worldgen;
 
-/*import net.fabricmc.fabric.api.biome.v1.BiomeModificationContext;
+import net.fabricmc.fabric.api.biome.v1.BiomeModificationContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
-import net.minecraft.data.worldgen.Features;*/
+import net.minecraft.data.worldgen.features.AquaticFeatures;
+import net.minecraft.data.worldgen.features.MiscOverworldFeatures;
+import net.minecraft.data.worldgen.features.VegetationFeatures;
+import net.minecraft.data.worldgen.placement.AquaticPlacements;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -12,6 +16,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import nl.tettelaar.rebalanced.Rebalanced;
 import nl.tettelaar.rebalanced.init.RebalancedWorldGen;
 
@@ -20,7 +25,7 @@ public class DoBiomeModifications {
 
 	private final static String modid = Rebalanced.modid;
 
-/*	public static void init() {
+	public static void init() {
 
 
 		// SPAWNING STUFF
@@ -34,7 +39,7 @@ public class DoBiomeModifications {
 		});
 
 		BiomeModifications.create(new ResourceLocation(modid, "seagrass_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.excludeByKey(Biomes.SNOWY_TAIGA).and(BiomeSelectors.categories(Biome.BiomeCategory.PLAINS, Biome.BiomeCategory.JUNGLE, Biome.BiomeCategory.EXTREME_HILLS, Biome.BiomeCategory.FOREST, Biome.BiomeCategory.SWAMP, Biome.BiomeCategory.TAIGA)), (s) -> {
-			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Features.SEAGRASS_NORMAL);
+			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEAGRASS_SIMPLE);
 		});
 
 
@@ -61,8 +66,8 @@ public class DoBiomeModifications {
 				});
 
 		BiomeModifications.create(new ResourceLocation(modid, "desert_biome_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.categories(Biome.BiomeCategory.DESERT), (s) -> {
-			s.getGenerationSettings().removeBuiltInFeature(Features.PATCH_SUGAR_CANE_DESERT);
-			s.getGenerationSettings().removeBuiltInFeature(Features.PATCH_SUGAR_CANE);
+			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.PATCH_SUGAR_CANE_DESERT);
+			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.PATCH_SUGAR_CANE);
 		});
 
 		BiomeModifications.create(new ResourceLocation(modid, "savanna_biome_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.categories(Biome.BiomeCategory.SAVANNA), (s) -> {
@@ -71,8 +76,8 @@ public class DoBiomeModifications {
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.COW);
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.LLAMA);
 			s.getSpawnSettings().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
-			s.getGenerationSettings().removeBuiltInFeature(Features.FLOWER_DEFAULT);
-			s.getGenerationSettings().removeBuiltInFeature(Features.FLOWER_WARM);
+			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_DEFAULT);
+			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_WARM);
 		});
 
 		BiomeModifications.create(new ResourceLocation(modid, "jungle_biome_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.categories(Biome.BiomeCategory.JUNGLE), (s) -> {
@@ -84,11 +89,11 @@ public class DoBiomeModifications {
 
 
 	public static void snowyBiome(BiomeModificationContext s) {
-		s.getGenerationSettings().removeBuiltInFeature(Features.PATCH_SUGAR_CANE);
-		s.getGenerationSettings().removeBuiltInFeature(Features.FLOWER_DEFAULT);
-		s.getGenerationSettings().removeBuiltInFeature(Features.FLOWER_FOREST);
-		s.getGenerationSettings().removeBuiltInFeature(Features.FLOWER_PLAIN);
+		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.PATCH_SUGAR_CANE);
+		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_DEFAULT);
+		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_FLOWER_FOREST);
+		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_PLAINS);
 
-	}*/
+	}
 
 }

@@ -1,8 +1,8 @@
 package nl.tettelaar.rebalanced.mixin.recipe.crafting;
 
 import nl.tettelaar.rebalanced.mixin.recipe.book.RecipeBookWidgetInvoker;
-import nl.tettelaar.rebalanced.recipe.CraftingMenuInterface;
-import nl.tettelaar.rebalanced.recipe.ResultContainerInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.CraftingMenuInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.ResultContainerInterface;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

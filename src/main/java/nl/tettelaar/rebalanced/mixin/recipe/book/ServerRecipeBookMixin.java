@@ -1,26 +1,22 @@
 package nl.tettelaar.rebalanced.mixin.recipe.book;
 
 import com.google.common.collect.Lists;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundRecipePacket;
-import net.minecraft.network.protocol.game.ServerGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.RecipeBook;
 import net.minecraft.stats.ServerRecipeBook;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
-import nl.tettelaar.rebalanced.recipe.ClientboundRecipePacketInterface;
-import nl.tettelaar.rebalanced.recipe.RecipeBookInterface;
-import nl.tettelaar.rebalanced.recipe.ServerRecipeBookInterface;
-import org.objectweb.asm.Opcodes;
+import nl.tettelaar.rebalanced.recipe.interfaces.ClientboundRecipePacketInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.RecipeBookInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.ServerRecipeBookInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -53,17 +49,16 @@ public class ServerRecipeBookMixin extends RecipeBook implements ServerRecipeBoo
         this.loadRecipes(discovered, recipeBookInterface::discover, recipeManager);
     }
 
-    @ModifyArg(method = "sendRecipes", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;)V"), index = 0)
-    private Packet<ClientGamePacketListener> addDiscoveredRecipes (Packet<ClientGamePacketListener> recipePacket) {
-        ((ClientboundRecipePacketInterface)(Object) recipePacket).setDiscovered(((RecipeBookInterface)(Object)(RecipeBook)this).getDiscoveredRecipes().stream().toList());
-        return recipePacket;
+    @Inject(method = "sendInitialRecipeBook", at = @At("RETURN"))
+    public void sendInitialRecipeBook(ServerPlayer serverPlayer, CallbackInfo ci) {
+        ClientboundRecipePacket packet = new ClientboundRecipePacket(ClientboundRecipePacket.State.INIT, this.known, this.highlight, this.getBookSettings());
+        ClientboundRecipePacketInterface recipePacketInterface = ((ClientboundRecipePacketInterface)(Object) packet);
+        recipePacketInterface.setDiscovered(((RecipeBookInterface)(Object)(RecipeBook)this).getDiscoveredRecipes().stream().toList());
+        recipePacketInterface.setIsDiscover();
+        serverPlayer.connection.send(packet);
     }
 
-    @ModifyArg(method = "sendInitialRecipeBook", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;)V"), index = 0)
-    private Packet<ClientGamePacketListener> addDiscoveredRecipesInit (Packet<ClientGamePacketListener> recipePacket) {
-        ((ClientboundRecipePacketInterface)(Object) recipePacket).setDiscovered(((RecipeBookInterface)(Object)(RecipeBook)this).getDiscoveredRecipes().stream().toList());
-        return recipePacket;
-    }
+
 
     @Shadow
     private void loadRecipes(ListTag listTag, Consumer<Recipe<?>> consumer, RecipeManager recipeManager) {
@@ -88,6 +83,7 @@ public class ServerRecipeBookMixin extends RecipeBook implements ServerRecipeBoo
         }
         ClientboundRecipePacketInterface packet = (ClientboundRecipePacketInterface) (Object)new ClientboundRecipePacket(ClientboundRecipePacket.State.ADD, Collections.emptyList(), Collections.emptyList(), this.getBookSettings());
         packet.setDiscovered(recipes);
+        packet.setIsDiscover();
         player.connection.send((ClientboundRecipePacket)packet);
         return discoveredRecipes;
     }

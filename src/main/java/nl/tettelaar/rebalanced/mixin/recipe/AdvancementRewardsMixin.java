@@ -1,6 +1,5 @@
 package nl.tettelaar.rebalanced.mixin.recipe;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.advancements.AdvancementRewards;
@@ -8,22 +7,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.Recipe;
-import nl.tettelaar.rebalanced.recipe.AdvancementRewardsInterface;
-import nl.tettelaar.rebalanced.recipe.PlayerRecipeInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.AdvancementRewardsInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.PlayerRecipeInterface;
 import nl.tettelaar.rebalanced.recipe.RecipeStatus;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Mixin(AdvancementRewards.class)
 public class AdvancementRewardsMixin implements AdvancementRewardsInterface {
@@ -56,7 +50,6 @@ public class AdvancementRewardsMixin implements AdvancementRewardsInterface {
                     break;
                 case DISCOVERED:
                     ((PlayerRecipeInterface) serverPlayer).discoverRecipesByKey(recipes);
-                    System.out.println("test");
                     break;
             }
         }

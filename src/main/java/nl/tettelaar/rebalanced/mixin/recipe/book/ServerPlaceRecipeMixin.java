@@ -1,9 +1,7 @@
 package nl.tettelaar.rebalanced.mixin.recipe.book;
 
-import net.minecraft.network.protocol.game.ClientboundPlaceGhostRecipePacket;
 import net.minecraft.recipebook.PlaceRecipe;
 import net.minecraft.recipebook.ServerPlaceRecipe;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.RecipeBook;
 import net.minecraft.stats.ServerRecipeBook;
 import net.minecraft.world.Container;
@@ -11,13 +9,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.RecipeBookMenu;
 import net.minecraft.world.item.crafting.Recipe;
-import nl.tettelaar.rebalanced.recipe.RecipeBookInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.RecipeBookInterface;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.jmx.Server;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

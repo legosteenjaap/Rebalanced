@@ -8,7 +8,7 @@ import java.util.Map;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
 import net.minecraft.resources.ResourceLocation;
-import nl.tettelaar.rebalanced.recipe.AdvancementRewardsInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.AdvancementRewardsInterface;
 import nl.tettelaar.rebalanced.recipe.RecipeStatus;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

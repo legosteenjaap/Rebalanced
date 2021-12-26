@@ -12,7 +12,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
-import nl.tettelaar.rebalanced.recipe.ResultContainerInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.ResultContainerInterface;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
