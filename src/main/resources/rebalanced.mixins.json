@@ -9,7 +9,7 @@
     //"worldgen.MultiNoiseBiomeSourceAccessor",
 
     //"worldgen.NoiseSamplerMixin",
-    //"worldgen.NoiseDataMixin",
+    "worldgen.NoiseDataMixin",
     //"worldgen.TerrainShaperMixin",
     //"worldgen.NoiseGeneratorSettingsMixin",
     //"worldgen.DimensionTypeMixin",
@@ -23,7 +23,6 @@
     "recipe.AdvancementManagerMixin",
     "recipe.AdvancementRewardsMixin",
     "recipe.RecipeManagerMixin",
-    "recipe.RecipeCommandMixin",
 
     "recipe.block.WitherSkullBlockMixin",
     "recipe.block.CarvedPumpkinBlockMixin",
@@ -43,6 +42,8 @@
     "recipe.book.network.ClientboundRecipePacketMixin",
 
     "recipe.campfire.CampfireBlockMixin",
+
+    "recipe.command.RecipeCommandMixin",
 
     "recipe.crafting.CraftingScreenMixin",
     "recipe.crafting.CraftingScreenHandlerInvoker",
@@ -83,6 +84,9 @@
     "elytra.FireworkItemMixin",
     "elytra.ElytraMixin",
 
+    //"xpbar.GuiMixin",
+    //"xpbar.FontMixin",
+
     "LocalDifficultyMixin",
     "WrittenBookMixin",
     "BeaconBlockEntityMixin",
@@ -95,6 +99,8 @@
   "client": [
   	"recipe.stonecutter.StonecutterScreenHandlerMixin",
 	"recipe.smithing.SmithingScreenHandlerMixin",
+
+    "recipe.book.RecipeButtonMixin",
 
     "recipe.book.knowledge.KnowledgeBookItemClientMixin",
 

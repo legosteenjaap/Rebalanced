@@ -34,7 +34,7 @@ public class ClientPacketListenerMixin {
     @Shadow @Final
     private Minecraft minecraft;
     @Shadow @Final
-    private RecipeManager recipeManager = new RecipeManager();
+    private final RecipeManager recipeManager = new RecipeManager();
 
     @Inject(method = "handleAddOrRemoveRecipes", at = @At("HEAD"), cancellable = true)
     public void handleAddOrRemoveRecipes(ClientboundRecipePacket clientboundRecipePacket, CallbackInfo ci) {

@@ -18,8 +18,8 @@ public class NoiseDataMixin {
         return -3;
     }
 
-    @ModifyConstant(method = "bootstrap", constant = @Constant(intValue = -7, ordinal = 0))
+    /*@ModifyConstant(method = "bootstrap", constant = @Constant(intValue = -7, ordinal = 0))
     private static int changeRidgeSize(int value) {
         return -9;
-    }
+    }*/
 }

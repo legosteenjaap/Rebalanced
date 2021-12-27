@@ -20,7 +20,7 @@ public class RecipeBookMixin implements RecipeBookInterface {
 
 
     @Shadow @Final
-    protected Set<ResourceLocation> known = Sets.newHashSet();
+    protected final Set<ResourceLocation> known = Sets.newHashSet();
 
 
     @Inject(method = "remove(Lnet/minecraft/resources/ResourceLocation;)V", at = @At("HEAD"))

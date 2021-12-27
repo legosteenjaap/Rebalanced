@@ -13,6 +13,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
 import nl.tettelaar.rebalanced.recipe.interfaces.ResultContainerInterface;
+import nl.tettelaar.rebalanced.util.RecipeUtil;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -64,7 +65,7 @@ public abstract class ResultContainerMixin implements RecipeHolder, ResultContai
 
     @Override
     public boolean isUnlockable(Player player) {
-        return this.getXPCost().isPresent() && (player.experienceLevel >= this.getXPCost().get() || player.isCreative());
+        return this.getXPCost().isPresent() && RecipeUtil.isUnlockable(player, getXPCost().get());
     }
 
     @Shadow

@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -46,9 +46,9 @@ public class RecipeCommandMixin {
         }
 
         if (collection.size() == 1) {
-            commandSourceStack.sendSuccess(new TranslatableComponent("commands.recipe.give.discover.single", collection2.size(), collection.iterator().next().getDisplayName()), true);
+            commandSourceStack.sendSuccess(new TranslatableComponent("commands.recipe.discover.single", collection2.size(), collection.iterator().next().getDisplayName()), true);
         } else {
-            commandSourceStack.sendSuccess(new TranslatableComponent("commands.recipe.give.discover.multiple", collection2.size(), collection.size()), true);
+            commandSourceStack.sendSuccess(new TranslatableComponent("commands.recipe.discover.multiple", collection2.size(), collection.size()), true);
         }
         return i;
     }

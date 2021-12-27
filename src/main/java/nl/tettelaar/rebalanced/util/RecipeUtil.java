@@ -11,6 +11,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
@@ -96,4 +97,7 @@ public class RecipeUtil {
 		return true;
 	}
 
+	public static boolean isUnlockable (Player player, int XPCOST) {
+		return player.experienceLevel >= XPCOST || player.isCreative();
+	}
 }

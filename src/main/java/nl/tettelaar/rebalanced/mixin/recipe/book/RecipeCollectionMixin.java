@@ -7,6 +7,7 @@ import net.minecraft.stats.RecipeBook;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.crafting.Recipe;
 import nl.tettelaar.rebalanced.recipe.interfaces.RecipeBookInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.RecipeCollectionInterface;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @Mixin(RecipeCollection.class)
-public class RecipeCollectionMixin {
+public class RecipeCollectionMixin implements RecipeCollectionInterface {
 
     @Shadow @Final private List<Recipe<?>> recipes;
     private final Set<Recipe<?>> discovered = Sets.newHashSet();
@@ -29,7 +30,9 @@ public class RecipeCollectionMixin {
     @Overwrite
     public void updateKnownRecipes(RecipeBook recipeBook) {
         for (Recipe<?> recipe : this.recipes) {
-            if (!(recipeBook.contains(recipe) || ((RecipeBookInterface)recipeBook).isDiscovered(recipe))) continue;
+            boolean isDiscovered = ((RecipeBookInterface)recipeBook).isDiscovered(recipe);
+            if (!(recipeBook.contains(recipe) || isDiscovered)) continue;
+            if (isDiscovered) discovered.add(recipe);
             this.known.add(recipe);
         }
     }
@@ -72,4 +75,8 @@ public class RecipeCollectionMixin {
         return list;
     }
 
+    @Override
+    public boolean isDiscovered(Recipe<?> recipe) {
+        return this.discovered.contains(recipe);
+    }
 }
