@@ -1,7 +1,9 @@
 package nl.tettelaar.rebalanced.api;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
@@ -16,13 +18,13 @@ import nl.tettelaar.rebalanced.village.TradeOffers;
 
 public class RecipeAPI {
 
-	private static List<ResourceLocation> discoverableRecipeAdvancements = new ArrayList<>();
+	private static List<ResourceLocation> removedRecipeAdvancements = new ArrayList<>();
 	private static ArrayList<Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>> knowledgeBooksLootTable = new ArrayList<>();
 	private static HashMap<VillagerProfession, HashMap<Integer, List<Tuple<TradeOffers.Factory, Float>>>> KnowledgeBooksVillagerTrades = new HashMap<>();
 	private static List<ResourceLocation> blockRecipeList = new ArrayList<>();
 	private static HashMap<ResourceLocation, List<ResourceLocation>> requiredRecipesMap = new HashMap<>();
 	private static List<Tuple<TradeOffers.Factory, Float>> wanderingTraderKnowledgeBooks = new ArrayList<>();
-	private static HashMap<Item, Integer> RecipeXPCost = new HashMap<>();
+	private static HashMap<Item, Integer> ItemXPCost = new HashMap<>();
 
 	public static void registerWanderingTraderKnowledgeBookID(List<List<ResourceLocation>> recipes, int minPrice, int maxPrice, float chance) {
 		wanderingTraderKnowledgeBooks.add(new Tuple<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
@@ -61,15 +63,20 @@ public class RecipeAPI {
 		blockRecipeList.add(name);
 	}
 
-	public static void setRecipeXPCost(Item item, int cost) {
-		RecipeXPCost.put(item, cost);
+	public static void setItemXPCost(Item item, int cost) {
+		ItemXPCost.put(item, cost);
 	}
 
+	public static void setItemsXPCost(List<Item> items, int cost) {
+		for (Item item : items) {
+			ItemXPCost.put(item, cost);
+		}
+	}
 
-	private static void registerKnowledgeBookID(List<List<ResourceLocation>> recipes, List<ResourceLocation> loottables) {
-		knowledgeBooksLootTable.add(new Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>(recipes, loottables));
-		for (List<ResourceLocation> e : recipes) {
-			discoverableRecipeAdvancements.addAll(e);
+	private static void registerKnowledgeBookID(List<List<ResourceLocation>> recipeLists, List<ResourceLocation> loottables) {
+		knowledgeBooksLootTable.add(new Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>(recipeLists, loottables));
+		for (List<ResourceLocation> recipeList : recipeLists) {
+			removedRecipeAdvancements.addAll(recipeList);
 		}
 
 	}
@@ -109,7 +116,7 @@ public class RecipeAPI {
 			KnowledgeBooksVillagerTrades.get(villager).put(level, trades);
 		}
 		for (List<ResourceLocation> recipeList : recipes) {
-			discoverableRecipeAdvancements.addAll(recipeList);
+			removedRecipeAdvancements.addAll(recipeList);
 		}
 	}
 
@@ -141,8 +148,8 @@ public class RecipeAPI {
 		 return null;
 	}
 
-	public static List<ResourceLocation> getDiscoverableRecipeAdvancements() {
-		return RecipeAPI.discoverableRecipeAdvancements;
+	public static List<ResourceLocation> getRemovedRecipeAdvancements() {
+		return RecipeAPI.removedRecipeAdvancements;
 	}
 
 	public static ArrayList<Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>> getKnowledgeBooksLootTable() {
@@ -160,12 +167,18 @@ public class RecipeAPI {
 		return blockRecipeList;
 	}
 
-	public static Optional<Integer> getRecipeXPCost(Item item) {
-		return Optional.ofNullable(RecipeXPCost.get(item));
+	public static Optional<Integer> getItemXPCost(Item item) {
+		return Optional.ofNullable(ItemXPCost.get(item));
+	}
+
+	public static List<ResourceLocation> getDiscoverableRecipes() {
+		return ItemXPCost.keySet().stream().map(item -> {
+			return Registry.ITEM.getKey(item);
+		}).collect(Collectors.toList());
 	}
 
 	public static boolean isDiscoverable (Item item) {
-		return RecipeXPCost.get(item) != null;
+		return ItemXPCost.get(item) != null;
 	}
 
 	public static class KnowledgeBookTrade implements TradeOffers.Factory {

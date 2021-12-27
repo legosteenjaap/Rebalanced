@@ -77,7 +77,7 @@ public class ServerRecipeBookMixin extends RecipeBook implements ServerRecipeBoo
         for (Recipe<?> recipe : recipeList) {
             ResourceLocation resourceLocation = recipe.getId();
             if (recipeBookInterface.getDiscoveredRecipes().contains(resourceLocation) || recipe.isSpecial() || !RecipeAPI.isDiscoverable(recipe.getResultItem().getItem())) continue;
-            recipeBookInterface.discover(resourceLocation);
+            if (!recipeBookInterface.discover(resourceLocation)) continue;
             recipes.add(resourceLocation);
             ++discoveredRecipes;
         }

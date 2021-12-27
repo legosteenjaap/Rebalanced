@@ -22,6 +22,7 @@
     "recipe.AdvancementBuilderAccessor",
     "recipe.AdvancementManagerMixin",
     "recipe.AdvancementRewardsMixin",
+    "recipe.RecipeCommandMixin",
     "recipe.RecipeManagerMixin",
 
     "recipe.block.WitherSkullBlockMixin",
@@ -43,7 +44,6 @@
 
     "recipe.campfire.CampfireBlockMixin",
 
-    "recipe.command.RecipeCommandMixin",
 
     "recipe.crafting.CraftingScreenMixin",
     "recipe.crafting.CraftingScreenHandlerInvoker",

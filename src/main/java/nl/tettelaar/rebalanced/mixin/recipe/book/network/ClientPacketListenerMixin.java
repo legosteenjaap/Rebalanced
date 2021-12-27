@@ -45,14 +45,11 @@ public class ClientPacketListenerMixin {
         clientRecipeBook.setBookSettings(clientboundRecipePacket.getBookSettings());
         ClientboundRecipePacket.State state = clientboundRecipePacket.getState();
 
-        if (packetInterface.IsDiscover()) {
+        //if (packetInterface.IsDiscover()) {
             switch (state) {
                 case INIT:
                     for (ResourceLocation resourceLocation : packetInterface.getDiscovered()) {
-                        this.recipeManager.byKey(resourceLocation).ifPresent(clientRecipeBook::addHighlight);
-                    }
-                    for (ResourceLocation resourceLocation : packetInterface.getDiscovered()) {
-                        this.recipeManager.byKey(resourceLocation).ifPresent(clientRecipeBook::add);
+                        this.recipeManager.byKey(resourceLocation).ifPresent(recipeBookInterface::discover);
                     }
                     break;
                 case ADD:
@@ -64,17 +61,17 @@ public class ClientPacketListenerMixin {
                         });
                     }
                     break;
-                case REMOVE:
+                /*case REMOVE:
                     for (ResourceLocation resourceLocation : packetInterface.getDiscovered()) {
                         this.recipeManager.byKey(resourceLocation).ifPresent(clientRecipeBook::remove);
                     }
-                    break;
-            }
-            ci.cancel();
-            clientRecipeBook.getCollections().forEach(recipeCollection -> recipeCollection.updateKnownRecipes(clientRecipeBook));
+                    break;*/
+            //}
+            /*clientRecipeBook.getCollections().forEach(recipeCollection -> recipeCollection.updateKnownRecipes(clientRecipeBook));
             if (this.minecraft.screen instanceof RecipeUpdateListener) {
                 ((RecipeUpdateListener) ((Object) this.minecraft.screen)).recipesUpdated();
-            }
+            }*/
+            //ci.cancel();
         }
     }
 

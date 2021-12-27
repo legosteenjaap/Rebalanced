@@ -48,7 +48,7 @@ public abstract class ResultContainerMixin implements RecipeHolder, ResultContai
     }
 
     private void setXPCost (Item item) {
-        Optional<Integer> OptXPCost = RecipeAPI.getRecipeXPCost(item);
+        Optional<Integer> OptXPCost = RecipeAPI.getItemXPCost(item);
         if (item != Items.AIR) XPCost = OptXPCost;
         if (XPCost.isPresent() && XPCost.get() > 99) XPCost = Optional.of(99);
     }

@@ -11,8 +11,8 @@ public interface RecipeBookInterface {
 
     final Set<ResourceLocation> discovered = Sets.newHashSet();
 
-    public void discover(ResourceLocation resourceLocation);
-    public void discover(Recipe<?> recipe);
+    public boolean discover(ResourceLocation resourceLocation);
+    public boolean discover(Recipe<?> recipe);
     public boolean isDiscovered(Recipe<?> recipe);
     default Set<ResourceLocation> getDiscoveredRecipes () {
         return discovered;

@@ -40,16 +40,20 @@ public class RecipeBookMixin implements RecipeBookInterface {
     }
 
     @Override
-    public void discover(ResourceLocation resourceLocation) {
-        this.discovered.add(resourceLocation);
-        this.known.remove(resourceLocation);
+    public boolean discover(ResourceLocation resourceLocation) {
+        if (!this.known.contains(resourceLocation)) {
+            this.discovered.add(resourceLocation);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void discover(Recipe<?> recipe) {
+    public boolean discover(Recipe<?> recipe) {
         if (!recipe.isSpecial()) {
-            this.discover(recipe.getId());
+            return this.discover(recipe.getId());
         }
+        return false;
     }
 
     @Override

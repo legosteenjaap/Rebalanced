@@ -41,12 +41,15 @@ public class AdvancementManagerMixin {
 					while (iterator.hasNext()) {
 						JsonElement recipe = iterator.next();
 						ResourceLocation id = new ResourceLocation(recipe.getAsString());
-						List<ResourceLocation> removedRecipes = RecipeAPI.getDiscoverableRecipeAdvancements();
-						if (removedRecipes != null && removedRecipes.contains(id)) {
+						List<ResourceLocation> removedRecipes = RecipeAPI.getRemovedRecipeAdvancements();
+						List<ResourceLocation> discoverableRecipes = RecipeAPI.getDiscoverableRecipes();
+						if (discoverableRecipes != null && discoverableRecipes.contains(id)) {
 							AdvancementRewardsInterface advancementRewardsInterface = ((AdvancementRewardsInterface)((AdvancementBuilderAccessor)map.get(idAdvancement)).getRewards());
 							if (!advancementRewardsInterface.hasRecipeStatus()) {
 								advancementRewardsInterface.setRecipeStatus(RecipeStatus.DISCOVERED);
 							}
+						} else if (removedRecipes != null && removedRecipes.contains(id)) {
+							advancements.remove(id);
 						}
 					}
 				}

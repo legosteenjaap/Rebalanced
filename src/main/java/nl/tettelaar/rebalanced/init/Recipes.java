@@ -166,7 +166,7 @@ public class Recipes {
 	}
 
 	public static void initXPCost () {
-		RecipeAPI.setRecipeXPCost(Items.STONE_PICKAXE, 15);
+		RecipeAPI.setItemsXPCost(Arrays.asList(Items.STONE_SWORD, Items.STONE_PICKAXE, Items.STONE_SHOVEL, Items.STONE_AXE, Items.STONE_HOE),5 );
 	}
 
 	private static void initGolems() {
