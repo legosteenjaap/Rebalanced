@@ -1,22 +1,24 @@
 package nl.tettelaar.rebalanced.mixin.xpbar;
 
-import com.google.common.primitives.Ints;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.util.Mth;
+import nl.tettelaar.rebalanced.api.ClientAPI;
 import nl.tettelaar.rebalanced.render.interfaces.FontInterface;
+import org.lwjgl.system.MathUtil;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.*;
+
+import static org.lwjgl.opengl.GL11.GL_ADD;
+import static org.lwjgl.opengl.GL14.GL_MAX;
+import static org.lwjgl.opengl.GL14C.GL_FUNC_ADD;
 
 @Mixin(Gui.class)
 public class GuiMixin extends GuiComponent{
@@ -39,66 +41,92 @@ public class GuiMixin extends GuiComponent{
         throw new AssertionError();
     }
 
-    PoseStack poseStackCapt;
 
-    @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
-    public void renderExperienceBarCapturePosestack(PoseStack poseStack, int i, CallbackInfo ci) {
-        poseStackCapt = poseStack;
-    }
 
-    @Inject(method = "renderExperienceBar", at = @At("RETURN"), cancellable = true)
-    public void renderExperienceBar(PoseStack poseStack, int i, CallbackInfo ci) {
-        this.setBlitOffset(0);
-        if (alpha <= -1) {
-            isFading = false;
-        } else if (alpha >= 2) {
-            isFading = true;
-        }
-        float transparencyDif = (0.01f * this.minecraft.getDeltaFrameTime());
-        if (isFading) transparencyDif = transparencyDif * -1;
-        alpha = alpha + transparencyDif;
-        System.out.println(alpha);
-        int m;
-        int l;
-        this.minecraft.getProfiler().push("expBar");
-        RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        int j = this.minecraft.player.getXpNeededForNextLevel();
-        if (j > 0) {
-            int k = 182;
-            l = (int)((this.minecraft.player.experienceProgress) * 183.0f);
-            m = this.screenHeight - 32 + 3;
-            this.blit(poseStack, i, m, 0, 64, 182, 5);
-            if (l > 0) {
-                this.blit(poseStack, i, m, 0, 69, l, 5);
+    @Redirect(method = "renderExperienceBar(Lcom/mojang/blaze3d/vertex/PoseStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V", ordinal = 0))
+    private void injected(Gui gui, PoseStack poseStack, int x, int y, int textureX, int textureY, int width, int height) {
+        if (ClientAPI.getXPCost() > 0) {
+            if (alpha <= -0.2) {
+                isFading = false;
+            } else if (alpha >= 1.2) {
+                isFading = true;
             }
+            float transparencyDif = (0.05f * this.minecraft.getDeltaFrameTime());
+            if (isFading) transparencyDif = transparencyDif * -1;
+            alpha = alpha + transparencyDif;
+        } else {
+            alpha= 0.0f;
         }
-        RenderSystem.disableBlend();
-        this.minecraft.getProfiler().pop();
-        if (this.minecraft.player.experienceLevel > 0) {
-            this.minecraft.getProfiler().push("expLevel");
-            String k = "" + (this.minecraft.player.experienceLevel);
-            l = (this.screenWidth - this.getFont().width(k)) / 2;
-            m = this.screenHeight - 31 - 4;
-            ((FontInterface)(Object)this.getFont()).enableTransparency();
-            int color = setAlpha(0, alpha);
-            this.getFont().draw(poseStack, k, (float)(l + 1), (float)m, color);
-            this.getFont().draw(poseStack, k, (float)(l - 1), (float)m, color);
-            this.getFont().draw(poseStack, k, (float)l, (float)(m + 1), color);
-            this.getFont().draw(poseStack, k, (float)l, (float)(m - 1), color);
-            this.getFont().draw(poseStack, k, (float)l, (float)m, setAlpha(8453920, alpha));
-            ((FontInterface)(Object)this.getFont()).disableTransparency();
-            this.minecraft.getProfiler().pop();
+        this.blit(poseStack, x, y, textureX, textureY, width, height);
+        ClientAPI.updateAltXP(ClientAPI.getXPCost(), ClientAPI.isLevel());
+        int textureWidthAlt = (int)(ClientAPI.getAltXPProgress() * 183.0f);
+        int textureWidth = (int)(this.minecraft.player.experienceProgress * 183.0f);
+        int textureHeight = this.screenHeight - 32 + 3;
+        if (textureWidthAlt > 0) {
+            RenderSystem.enableBlend();
+            this.blit(poseStack, x, textureHeight, 0, 69, Math.min(textureWidth, textureWidthAlt), 5);
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, Mth.clamp(alpha, 0.0f, 1.0f));
+            this.blit(poseStack, x, textureHeight, 0, 69, Math.max(textureWidth, textureWidthAlt), 5);
+            RenderSystem.disableBlend();
+        } else if (textureWidth > 0) {
+            this.blit(poseStack, x, textureHeight, 0, 69, textureWidth, 5);
         }
+    }
+    @Redirect(method = "renderExperienceBar(Lcom/mojang/blaze3d/vertex/PoseStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V", ordinal = 1))
+    private void removeXPProgressBlit(Gui gui, PoseStack poseStack, int x, int y, int textureX, int textureY, int width, int height) {
     }
 
-    @ModifyConstant(method = "renderExperienceBar", constant = {@Constant(intValue = 0), @Constant(intValue = 8453920)})
-    private int changeAlpha (int color) {
-        color = setAlpha(color, 2.0f - alpha);
-        return color;
+    @Redirect(method = "renderExperienceBar(Lcom/mojang/blaze3d/vertex/PoseStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/lang/String;FFI)I", ordinal = 0))
+    private int replaceXPNumDraw(Font font, PoseStack poseStack, String string, float a, float b, int color) throws Exception {
+        if (ClientAPI.getAltXPLevel() >= 0 && ClientAPI.getXPCost() > 0) {
+            String XP = "" + minecraft.player.experienceLevel;
+            String altXP;
+            if (ClientAPI.getAltXPLevel() > 0) altXP = "" + ClientAPI.getAltXPLevel();
+            else {
+                altXP = "";
+            }
+            int l = (this.screenWidth - this.getFont().width(XP)) / 2;
+            int m = this.screenHeight - 31 - 4;
+            ((FontInterface)(Object)this.getFont()).enableTransparency();
+            int colorBack = setAlpha(0, 1.0f - alpha);
+            int colorFront = setAlpha(8453920, 1.0f - alpha);
+            int colorBackAlt = setAlpha(0, alpha);
+            int colorFrontAlt = setAlpha(8453920, alpha);
+            RenderSystem.enableBlend();
+            this.getFont().draw(poseStack, XP, (float) (l + 1), (float) m, colorBack);
+            this.getFont().draw(poseStack, XP, (float) (l - 1), (float) m, colorBack);
+            this.getFont().draw(poseStack, XP, (float) l, (float) (m + 1), colorBack);
+            this.getFont().draw(poseStack, XP, (float) l, (float) (m - 1), colorBack);
+            this.getFont().draw(poseStack, XP, (float) l, (float) m, colorFront);
+            l = (this.screenWidth - this.getFont().width(altXP)) / 2;
+            this.getFont().draw(poseStack, altXP, (float) (l + 1), (float) m, colorBackAlt);
+            this.getFont().draw(poseStack, altXP, (float) (l - 1), (float) m, colorBackAlt);
+            this.getFont().draw(poseStack, altXP, (float) l, (float) (m + 1), colorBackAlt);
+            this.getFont().draw(poseStack, altXP, (float) l, (float) (m - 1), colorBackAlt);
+            this.getFont().draw(poseStack, altXP, (float) l, (float) m, colorFrontAlt);
+            ((FontInterface)(Object)this.getFont()).disableTransparency();
+            RenderSystem.disableBlend();
+        } else if (minecraft.player.experienceLevel > 0) {
+            String k = "" + minecraft.player.experienceLevel;
+            int l = (this.screenWidth - this.getFont().width(k)) / 2;
+            int m = this.screenHeight - 31 - 4;
+            this.getFont().draw(poseStack, k, (float) (l + 1), (float) m, 0);
+            this.getFont().draw(poseStack, k, (float) (l - 1), (float) m, 0);
+            this.getFont().draw(poseStack, k, (float) l, (float) (m + 1), 0);
+            this.getFont().draw(poseStack, k, (float) l, (float) (m - 1), 0);
+            this.getFont().draw(poseStack, k, (float) l, (float) m, 8453920);
+        }
+        return 0;
     }
+
+    @Redirect(method = "renderExperienceBar(Lcom/mojang/blaze3d/vertex/PoseStack;I)V", slice = @Slice(from = @At(ordinal = 0, value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/lang/String;FFI)I")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/lang/String;FFI)I"))
+    private int removeXPNumDraw(Font font, PoseStack poseStack, String string, float a, float b, int color) {
+        return 0;
+    }
+
+
+
+
 
     public int setAlphaWithMax (int color, float alpha) {
         float maxAlpha = getAlpha(color);

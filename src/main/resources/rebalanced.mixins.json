@@ -84,8 +84,10 @@
     "elytra.FireworkItemMixin",
     "elytra.ElytraMixin",
 
-    //"xpbar.GuiMixin",
-    //"xpbar.FontMixin",
+    "xpbar.GuiMixin",
+    "xpbar.FontMixin",
+    "xpbar.PlayerMixin",
+
 
     "LocalDifficultyMixin",
     "WrittenBookMixin",
