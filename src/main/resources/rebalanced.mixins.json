@@ -100,7 +100,9 @@
   ],
   "client": [
   	"recipe.stonecutter.StonecutterScreenHandlerMixin",
-	"recipe.smithing.SmithingScreenHandlerMixin",
+
+    "recipe.smithing.SmithingMenuMixin",
+    "recipe.smithing.SmithingScreenMixin",
 
     "recipe.book.RecipeButtonMixin",
 

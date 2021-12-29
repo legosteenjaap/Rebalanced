@@ -169,6 +169,7 @@ public class Recipes {
 		RecipeAPI.setItemsXPCost(Arrays.asList(Items.STONE_SWORD, Items.STONE_PICKAXE, Items.STONE_SHOVEL, Items.STONE_AXE, Items.STONE_HOE),5);
 		RecipeAPI.setItemsXPCost(Arrays.asList(Items.DRIED_KELP, Items.BAKED_POTATO, Items.COOKED_SALMON, Items.COOKED_COD),10);
 		RecipeAPI.setItemsXPCost(Arrays.asList(Items.COOKED_RABBIT, Items.COOKED_BEEF, Items.COOKED_CHICKEN, Items.COOKED_MUTTON, Items.COOKED_CHICKEN, Items.COOKED_PORKCHOP), 15);
+		RecipeAPI.setItemsXPCost(Arrays.asList(Items.NETHERITE_BOOTS), 10);
 
 	}
 
