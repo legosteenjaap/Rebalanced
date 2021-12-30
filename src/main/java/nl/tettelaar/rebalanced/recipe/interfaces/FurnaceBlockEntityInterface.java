@@ -6,4 +6,5 @@ public interface FurnaceBlockEntityInterface {
 
     public void setOwner(Player player);
     public Player getOwner();
+    public boolean isCookingRecipe();
 }

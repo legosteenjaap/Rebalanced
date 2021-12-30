@@ -41,14 +41,12 @@ public class GuiMixin extends GuiComponent{
         throw new AssertionError();
     }
 
-
-
     @Redirect(method = "renderExperienceBar(Lcom/mojang/blaze3d/vertex/PoseStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V", ordinal = 0))
     private void injected(Gui gui, PoseStack poseStack, int x, int y, int textureX, int textureY, int width, int height) {
         if (ClientAPI.getXPCost() > 0) {
-            if (alpha <= -0.2) {
+            if (alpha <= -0.5) {
                 isFading = false;
-            } else if (alpha >= 1.2) {
+            } else if (alpha >= 1.5) {
                 isFading = true;
             }
             float transparencyDif = (0.05f * this.minecraft.getDeltaFrameTime());
@@ -67,6 +65,7 @@ public class GuiMixin extends GuiComponent{
             this.blit(poseStack, x, textureHeight, 0, 69, Math.min(textureWidth, textureWidthAlt), 5);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, Mth.clamp(alpha, 0.0f, 1.0f));
             this.blit(poseStack, x, textureHeight, 0, 69, Math.max(textureWidth, textureWidthAlt), 5);
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             RenderSystem.disableBlend();
         } else if (textureWidth > 0) {
             this.blit(poseStack, x, textureHeight, 0, 69, textureWidth, 5);

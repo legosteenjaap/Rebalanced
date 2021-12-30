@@ -57,6 +57,7 @@ public class CampfireBlockMixin implements XPBlockInterface {
 		} else if (optionalRecipeOff.isPresent()) {
 			recipe = optionalRecipeOff.get();
 		}
+		if (player.isShiftKeyDown()) recipe = null;
 		if (recipe != null) {
 			Optional<Integer> XPCost = RecipeAPI.getItemXPCost(recipe.getResultItem().getItem());
 			if (XPCost.isPresent() && (!(player instanceof LocalPlayer) || !((LocalPlayer)player).getRecipeBook().contains(recipe))) return XPCost.get();

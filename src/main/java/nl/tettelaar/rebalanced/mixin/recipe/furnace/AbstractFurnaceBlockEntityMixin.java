@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import nl.tettelaar.rebalanced.recipe.interfaces.FurnaceBlockEntityInterface;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -22,6 +23,8 @@ import java.util.UUID;
 public abstract class AbstractFurnaceBlockEntityMixin extends BaseContainerBlockEntity implements FurnaceBlockEntityInterface {
 
     UUID player;
+
+    @Shadow int cookingProgress;
 
     protected AbstractFurnaceBlockEntityMixin(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -69,6 +72,11 @@ public abstract class AbstractFurnaceBlockEntityMixin extends BaseContainerBlock
     @Override
     public Player getOwner() {
         return this.getLevel().getPlayerByUUID(this.player);
+    }
+
+    @Override
+    public boolean isCookingRecipe() {
+        return cookingProgress > 0;
     }
 
 }

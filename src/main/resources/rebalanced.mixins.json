@@ -4,10 +4,6 @@
   "package": "nl.tettelaar.rebalanced.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    //"worldgen.MultiNoiseBiomeSourceMixin",
-    //"worldgen.NetherBiomeMixin",
-    //"worldgen.MultiNoiseBiomeSourceAccessor",
-
     //"worldgen.NoiseSamplerMixin",
     "worldgen.NoiseDataMixin",
     //"worldgen.TerrainShaperMixin",
@@ -44,7 +40,6 @@
 
     "recipe.campfire.CampfireBlockMixin",
 
-
     "recipe.crafting.CraftingScreenMixin",
     "recipe.crafting.CraftingScreenHandlerInvoker",
     "recipe.crafting.RecipeHolderMixin",
@@ -53,8 +48,10 @@
     "recipe.crafting.CraftingMenuMixin",
 
     "recipe.furnace.AbstractFurnaceBlockEntityMixin",
-    "recipe.furnace.FurnaceBlockMixin",
     "recipe.furnace.AbstractFurnaceBlockEntityInvoker",
+    "recipe.furnace.AbstractFurnaceBlockMixin",
+    "recipe.furnace.AbstractFurnaceMenuMixin",
+    "recipe.furnace.FurnaceBlockEntityMixin",
 
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
