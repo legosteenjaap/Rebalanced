@@ -38,6 +38,11 @@
 
     "recipe.book.network.ClientboundRecipePacketMixin",
 
+    /*"recipe.brewing.MenuTypeInvoker",
+    "recipe.brewing.MenuScreensInvoker",
+    "recipe.brewing.MenuTypeMixin",
+    "recipe.brewing.BrewingStandBlockEntityMixin",*/
+
     "recipe.campfire.CampfireBlockMixin",
 
     "recipe.crafting.CraftingScreenMixin",

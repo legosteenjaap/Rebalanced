@@ -21,7 +21,7 @@ public class RecipeAPI {
 	private static List<ResourceLocation> removedRecipeAdvancements = new ArrayList<>();
 	private static ArrayList<Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>> knowledgeBooksLootTable = new ArrayList<>();
 	private static HashMap<VillagerProfession, HashMap<Integer, List<Tuple<TradeOffers.Factory, Float>>>> KnowledgeBooksVillagerTrades = new HashMap<>();
-	private static List<ResourceLocation> blockRecipeList = new ArrayList<>();
+	private static List<Tuple<ResourceLocation, Item>> blockRecipeList = new ArrayList<>();
 	private static HashMap<ResourceLocation, List<ResourceLocation>> requiredRecipesMap = new HashMap<>();
 	private static List<Tuple<TradeOffers.Factory, Float>> wanderingTraderKnowledgeBooks = new ArrayList<>();
 	private static HashMap<Item, Integer> ItemXPCost = new HashMap<>();
@@ -59,8 +59,8 @@ public class RecipeAPI {
 		registerRequiredRecipesID(new ResourceLocation(recipe), requiredRecipesID);
 	}
 
-	public static void registerBlockRecipe(ResourceLocation name) {
-		blockRecipeList.add(name);
+	public static void registerBlockRecipe(ResourceLocation name, Item displayItem) {
+		blockRecipeList.add(new Tuple<>(name, displayItem));
 	}
 
 	public static void setItemXPCost(Item item, int cost) {
@@ -144,7 +144,7 @@ public class RecipeAPI {
 
 	public static List<ResourceLocation> getRequiredRecipes(ResourceLocation recipe) {
 		 List<ResourceLocation> requiredRecipes = requiredRecipesMap.get(recipe);
-		 if(requiredRecipes != null) return requiredRecipes;
+		 if(requiredRecipes != null && requiredRecipes.size() > 0) return requiredRecipes;
 		 return null;
 	}
 
@@ -163,7 +163,7 @@ public class RecipeAPI {
 		return null;
 	}
 
-	public static List<ResourceLocation> getBlockRecipeList() {
+	public static List<Tuple<ResourceLocation, Item>> getBlockRecipeList() {
 		return blockRecipeList;
 	}
 

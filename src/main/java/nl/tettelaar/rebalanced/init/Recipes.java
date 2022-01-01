@@ -1,10 +1,22 @@
 package nl.tettelaar.rebalanced.init;
 
 import java.util.Arrays;
+
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerProfession;
+
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmokingRecipe;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
+import nl.tettelaar.rebalanced.mixin.recipe.brewing.MenuScreensInvoker;
+import nl.tettelaar.rebalanced.mixin.recipe.brewing.MenuTypeInvoker;
+import nl.tettelaar.rebalanced.recipe.BlockRecipe;
+import nl.tettelaar.rebalanced.recipe.BrewingStandMenu;
+import nl.tettelaar.rebalanced.recipe.BrewingStandScreen;
 
 public class Recipes {
 
@@ -16,14 +28,23 @@ public class Recipes {
 	private static final String CHICKEN = "cooked_chicken;cooked_chicken_from_campfire_cooking;cooked_chicken_from_smoking";
 	private static final String RABBIT = "cooked_chicken;cooked_chicken_from_campfire_cooking;cooked_chicken_from_smoking";
 	private static final String MUTTON = "cooked_mutton;cooked_mutton_from_campfire_cooking;cooked_mutton_from_smoking";
-	
+
+	public static final RecipeType<BlockRecipe> BLOCK = RecipeType.register("block");
+	//public static final RecipeType<SmokingRecipe> BREWING = RecipeType.register("brewing");
+	//public static final MenuType<BrewingStandMenu> BREWING_STAND = register(BrewingStandMenu::new);
+
 	public static void init() {
 		initXPCost();
 		initKnowledgeBooks();
 		initGolems();
 		initRequiredRecipes();
+		//MenuScreensInvoker.register(BREWING_STAND, BrewingStandScreen::new);
 	}
-	
+
+	private static MenuType register(MenuType.MenuSupplier menuSupplier) {
+		return Registry.register(Registry.MENU, "brewing_stand", MenuTypeInvoker.initMenuType(menuSupplier));
+	}
+
 	public static void initRequiredRecipes () {
 		RecipeAPI.registerRequiredRecipes("iron_sword", Arrays.asList("stone_sword"));
 		RecipeAPI.registerRequiredRecipes("iron_pickaxe", Arrays.asList("stone_pickaxe"));
@@ -174,10 +195,10 @@ public class Recipes {
 	}
 
 	private static void initGolems() {
-		RecipeAPI.registerBlockRecipe(new ResourceLocation("iron_golem"));
-		RecipeAPI.registerBlockRecipe(new ResourceLocation("snow_golem"));
-		RecipeAPI.registerBlockRecipe(new ResourceLocation("wither"));
-		RecipeAPI.registerBlockRecipe(new ResourceLocation("nether_portal"));
+		RecipeAPI.registerBlockRecipe(new ResourceLocation("iron_golem"), Items.IRON_BLOCK);
+		RecipeAPI.registerBlockRecipe(new ResourceLocation("snow_golem"), Items.SNOW_BLOCK);
+		RecipeAPI.registerBlockRecipe(new ResourceLocation("wither"), Items.SOUL_SAND);
+		RecipeAPI.registerBlockRecipe(new ResourceLocation("nether_portal"), Items.OBSIDIAN);
 	}
 
 }

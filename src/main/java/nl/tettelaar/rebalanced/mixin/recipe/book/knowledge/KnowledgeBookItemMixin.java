@@ -34,39 +34,32 @@ public class KnowledgeBookItemMixin extends Item {
 	}
 
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
-	public void useHead(Level world, Player user, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
-		ItemStack itemStack = user.getItemInHand(hand);
+	public void useHead(Level world, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
+		ItemStack itemStack = player.getItemInHand(hand);
 
 		CompoundTag compoundTag = itemStack.getTag();
 		if (compoundTag != null && compoundTag.contains("Recipes", 9)) {
 			if (!world.isClientSide) {
-				ServerPlayer player = (ServerPlayer) user;
+				ServerPlayer serverPlayer = (ServerPlayer) player;
 				ItemStack output = RecipeUtil.getRecipeOutput(compoundTag, world);
-				if (output != null && RecipeUtil.playerCanUnlockRecipe(compoundTag, world, player)) {
-					if (RecipeUtil.playerHasAllRecipes(compoundTag, world, player)) {
-						Random random = user.level.getRandom();
+				if (output != null && RecipeUtil.hasAllRequiredRecipes(compoundTag, world, serverPlayer)) {
+					if (RecipeUtil.playerHasAllRecipes(compoundTag, world, serverPlayer)) {
+						Random random = serverPlayer.level.getRandom();
 						int ranInt = random.nextInt(7) + 3;
 						switch (output.getRarity()) {
-						case UNCOMMON:
-							ranInt *= 2;
-							break;
-						case RARE:
-							ranInt *= 3;
-							break;
-						case EPIC:
-							ranInt *= 4;
-							break;
-						default:
-							break;
-
+							case UNCOMMON -> ranInt *= 2;
+							case RARE -> ranInt *= 3;
+							case EPIC -> ranInt *= 4;
+							default -> {
+							}
 						}
 						for (int i = 0; i < ranInt; i++) {
-							ExperienceOrb.award((ServerLevel) user.level, user.position(), random.nextInt(3));
+							ExperienceOrb.award((ServerLevel) serverPlayer.level, serverPlayer.position(), random.nextInt(3));
 						}
 
 					} else {
 						FriendlyByteBuf buf = PacketByteBufs.create();
-						ServerPlayNetworking.send((ServerPlayer) user, NetworkingClient.SHOW_FLOATING_ITEM_ID, buf.writeItem(output));
+						ServerPlayNetworking.send((ServerPlayer) serverPlayer, NetworkingClient.SHOW_FLOATING_ITEM_ID, buf.writeItem(output));
 					}
 				} else {
 					cir.setReturnValue(InteractionResultHolder.fail(itemStack));
@@ -77,7 +70,8 @@ public class KnowledgeBookItemMixin extends Item {
 			}
 			
 		}
-		user.playNotifySound(SoundEvents.VILLAGER_WORK_LIBRARIAN, SoundSource.PLAYERS, 1f, 1f);
+		player.playNotifySound(SoundEvents.VILLAGER_WORK_LIBRARIAN, SoundSource.PLAYERS, 1f, 1f);
+		player.getCooldowns().addCooldown(this, 20);
 	}
 
 	@Inject(method = "use", at = @At("RETURN"), cancellable = true)

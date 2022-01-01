@@ -9,6 +9,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -78,12 +79,14 @@ public class RecipeUtil {
 		return output;
 	}
 
-	public static boolean playerCanUnlockRecipe(CompoundTag compoundTag, Level world, ServerPlayer player) {
+	public static boolean hasAllRequiredRecipes(CompoundTag compoundTag, Level world, ServerPlayer player) {
 		List<ResourceLocation> recipesID = RecipeAPI.getRequiredRecipes(Registry.ITEM.getKey((getRecipeOutput(compoundTag, world).getItem())));
 		if (recipesID != null) {
 			for (ResourceLocation recipeID : recipesID) {
-				if (!player.getRecipeBook().contains(recipeID))
+				if (!player.getRecipeBook().contains(recipeID)) {
+					player.displayClientMessage(new TranslatableComponent("item.knowledge_book.require_recipe"), true);
 					return false;
+				}
 			}
 		}
 		return true;
