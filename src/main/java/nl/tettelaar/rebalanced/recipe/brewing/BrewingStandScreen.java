@@ -1,7 +1,7 @@
 /*
  * Decompiled with CFR 0.0.9 (FabricMC cc05e23f).
  */
-package nl.tettelaar.rebalanced.recipe;
+package nl.tettelaar.rebalanced.recipe.brewing;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;

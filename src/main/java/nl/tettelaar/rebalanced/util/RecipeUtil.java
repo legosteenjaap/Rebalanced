@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import com.google.common.collect.Lists;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
+import nl.tettelaar.rebalanced.recipe.interfaces.RecipeBookInterface;
 
 public class RecipeUtil {
 
@@ -100,7 +102,11 @@ public class RecipeUtil {
 		return true;
 	}
 
-	public static boolean isUnlockable (Player player, int XPCOST) {
-		return player.experienceLevel >= XPCOST || player.isCreative();
+	public static boolean isUnlockable (ServerPlayer player, int XPCost, Recipe<?> recipe) {
+		return (((RecipeBookInterface)player.getRecipeBook()).isDiscovered(recipe) && player.experienceLevel >= XPCost) || player.isCreative();
+	}
+
+	public static boolean isUnlockable (LocalPlayer player, int XPCost, Recipe<?> recipe) {
+		return (((RecipeBookInterface)player.getRecipeBook()).isDiscovered(recipe) && player.experienceLevel >= XPCost) || player.isCreative();
 	}
 }

@@ -18,7 +18,6 @@
     "recipe.AdvancementBuilderAccessor",
     "recipe.AdvancementManagerMixin",
     "recipe.AdvancementRewardsMixin",
-    "recipe.RecipeCommandMixin",
     "recipe.RecipeManagerMixin",
 
     "recipe.block.WitherSkullBlockMixin",
@@ -40,13 +39,15 @@
 
     /*"recipe.brewing.MenuTypeInvoker",
     "recipe.brewing.MenuScreensInvoker",
-    "recipe.brewing.MenuTypeMixin",
-    "recipe.brewing.BrewingStandBlockEntityMixin",*/
+    "recipe.brewing.MenuTypeMixin",*/
+    "recipe.brewing.BrewingStandBlockEntityMixin",
 
     "recipe.campfire.CampfireBlockMixin",
 
+    "recipe.command.RecipeCommandMixin",
+
     "recipe.crafting.CraftingScreenMixin",
-    "recipe.crafting.CraftingScreenHandlerInvoker",
+    "recipe.crafting.CraftingMenuInvoker",
     "recipe.crafting.RecipeHolderMixin",
     "recipe.crafting.ResultContainerMixin",
     "recipe.crafting.ResultSlotMixin",
@@ -57,6 +58,7 @@
     "recipe.furnace.AbstractFurnaceBlockMixin",
     "recipe.furnace.AbstractFurnaceMenuMixin",
     "recipe.furnace.FurnaceBlockEntityMixin",
+    "recipe.furnace.AbstractFurnaceScreenMixin",
 
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
@@ -98,7 +100,7 @@
     "DisableEndPortalMixin",
     "BoatEntityMixin",
     "HorseBaseEntityMixin",
-    "ItemMixin"
+    //"ItemMixin"
   ],
   "client": [
   	"recipe.stonecutter.StonecutterScreenHandlerMixin",
@@ -109,6 +111,8 @@
     "recipe.book.RecipeButtonMixin",
 
     "recipe.book.knowledge.KnowledgeBookItemClientMixin",
+
+    "recipe.command.ClientSuggestionProviderAccessor",
 
     "recipe.book.network.ClientPacketListenerMixin",
 

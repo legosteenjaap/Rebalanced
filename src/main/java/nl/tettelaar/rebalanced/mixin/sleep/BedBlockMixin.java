@@ -20,13 +20,18 @@ public class BedBlockMixin {
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
 	public void use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
 		if (player.experienceLevel < 10 && world.dimensionType().bedWorks() && !world.isDay() && !world.isThundering()) {
-            if (player instanceof ServerPlayer) {
-            	((ServerPlayer) player).setRespawnPosition(world.dimension(), pos, 0.0F, false, true);
-            }
-            TranslatableComponent text = new TranslatableComponent("sleep.try.xp");
-			player.displayClientMessage(text , true);
-			cir.setReturnValue(InteractionResult.FAIL);
+
+            //TranslatableComponent text = new TranslatableComponent("sleep.try.xp");
+			//player.displayClientMessage(text , true);
+			//cir.setReturnValue(InteractionResult.FAIL);
 		}
+		if (player instanceof ServerPlayer) {
+			((ServerPlayer) player).setRespawnPosition(world.dimension(), pos, 0.0F, false, true);
+		} else {
+			player.displayClientMessage(new TranslatableComponent("rebalanced.testing.unfinished"), true);
+		}
+		cir.setReturnValue(InteractionResult.FAIL);
+
 	}
 	
 

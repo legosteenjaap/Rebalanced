@@ -1,9 +1,9 @@
 package nl.tettelaar.rebalanced.api;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
@@ -11,6 +11,8 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.trading.MerchantOffer;
 import org.jetbrains.annotations.Nullable;
 import nl.tettelaar.rebalanced.util.RecipeUtil;
@@ -25,6 +27,7 @@ public class RecipeAPI {
 	private static HashMap<ResourceLocation, List<ResourceLocation>> requiredRecipesMap = new HashMap<>();
 	private static List<Tuple<TradeOffers.Factory, Float>> wanderingTraderKnowledgeBooks = new ArrayList<>();
 	private static HashMap<Item, Integer> ItemXPCost = new HashMap<>();
+	private static ArrayList<ResourceLocation> ExcludedDiscoverableRecipes = new ArrayList<>();
 
 	public static void registerWanderingTraderKnowledgeBookID(List<List<ResourceLocation>> recipes, int minPrice, int maxPrice, float chance) {
 		wanderingTraderKnowledgeBooks.add(new Tuple<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
@@ -71,6 +74,10 @@ public class RecipeAPI {
 		for (Item item : items) {
 			ItemXPCost.put(item, cost);
 		}
+	}
+
+	public static void addExcludedDiscoverableRecipes(List<ResourceLocation> recipes) {
+		ExcludedDiscoverableRecipes.addAll(recipes);
 	}
 
 	private static void registerKnowledgeBookID(List<List<ResourceLocation>> recipeLists, List<ResourceLocation> loottables) {
@@ -171,14 +178,37 @@ public class RecipeAPI {
 		return Optional.ofNullable(ItemXPCost.get(item));
 	}
 
-	public static List<ResourceLocation> getDiscoverableRecipes() {
-		return ItemXPCost.keySet().stream().map(item -> {
-			return Registry.ITEM.getKey(item);
+	public static List<ResourceLocation> getDiscoverableRecipes(RecipeManager recipeManager) {
+		ArrayList<ResourceLocation> discoverableRecipes = new ArrayList<>();
+		ItemXPCost.keySet().forEach((Item item) -> {
+			discoverableRecipes.addAll(RecipeAPI.getRecipesWithDiscoverableItem(new ItemStack(item), recipeManager).stream().map((Function<Recipe, ResourceLocation>) Recipe::getId).collect(Collectors.toList()));
+		});
+		discoverableRecipes.removeAll(ExcludedDiscoverableRecipes);
+		return discoverableRecipes;
+	}
+
+	public static List<Recipe<?>> getDiscoverableRecipesWithItem(ItemStack item, RecipeManager recipeManager) {
+		ArrayList<ResourceLocation> recipes = (ArrayList<ResourceLocation>) getDiscoverableRecipes(recipeManager);
+		new ArrayList<>(recipes).forEach((resourceLocation) -> {
+			if (recipeManager.byKey(resourceLocation).get().getResultItem().getItem().equals(item.getItem()))recipes.remove(resourceLocation);
+		});
+		return recipes.stream().map((resourceLocation) -> {
+			return recipeManager.byKey(resourceLocation).get();
 		}).collect(Collectors.toList());
 	}
 
-	public static boolean isDiscoverable (Item item) {
-		return ItemXPCost.get(item) != null;
+	public static Collection<Recipe<?>> getRecipesWithDiscoverableItem(ItemStack item, RecipeManager recipeManager) {
+		ArrayList<Recipe<?>> recipes = new ArrayList<>();
+		for (Recipe<?> recipe : recipeManager.getRecipes()) {
+			if (recipe.getResultItem().getItem().equals(item.getItem()) && RecipeAPI.isDiscoverable(recipe)) {
+				recipes.add(recipe);
+			}
+		}
+		return recipes;
+	}
+
+	public static boolean isDiscoverable (Recipe recipe) {
+		return ItemXPCost.get(recipe.getResultItem().getItem()) != null && !ExcludedDiscoverableRecipes.contains(recipe.getId());
 	}
 
 	public static class KnowledgeBookTrade implements TradeOffers.Factory {

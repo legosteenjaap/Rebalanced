@@ -27,6 +27,7 @@ public class RecipeCollectionMixin {
 
     @Overwrite
     public void updateKnownRecipes(RecipeBook recipeBook) {
+
         for (Recipe<?> recipe : this.recipes) {
             boolean isDiscovered = ((RecipeBookInterface)recipeBook).isDiscovered(recipe);
             if (!(recipeBook.contains(recipe) || isDiscovered)) continue;

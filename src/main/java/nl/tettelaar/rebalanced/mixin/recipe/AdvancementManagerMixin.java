@@ -7,55 +7,47 @@ import java.util.List;
 import java.util.Map;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.world.item.crafting.RecipeManager;
 import nl.tettelaar.rebalanced.recipe.interfaces.AdvancementRewardsInterface;
 import nl.tettelaar.rebalanced.recipe.RecipeStatus;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(AdvancementList.class)
+@Mixin(ServerAdvancementManager.class)
 public class AdvancementManagerMixin {
 
-	@ModifyVariable(method = "add", at = @At("HEAD"), ordinal = 0)
-	private Map<ResourceLocation, Advancement.Builder> removeRecipes(Map<ResourceLocation, Advancement.Builder> map) {
+	@Inject(method = "lambda$apply$0", at = @At("HEAD"))
+	private void removeAdvancements(Map<ResourceLocation, JsonElement> map, ResourceLocation resourceLocation, JsonElement jsonElemen, CallbackInfo ci) {
+		JsonElement rewards = null;
+		try {
+			rewards = map.get(resourceLocation).getAsJsonObject().get("rewards");
+		} catch (NullPointerException e) {
 
-		HashMap<ResourceLocation, Advancement.Builder> hashMap = Maps.newHashMap(map);
-
-		List<ResourceLocation> advancements = new ArrayList<ResourceLocation>(hashMap.keySet());
-		for (ResourceLocation idAdvancement : advancements) {
-			JsonElement rewards = null;
-			try {
-				rewards = hashMap.get(idAdvancement).serializeToJson().get("rewards");
-			} catch (NullPointerException e) {
-				
-			}
-			if (rewards != null && rewards.isJsonObject()) {
-				JsonElement recipes = rewards.getAsJsonObject().get("recipes");
-				if (recipes != null && recipes.isJsonArray()) {
-					Iterator<JsonElement> iterator = recipes.getAsJsonArray().iterator();
-					while (iterator.hasNext()) {
-						JsonElement recipe = iterator.next();
-						ResourceLocation id = new ResourceLocation(recipe.getAsString());
-						List<ResourceLocation> removedRecipes = RecipeAPI.getRemovedRecipeAdvancements();
-						List<ResourceLocation> discoverableRecipes = RecipeAPI.getDiscoverableRecipes();
-						if (discoverableRecipes != null && discoverableRecipes.contains(id)) {
-							AdvancementRewardsInterface advancementRewardsInterface = ((AdvancementRewardsInterface)((AdvancementBuilderAccessor)map.get(idAdvancement)).getRewards());
-							if (!advancementRewardsInterface.hasRecipeStatus()) {
-								advancementRewardsInterface.setRecipeStatus(RecipeStatus.DISCOVERED);
-							}
-						} else if (removedRecipes != null && removedRecipes.contains(id)) {
-							advancements.remove(id);
-						}
+		}
+		if (rewards != null && rewards.isJsonObject()) {
+			JsonElement recipes = rewards.getAsJsonObject().get("recipes");
+			if (recipes != null && recipes.isJsonArray()) {
+				Iterator<JsonElement> iterator = recipes.getAsJsonArray().iterator();
+				while (iterator.hasNext()) {
+					JsonElement recipe = iterator.next();
+					ResourceLocation id = new ResourceLocation(recipe.getAsString());
+					List<ResourceLocation> removedRecipes = RecipeAPI.getRemovedRecipeAdvancements();
+					if (removedRecipes != null && removedRecipes.contains(id)) {
+						map.remove(id);
 					}
 				}
 			}
 		}
-		return hashMap;
 	}
-
 }

@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.mixin.recipe;
+package nl.tettelaar.rebalanced.mixin.recipe.command;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -32,7 +32,7 @@ import java.util.Collections;
 public class RecipeCommandMixin {
 
     private static final SimpleCommandExceptionType ERROR_DISCOVER_FAILED = new SimpleCommandExceptionType(new TranslatableComponent("commands.recipe.discover.failed"));
-    private static final SuggestionProvider<CommandSourceStack> DISCOVERABLE_RECIPES = SuggestionProviders.register(new ResourceLocation("discoverable_recipes"), (commandContext, suggestionsBuilder) -> SharedSuggestionProvider.suggestResource(RecipeAPI.getDiscoverableRecipes().stream(), suggestionsBuilder));
+    private static final SuggestionProvider<CommandSourceStack> DISCOVERABLE_RECIPES = SuggestionProviders.register(new ResourceLocation("discoverable_recipes"), (commandContext, suggestionsBuilder) -> SharedSuggestionProvider.suggestResource(RecipeAPI.getDiscoverableRecipes(((ClientSuggestionProviderAccessor)commandContext.getSource()).getConnection().getRecipeManager()), suggestionsBuilder));
 
     @ModifyArg(method = "register", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;register(Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;)Lcom/mojang/brigadier/tree/LiteralCommandNode;"), index = 0)
     private static LiteralArgumentBuilder registerDiscoverRecipes (LiteralArgumentBuilder argumentBuilder) {

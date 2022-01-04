@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface RecipeBookInterface {
 
-    final Set<ResourceLocation> discovered = Sets.newHashSet();
+    Set<ResourceLocation> discovered = Sets.newHashSet();
 
     public boolean discover(ResourceLocation resourceLocation);
     public boolean discover(Recipe<?> recipe);

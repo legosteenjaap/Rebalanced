@@ -18,18 +18,18 @@ public class ClientboundRecipePacketMixin implements ClientboundRecipePacketInte
 
     boolean isDiscover = false;
 
-    List<ResourceLocation> discovered = ImmutableList.of();
+    //List<ResourceLocation> discovered = ImmutableList.of();
 
     @Inject(method = "<init>(Lnet/minecraft/network/FriendlyByteBuf;)V", at = @At("RETURN"))
     public void ClientboundRecipePacketMixin(FriendlyByteBuf friendlyByteBuf, CallbackInfo ci) {
         this.isDiscover = friendlyByteBuf.readBoolean();
-        this.discovered = friendlyByteBuf.readList(FriendlyByteBuf::readResourceLocation);
+        //this.discovered = friendlyByteBuf.readList(FriendlyByteBuf::readResourceLocation);
     }
 
     @Inject(method = "write", at = @At("RETURN"), cancellable = true)
     public void write(@NotNull FriendlyByteBuf friendlyByteBuf, CallbackInfo ci) {
         friendlyByteBuf.writeBoolean(this.isDiscover);
-        friendlyByteBuf.writeCollection(this.discovered, FriendlyByteBuf::writeResourceLocation);
+        //friendlyByteBuf.writeCollection(this.discovered, FriendlyByteBuf::writeResourceLocation);
     }
 
 
@@ -43,7 +43,7 @@ public class ClientboundRecipePacketMixin implements ClientboundRecipePacketInte
         return isDiscover;
     }
 
-    @Override
+    /*@Override
     public List<ResourceLocation> getDiscovered() {
         return this.discovered;
     }
@@ -51,6 +51,6 @@ public class ClientboundRecipePacketMixin implements ClientboundRecipePacketInte
     @Override
     public void setDiscovered(List<ResourceLocation> discovered) {
         this.discovered = discovered;
-    }
+    }*/
 
 }

@@ -7,9 +7,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.Recipe;
+import nl.tettelaar.rebalanced.api.RecipeAPI;
 import nl.tettelaar.rebalanced.recipe.interfaces.AdvancementRewardsInterface;
 import nl.tettelaar.rebalanced.recipe.interfaces.PlayerRecipeInterface;
 import nl.tettelaar.rebalanced.recipe.RecipeStatus;
+import nl.tettelaar.rebalanced.util.RecipeUtil;
+import org.lwjgl.system.CallbackI;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,12 +20,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.net.ResponseCache;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Mixin(AdvancementRewards.class)
 public class AdvancementRewardsMixin implements AdvancementRewardsInterface {
 
-    @Unique private RecipeStatus status;
+    @Unique private RecipeStatus status = null;
 
     @Override
     public void setRecipeStatus(RecipeStatus status) {
@@ -52,15 +58,21 @@ public class AdvancementRewardsMixin implements AdvancementRewardsInterface {
                     ((PlayerRecipeInterface) serverPlayer).discoverRecipesByKey(recipes);
                     break;
             }
+        } else {
+            for (ResourceLocation id : recipes) {
+                Optional<? extends Recipe<?>> recipe = serverPlayer.getServer().getRecipeManager().byKey(id);
+                if (recipe.isPresent() && !RecipeAPI.isDiscoverable(recipe.get())) serverPlayer.awardRecipesByKey(recipes);
+            }
+            ((PlayerRecipeInterface) serverPlayer).discoverRecipesByKey(recipes);
         }
     }
 
     @Inject(method = "deserialize", at = @At("RETURN"), cancellable = true)
     private static void deserialize(JsonObject jsonObject, CallbackInfoReturnable<AdvancementRewards> cir) throws JsonParseException {
+        RecipeStatus status = null;
         if (jsonObject.has("recipestatus")) {
             String recipeStatus = GsonHelper.getAsString(jsonObject, "recipestatus");
 
-            RecipeStatus status = null;
             switch (recipeStatus) {
                 case "UNLOCKED":
                     status = RecipeStatus.UNLOCKED;
@@ -72,12 +84,11 @@ public class AdvancementRewardsMixin implements AdvancementRewardsInterface {
                     status = RecipeStatus.DISCOVERED;
                     break;
                 default:
-                    if (recipeStatus == null) break;
                     throw new JsonParseException("This is not a recipe status: " + recipeStatus);
             }
-            if (recipeStatus != null)
-                ((AdvancementRewardsInterface) (Object) cir.getReturnValue()).setRecipeStatus(status);
         }
+        if (status != null)
+            ((AdvancementRewardsInterface) (Object) cir.getReturnValue()).setRecipeStatus(status);
     }
 
 

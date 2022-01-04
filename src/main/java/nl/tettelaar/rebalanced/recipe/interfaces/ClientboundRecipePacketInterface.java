@@ -9,7 +9,7 @@ public interface ClientboundRecipePacketInterface {
 
     public void setIsDiscover();
     public boolean IsDiscover();
-    public List<ResourceLocation> getDiscovered ();
-    public void setDiscovered(List<ResourceLocation> discovered);
+    //public List<ResourceLocation> getDiscovered ();
+    //public void setDiscovered(List<ResourceLocation> discovered);
 
 }

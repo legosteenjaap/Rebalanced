@@ -63,11 +63,6 @@ public abstract class ResultContainerMixin implements RecipeHolder, ResultContai
         return XPCost;
     }
 
-    @Override
-    public boolean isUnlockable(Player player) {
-        return this.getXPCost().isPresent() && RecipeUtil.isUnlockable(player, getXPCost().get());
-    }
-
     @Shadow
     public ItemStack getItem(int i) {
         throw new AssertionError();

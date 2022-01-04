@@ -45,15 +45,15 @@ public class ClientPacketListenerMixin {
         clientRecipeBook.setBookSettings(clientboundRecipePacket.getBookSettings());
         ClientboundRecipePacket.State state = clientboundRecipePacket.getState();
 
-        //if (packetInterface.IsDiscover()) {
+        if (packetInterface.IsDiscover()) {
             switch (state) {
                 case INIT:
-                    for (ResourceLocation resourceLocation : packetInterface.getDiscovered()) {
+                    for (ResourceLocation resourceLocation : clientboundRecipePacket.getRecipes()) {
                         this.recipeManager.byKey(resourceLocation).ifPresent(recipeBookInterface::discover);
                     }
                     break;
                 case ADD:
-                    for (ResourceLocation resourceLocation : packetInterface.getDiscovered()) {
+                    for (ResourceLocation resourceLocation : clientboundRecipePacket.getRecipes()) {
                         this.recipeManager.byKey(resourceLocation).ifPresent(recipe -> {
                             recipeBookInterface.discover(recipe);
                             clientRecipeBook.addHighlight((Recipe<?>) recipe);
@@ -61,17 +61,12 @@ public class ClientPacketListenerMixin {
                         });
                     }
                     break;
-                /*case REMOVE:
-                    for (ResourceLocation resourceLocation : packetInterface.getDiscovered()) {
-                        this.recipeManager.byKey(resourceLocation).ifPresent(clientRecipeBook::remove);
-                    }
-                    break;*/
-            //}
-            /*clientRecipeBook.getCollections().forEach(recipeCollection -> recipeCollection.updateKnownRecipes(clientRecipeBook));
+            }
+            clientRecipeBook.getCollections().forEach(recipeCollection -> recipeCollection.updateKnownRecipes(clientRecipeBook));
             if (this.minecraft.screen instanceof RecipeUpdateListener) {
-                ((RecipeUpdateListener) ((Object) this.minecraft.screen)).recipesUpdated();
-            }*/
-            //ci.cancel();
+                ((RecipeUpdateListener)((Object)this.minecraft.screen)).recipesUpdated();
+            }
+            ci.cancel();
         }
     }
 

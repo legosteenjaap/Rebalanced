@@ -2,7 +2,7 @@ package nl.tettelaar.rebalanced.init;
 
 import java.util.Arrays;
 
-import net.minecraft.client.gui.screens.MenuScreens;
+import com.google.common.collect.Lists;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -10,13 +10,9 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SmokingRecipe;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
-import nl.tettelaar.rebalanced.mixin.recipe.brewing.MenuScreensInvoker;
 import nl.tettelaar.rebalanced.mixin.recipe.brewing.MenuTypeInvoker;
 import nl.tettelaar.rebalanced.recipe.BlockRecipe;
-import nl.tettelaar.rebalanced.recipe.BrewingStandMenu;
-import nl.tettelaar.rebalanced.recipe.BrewingStandScreen;
 
 public class Recipes {
 
@@ -38,6 +34,7 @@ public class Recipes {
 		initKnowledgeBooks();
 		initGolems();
 		initRequiredRecipes();
+		RecipeAPI.addExcludedDiscoverableRecipes(Arrays.asList(new ResourceLocation("dried_kelp")));
 		//MenuScreensInvoker.register(BREWING_STAND, BrewingStandScreen::new);
 	}
 

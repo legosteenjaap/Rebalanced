@@ -1,4 +1,4 @@
-package nl.tettelaar.rebalanced.recipe;
+package nl.tettelaar.rebalanced.recipe.brewing;
 
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.resources.ResourceLocation;

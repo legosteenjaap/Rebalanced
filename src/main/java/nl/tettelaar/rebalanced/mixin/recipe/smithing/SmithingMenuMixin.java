@@ -94,7 +94,7 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu implements Smit
 			return false;
 		}
 		Optional<Integer> XPCost = RecipeAPI.getItemXPCost(selectedRecipe.getResultItem().getItem());
-		return (XPCost.isPresent() && RecipeUtil.isUnlockable(player, XPCost.get()));
+		return (XPCost.isPresent() && RecipeUtil.isUnlockable((LocalPlayer) player, XPCost.get(), selectedRecipe));
 	}
 
 	@Override

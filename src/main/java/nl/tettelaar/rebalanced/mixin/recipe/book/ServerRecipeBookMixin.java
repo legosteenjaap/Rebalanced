@@ -36,7 +36,7 @@ public class ServerRecipeBookMixin extends RecipeBook implements ServerRecipeBoo
     public void toNbt(CallbackInfoReturnable<CompoundTag> cir) {
         CompoundTag compoundTag = cir.getReturnValue();
         ListTag listTag2 = new ListTag();
-        for (ResourceLocation resourceLocation2 : ((RecipeBookInterface)(Object)(RecipeBook)this).getDiscoveredRecipes()) {
+        for (ResourceLocation resourceLocation2 : ((RecipeBookInterface)(ServerRecipeBook)(Object)this).getDiscoveredRecipes()) {
             listTag2.add(StringTag.valueOf(resourceLocation2.toString()));
         }
         compoundTag.put("discovered", listTag2);
@@ -45,15 +45,14 @@ public class ServerRecipeBookMixin extends RecipeBook implements ServerRecipeBoo
     @Inject(method = "fromNbt", at = @At("RETURN"), cancellable = true)
     public void fromNbt(CompoundTag compoundTag, RecipeManager recipeManager, CallbackInfo ci) {
         ListTag discovered = compoundTag.getList("discovered", 8);
-        RecipeBookInterface recipeBookInterface = (RecipeBookInterface) (Object)(RecipeBook)this;
+        RecipeBookInterface recipeBookInterface = (RecipeBookInterface) (ServerRecipeBook)(Object)this;
         this.loadRecipes(discovered, recipeBookInterface::discover, recipeManager);
     }
 
     @Inject(method = "sendInitialRecipeBook", at = @At("RETURN"))
     public void sendInitialRecipeBook(ServerPlayer serverPlayer, CallbackInfo ci) {
-        ClientboundRecipePacket packet = new ClientboundRecipePacket(ClientboundRecipePacket.State.INIT, this.known, this.highlight, this.getBookSettings());
+        ClientboundRecipePacket packet = new ClientboundRecipePacket(ClientboundRecipePacket.State.INIT, ((RecipeBookInterface)(Object)(RecipeBook)this).getDiscoveredRecipes().stream().toList(), Collections.emptyList(), this.getBookSettings());
         ClientboundRecipePacketInterface recipePacketInterface = ((ClientboundRecipePacketInterface)(Object) packet);
-        recipePacketInterface.setDiscovered(((RecipeBookInterface)(Object)(RecipeBook)this).getDiscoveredRecipes().stream().toList());
         recipePacketInterface.setIsDiscover();
         serverPlayer.connection.send(packet);
     }
@@ -76,13 +75,12 @@ public class ServerRecipeBookMixin extends RecipeBook implements ServerRecipeBoo
         RecipeBookInterface recipeBookInterface = (RecipeBookInterface)(Object)(RecipeBook)this;
         for (Recipe<?> recipe : recipeList) {
             ResourceLocation resourceLocation = recipe.getId();
-            if (recipeBookInterface.getDiscoveredRecipes().contains(resourceLocation) || recipe.isSpecial() || !RecipeAPI.isDiscoverable(recipe.getResultItem().getItem())) continue;
+            if (recipeBookInterface.getDiscoveredRecipes().contains(resourceLocation) || recipe.isSpecial() || !RecipeAPI.isDiscoverable(recipe)) continue;
             if (!recipeBookInterface.discover(resourceLocation)) continue;
             recipes.add(resourceLocation);
             ++discoveredRecipes;
         }
-        ClientboundRecipePacketInterface packet = (ClientboundRecipePacketInterface) (Object)new ClientboundRecipePacket(ClientboundRecipePacket.State.ADD, Collections.emptyList(), Collections.emptyList(), this.getBookSettings());
-        packet.setDiscovered(recipes);
+        ClientboundRecipePacketInterface packet = (ClientboundRecipePacketInterface) (Object)new ClientboundRecipePacket(ClientboundRecipePacket.State.ADD, recipes, recipes, this.getBookSettings());
         packet.setIsDiscover();
         player.connection.send((ClientboundRecipePacket)packet);
         return discoveredRecipes;
@@ -93,4 +91,5 @@ public class ServerRecipeBookMixin extends RecipeBook implements ServerRecipeBoo
         RecipeBookInterface recipeBookInterface = (RecipeBookInterface)(Object)(RecipeBook)this;
         return set.contains(resourceLocation) || recipeBookInterface.getDiscoveredRecipes().contains(resourceLocation);
     }
+
 }

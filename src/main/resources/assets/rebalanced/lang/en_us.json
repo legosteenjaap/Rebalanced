@@ -2,5 +2,6 @@
   "container.unlock.cost": "Cost: %s",
   "sleep.try.xp": "You don't have enough xp to sleep",
   "recipe.toast.discover.title": "New recipes discovered!",
-  "item.knowledge_book.require_recipe": "Required recipes not unlocked"
+  "item.knowledge_book.require_recipe": "Required recipes not unlocked",
+  "rebalanced.testing.unfinished": "Functionality of this item is partially unfinished"
 }

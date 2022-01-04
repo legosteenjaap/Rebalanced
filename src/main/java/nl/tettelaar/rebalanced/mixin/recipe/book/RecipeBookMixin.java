@@ -18,7 +18,6 @@ import java.util.Set;
 public class RecipeBookMixin implements RecipeBookInterface {
 
 
-
     @Shadow @Final
     protected final Set<ResourceLocation> known = Sets.newHashSet();
 
@@ -43,6 +42,7 @@ public class RecipeBookMixin implements RecipeBookInterface {
     public boolean discover(ResourceLocation resourceLocation) {
         if (!this.known.contains(resourceLocation)) {
             this.discovered.add(resourceLocation);
+            this.known.remove(resourceLocation);
             return true;
         }
         return false;
@@ -63,4 +63,5 @@ public class RecipeBookMixin implements RecipeBookInterface {
         }
         return this.discovered.contains(recipe.getId());
     }
+
 }

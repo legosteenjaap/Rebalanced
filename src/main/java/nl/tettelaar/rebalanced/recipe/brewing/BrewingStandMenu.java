@@ -1,7 +1,7 @@
 /*
  * Decompiled with CFR 0.0.9 (FabricMC cc05e23f).
  */
-package nl.tettelaar.rebalanced.recipe;
+package nl.tettelaar.rebalanced.recipe.brewing;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
@@ -18,7 +18,6 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.crafting.Recipe;
-import nl.tettelaar.rebalanced.init.Recipes;
 
 public class BrewingStandMenu
         extends RecipeBookMenu {

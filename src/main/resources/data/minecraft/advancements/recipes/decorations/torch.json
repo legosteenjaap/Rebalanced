@@ -3,7 +3,8 @@
   "rewards": {
     "recipes": [
       "minecraft:torch"
-    ]
+    ],
+    "recipestatus": "UNLOCKED"
   },
   "criteria": {
     "has_coal": {
@@ -23,7 +24,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
+           "items": [
               "minecraft:charcoal"
             ]
           }

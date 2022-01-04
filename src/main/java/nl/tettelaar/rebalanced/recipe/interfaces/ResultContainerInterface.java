@@ -8,5 +8,5 @@ public interface ResultContainerInterface {
 
     public boolean isRecipeUnlocked();
     public Optional<Integer> getXPCost();
-    public boolean isUnlockable(Player player);
+
 }

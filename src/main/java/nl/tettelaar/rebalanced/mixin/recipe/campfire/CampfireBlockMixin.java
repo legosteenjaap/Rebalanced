@@ -34,11 +34,11 @@ public class CampfireBlockMixin implements XPBlockInterface {
 	      if (blockEntity instanceof CampfireBlockEntity) {
 	         CampfireBlockEntity campfireBlockEntity = (CampfireBlockEntity)blockEntity;
 	         ItemStack itemStack = player.getItemInHand(hand);
-	         Optional<CampfireCookingRecipe> optional = campfireBlockEntity.getCookableRecipe(itemStack);
-	         if (optional.isPresent() && ((!level.isClientSide() && !((ServerPlayer) player).getRecipeBook().contains(optional.get())) && level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING))) {
+	         Optional<CampfireCookingRecipe> recipe = campfireBlockEntity.getCookableRecipe(itemStack);
+	         if (recipe.isPresent() && ((!level.isClientSide() && !((ServerPlayer) player).getRecipeBook().contains(recipe.get())) && level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING))) {
 				 int XPCost = getXPCost(player, pos, level);
 				 if (player.experienceLevel >= XPCost) {
-					((ServerPlayer) player).getRecipeBook().addRecipes(Arrays.asList(optional.get()),(ServerPlayer) player);
+					((ServerPlayer) player).getRecipeBook().addRecipes(RecipeAPI.getDiscoverableRecipesWithItem(recipe.get().getResultItem(), level.getRecipeManager()),(ServerPlayer) player);
 					((ServerPlayer)player).giveExperienceLevels(-XPCost);
 				} else {
 					cir.setReturnValue(InteractionResult.FAIL);
