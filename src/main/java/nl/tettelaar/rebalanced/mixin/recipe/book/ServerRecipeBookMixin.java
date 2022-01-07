@@ -37,7 +37,11 @@ public class ServerRecipeBookMixin extends RecipeBook implements ServerRecipeBoo
         CompoundTag compoundTag = cir.getReturnValue();
         ListTag listTag2 = new ListTag();
         for (ResourceLocation resourceLocation2 : ((RecipeBookInterface)(ServerRecipeBook)(Object)this).getDiscoveredRecipes()) {
-            listTag2.add(StringTag.valueOf(resourceLocation2.toString()));
+            try {
+                listTag2.add(StringTag.valueOf(resourceLocation2.toString()));
+            } catch (NullPointerException e) {
+                System.out.println("bruh");
+            }
         }
         compoundTag.put("discovered", listTag2);
     }

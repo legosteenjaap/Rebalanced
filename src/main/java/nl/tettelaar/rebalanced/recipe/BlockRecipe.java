@@ -1,12 +1,13 @@
 package nl.tettelaar.rebalanced.recipe;
 
+import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import nl.tettelaar.rebalanced.init.Recipes;
 
@@ -52,11 +53,33 @@ public class BlockRecipe implements Recipe<Container> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return null;
+        return Recipes.BLOCK_RECIPE;
     }
 
     @Override
     public RecipeType<?> getType() {
         return Recipes.BLOCK;
     }
+
+    public static class Serializer
+            implements RecipeSerializer<BlockRecipe> {
+
+        @Override
+        public BlockRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
+            ItemStack displayItem = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "displayItem"));
+            return new BlockRecipe(resourceLocation, displayItem);
+        }
+
+        @Override
+        public BlockRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf friendlyByteBuf) {
+            ItemStack displayItem = friendlyByteBuf.readItem();
+            return new BlockRecipe(resourceLocation, displayItem);
+        }
+
+        @Override
+        public void toNetwork(FriendlyByteBuf friendlyByteBuf, BlockRecipe recipe) {
+            friendlyByteBuf.writeItem(recipe.resultItemDisplay);
+        }
+    }
+
 }

@@ -78,7 +78,6 @@ public class DeathScreenMixin extends Screen {
 	public void tick(CallbackInfo ci) {
 		if (checkIfHasSpawn && NetworkingClient.hasSpawnPoint != null) {
 			checkIfHasSpawn = false;
-			System.out.println(NetworkingClient.hasSpawnPoint);
 			if (!NetworkingClient.hasSpawnPoint) {
 				ConfirmRespawnNightScreen confirmRespawnNightScreen = new ConfirmRespawnNightScreen(this::onConfirm);
 				this.minecraft.setScreen(confirmRespawnNightScreen);

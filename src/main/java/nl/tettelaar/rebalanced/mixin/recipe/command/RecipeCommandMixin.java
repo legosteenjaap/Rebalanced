@@ -18,6 +18,7 @@ import net.minecraft.server.commands.RecipeCommand;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.crafting.Recipe;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
+import nl.tettelaar.rebalanced.network.NetworkingClient;
 import nl.tettelaar.rebalanced.recipe.interfaces.PlayerRecipeInterface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,12 +33,11 @@ import java.util.Collections;
 public class RecipeCommandMixin {
 
     private static final SimpleCommandExceptionType ERROR_DISCOVER_FAILED = new SimpleCommandExceptionType(new TranslatableComponent("commands.recipe.discover.failed"));
-    private static final SuggestionProvider<CommandSourceStack> DISCOVERABLE_RECIPES = SuggestionProviders.register(new ResourceLocation("discoverable_recipes"), (commandContext, suggestionsBuilder) -> SharedSuggestionProvider.suggestResource(RecipeAPI.getDiscoverableRecipes(((ClientSuggestionProviderAccessor)commandContext.getSource()).getConnection().getRecipeManager()), suggestionsBuilder));
 
     @ModifyArg(method = "register", at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/CommandDispatcher;register(Lcom/mojang/brigadier/builder/LiteralArgumentBuilder;)Lcom/mojang/brigadier/tree/LiteralCommandNode;"), index = 0)
     private static LiteralArgumentBuilder registerDiscoverRecipes (LiteralArgumentBuilder argumentBuilder) {
 
-        return (LiteralArgumentBuilder) argumentBuilder.then(Commands.literal("discover").then((ArgumentBuilder<CommandSourceStack, ?>)((RequiredArgumentBuilder)Commands.argument("targets", EntityArgument.players()).then((ArgumentBuilder<CommandSourceStack, ?>)Commands.argument("recipe", ResourceLocationArgument.id()).suggests(DISCOVERABLE_RECIPES).executes(commandContext -> RecipeCommandMixin.discoverRecipes((CommandSourceStack)commandContext.getSource(), EntityArgument.getPlayers(commandContext, "targets"), Collections.singleton(ResourceLocationArgument.getRecipe(commandContext, "recipe")))))).then(Commands.literal("*").executes(commandContext -> RecipeCommandMixin.discoverRecipes((CommandSourceStack)commandContext.getSource(), EntityArgument.getPlayers(commandContext, "targets"), ((CommandSourceStack)commandContext.getSource()).getServer().getRecipeManager().getRecipes())))));
+        return (LiteralArgumentBuilder) argumentBuilder.then(Commands.literal("discover").then((ArgumentBuilder<CommandSourceStack, ?>)((RequiredArgumentBuilder)Commands.argument("targets", EntityArgument.players()).then((ArgumentBuilder<CommandSourceStack, ?>)Commands.argument("recipe", ResourceLocationArgument.id()).suggests(NetworkingClient.DISCOVERABLE_RECIPES).executes(commandContext -> RecipeCommandMixin.discoverRecipes((CommandSourceStack)commandContext.getSource(), EntityArgument.getPlayers(commandContext, "targets"), Collections.singleton(ResourceLocationArgument.getRecipe(commandContext, "recipe")))))).then(Commands.literal("*").executes(commandContext -> RecipeCommandMixin.discoverRecipes((CommandSourceStack)commandContext.getSource(), EntityArgument.getPlayers(commandContext, "targets"), ((CommandSourceStack)commandContext.getSource()).getServer().getRecipeManager().getRecipes())))));
 
     }
 

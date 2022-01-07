@@ -78,21 +78,21 @@ public abstract class 	PanicGoalMixin extends Goal {
 
 		AABB box = new AABB(x - distance, y - distance, z - distance, x + distance, y + distance, z + distance);
 
-		try {
 			List<Entity> entities = mob.getCommandSenderWorld().getEntities(this.mob, box, EntitySelector.LIVING_ENTITY_STILL_ALIVE);
 
 			for (Entity entity : entities) {
 				if (entity instanceof Animal) {
-					Animal animalEntity = (Animal) entity;
+					try {
+						Animal animalEntity = (Animal) entity;
 					if (animalEntity.getLastHurtByMob() == null) {
 						animalEntity.setLastHurtByMob(this.mob.getLastHurtByMob());
+					}
+					} catch (ClassCastException e) {
+
 					}
 				}
 			}
 
-		} catch (ClassCastException e) {
-
-		}
 		this.mob.getNavigation().moveTo(this.posX, this.posY, this.posZ, this.speedModifier * speedMultiplier);
 		this.isRunning = true;
 		ci.cancel();
@@ -101,6 +101,6 @@ public abstract class 	PanicGoalMixin extends Goal {
 
 	@Inject(method = "isRunning", at = @At("RETURN"), cancellable = true)
 	public void isRunning(CallbackInfoReturnable<Boolean> cir) {
-		cir.setReturnValue(timer < 500);
+		cir.setReturnValue(timer < 1500);
 	}
 }

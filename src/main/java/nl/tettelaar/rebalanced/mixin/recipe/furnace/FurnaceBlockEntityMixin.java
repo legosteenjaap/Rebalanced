@@ -33,7 +33,9 @@ public abstract class FurnaceBlockEntityMixin extends AbstractFurnaceBlockEntity
     @Inject(method = "createMenu", at = @At("RETURN"))
     protected void createMenu(int i, Inventory inventory, CallbackInfoReturnable<AbstractContainerMenu> cir) {
         ((FurnaceBlockEntityInterface)this).addInspectingPlayer((ServerPlayer) inventory.player);
-        NetworkingClient.lastFurnacePos = this.getBlockPos();
+        FriendlyByteBuf buf = PacketByteBufs.create();
+        buf.writeBlockPos(this.getBlockPos());
+        ServerPlayNetworking.send((ServerPlayer) inventory.player,NetworkingServer.FURNACE_POS, buf);
         ((FurnaceMenuInterface)(Object)cir.getReturnValue()).setBlockEntity(this);
     }
 

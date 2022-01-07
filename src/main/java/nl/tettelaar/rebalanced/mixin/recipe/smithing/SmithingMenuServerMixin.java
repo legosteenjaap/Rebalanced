@@ -7,9 +7,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -24,6 +27,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
 import nl.tettelaar.rebalanced.network.NetworkingClient;
+import nl.tettelaar.rebalanced.network.NetworkingServer;
 import nl.tettelaar.rebalanced.recipe.interfaces.SmithingMenuInterface;
 import nl.tettelaar.rebalanced.util.RecipeUtil;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SmithingMenu.class)
-public abstract class SmithingMenuMixin extends ItemCombinerMenu implements SmithingMenuInterface {
+public abstract class SmithingMenuServerMixin extends ItemCombinerMenu implements SmithingMenuInterface {
 
 	@Shadow
 	@Final
@@ -48,12 +52,8 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu implements Smit
 	@Final
 	private List<UpgradeRecipe> recipes;
 
-	public SmithingMenuMixin(MenuType<?> type, int syncId, Inventory playerInventory, ContainerLevelAccess context) {
+	public SmithingMenuServerMixin(MenuType<?> type, int syncId, Inventory playerInventory, ContainerLevelAccess context) {
 		super(type, syncId, playerInventory, context);
-		FriendlyByteBuf buf = PacketByteBufs.create();
-		buf.writeBoolean(player.getLevel().getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING));
-		NetworkingClient.doLimitedCrafting = true;
-		ClientPlayNetworking.send(NetworkingClient.DO_LIMITEDCRAFTING_ID, buf);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -78,13 +78,13 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu implements Smit
 
 	@Inject(method = "mayPickup", at = @At("HEAD"), cancellable = true)
 	protected void mayPickup(Player player, boolean bl, CallbackInfoReturnable<Boolean> cir) {
-		if (!isUnlockable()) cir.setReturnValue(false);
+		if (!((SmithingMenuInterface)this).isUnlockable() && !canUseRecipe()) cir.setReturnValue(false);
 	}
 
 	@Inject(method = "onTake", at = @At("HEAD"))
 	protected void onTake(Player player, ItemStack itemStack, CallbackInfo ci) {
-		if (!this.canUseRecipe() && this.isUnlockable() && getXPCost().isPresent()) {
-			player.experienceLevel = player.experienceLevel - getXPCost().get();
+		if (!((SmithingMenuInterface)this).canUseRecipe() && ((SmithingMenuInterface)this).isUnlockable() && ((SmithingMenuInterface)this).getXPCost().isPresent()) {
+			player.giveExperienceLevels(-((SmithingMenuInterface)this).getXPCost().get());
 		}
 	}
 
@@ -94,12 +94,12 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu implements Smit
 			return false;
 		}
 		Optional<Integer> XPCost = RecipeAPI.getItemXPCost(selectedRecipe.getResultItem().getItem());
-		return (XPCost.isPresent() && RecipeUtil.isUnlockable((LocalPlayer) player, XPCost.get(), selectedRecipe));
+		return (XPCost.isPresent() && RecipeUtil.isUnlockable((ServerPlayer) player, XPCost.get(), selectedRecipe));
 	}
 
 	@Override
 	public boolean canUseRecipe() {
-		return (level.isClientSide() && (!level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((LocalPlayer) this.player).getRecipeBook().contains(this.selectedRecipe))) || (!level.isClientSide && (!NetworkingClient.doLimitedCrafting || ((ServerPlayer) player).getRecipeBook().contains(this.selectedRecipe)));
+		return ((!level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || ((ServerPlayer) this.player).getRecipeBook().contains(this.selectedRecipe)));
 	}
 
 	@Override

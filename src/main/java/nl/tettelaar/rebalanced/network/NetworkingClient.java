@@ -1,13 +1,19 @@
 package nl.tettelaar.rebalanced.network;
 
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import nl.tettelaar.rebalanced.Rebalanced;
+import nl.tettelaar.rebalanced.api.RecipeAPI;
+import nl.tettelaar.rebalanced.mixin.recipe.command.ClientSuggestionProviderAccessor;
 import org.lwjgl.system.CallbackI;
 
 import java.util.Optional;
@@ -26,6 +32,8 @@ public class NetworkingClient {
 	public static Boolean hasSpawnPoint = null;
 	public static Boolean doLimitedCrafting = true;
 	private static Recipe<?> furnaceRecipe = null;
+
+	public static final SuggestionProvider<CommandSourceStack> DISCOVERABLE_RECIPES = SuggestionProviders.register(new ResourceLocation("discoverable_recipes"), (commandContext, suggestionsBuilder) -> SharedSuggestionProvider.suggestResource(RecipeAPI.getDiscoverableRecipes(((ClientSuggestionProviderAccessor)commandContext.getSource()).getConnection().getRecipeManager()), suggestionsBuilder));
 
 	public static void init () {
 		ClientPlayNetworking.registerGlobalReceiver(SHOW_FLOATING_ITEM_ID, (client, handler, buf, responseSender) -> {
@@ -59,6 +67,13 @@ public class NetworkingClient {
 			}
 			client.execute(() -> {
 				NetworkingClient.furnaceRecipe = recipe.orElse(null);
+			});
+		});
+
+		ClientPlayNetworking.registerGlobalReceiver(NetworkingServer.FURNACE_POS, (client, handler, buf, responseSender) -> {
+			BlockPos furnacePos = buf.readBlockPos();
+			client.execute(() -> {
+				NetworkingClient.lastFurnacePos = furnacePos;
 			});
 		});
 

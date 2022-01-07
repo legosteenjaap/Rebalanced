@@ -61,7 +61,7 @@ public class ConfirmRespawnNightScreen extends Screen {
 	public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
 		this.renderBackground(matrices);
 		drawCenteredString(matrices, this.font, this.title, this.width / 2, 70, 16777215);
-		this.time = MultiLineLabel.create(this.font, Component.nullToEmpty(Long.toString(((RebalancedClient.earliestRespawnTime - this.minecraft.level.getDayTime())) / 20 * Rebalanced.timeMultiplier)), this.width - 50);
+		this.time = MultiLineLabel.create(this.font, Component.nullToEmpty(Long.toString(((RebalancedClient.earliestRespawnTime - (this.minecraft.level.getDayTime() % 24000))) / 20 * Rebalanced.timeMultiplier)), this.width - 50);
 		this.time.renderCentered(matrices, this.width / 2, 90);
 		super.render(matrices, mouseX, mouseY, delta);
 	}

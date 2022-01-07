@@ -8,7 +8,7 @@ public class RebalancedClient implements ClientModInitializer {
 	public static final String modid = Rebalanced.modid;
 
 	public static final long latestRespawnTime = 10000;
-	public static final long earliestRespawnTime = 22000;
+	public static final long earliestRespawnTime = 23300;
 
 	@Override
 	public void onInitializeClient() {

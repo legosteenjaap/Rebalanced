@@ -27,12 +27,10 @@
     //"recipe.block.FireChargeMixin",
 
     "recipe.book.knowledge.KnowledgeBookItemMixin",
-    "recipe.book.RecipeBookWidgetInvoker",
     "recipe.book.RecipeBookMixin",
     "recipe.book.ServerRecipeBookMixin",
     "recipe.book.ServerRecipeBookMixin",
     "recipe.book.PlayerDiscoverMixin",
-    "recipe.book.RecipeCollectionMixin",
     "recipe.book.ServerPlaceRecipeMixin",
 
     "recipe.book.network.ClientboundRecipePacketMixin",
@@ -46,7 +44,6 @@
 
     "recipe.command.RecipeCommandMixin",
 
-    "recipe.crafting.CraftingScreenMixin",
     "recipe.crafting.CraftingMenuInvoker",
     "recipe.crafting.RecipeHolderMixin",
     "recipe.crafting.ResultContainerMixin",
@@ -58,7 +55,8 @@
     "recipe.furnace.AbstractFurnaceBlockMixin",
     "recipe.furnace.AbstractFurnaceMenuMixin",
     "recipe.furnace.FurnaceBlockEntityMixin",
-    "recipe.furnace.AbstractFurnaceScreenMixin",
+
+    "recipe.smithing.ItemCombinerMenuAccessor",
 
   	"village.GolemProtectChestMixin",
     "village.VillagerEntityMixin",
@@ -88,11 +86,6 @@
     "elytra.FireworkItemMixin",
     "elytra.ElytraMixin",
 
-    "xpbar.GuiMixin",
-    "xpbar.FontMixin",
-    "xpbar.PlayerMixin",
-
-
     "LocalDifficultyMixin",
     "WrittenBookMixin",
     "BeaconBlockEntityMixin",
@@ -100,24 +93,39 @@
     "DisableEndPortalMixin",
     "BoatEntityMixin",
     "HorseBaseEntityMixin",
+    "ConnectionMixin"
     //"ItemMixin"
   ],
   "client": [
-  	"recipe.stonecutter.StonecutterScreenHandlerMixin",
 
-    "recipe.smithing.SmithingMenuMixin",
     "recipe.smithing.SmithingScreenMixin",
-
-    "recipe.book.RecipeButtonMixin",
+    "recipe.smithing.SmithingMenuClientMixin",
 
     "recipe.book.knowledge.KnowledgeBookItemClientMixin",
 
     "recipe.command.ClientSuggestionProviderAccessor",
 
+    "recipe.campfire.CampfireBlockClientMixin",
+    "recipe.crafting.CraftingScreenMixin",
+    "recipe.furnace.AbstractFurnaceScreenMixin",
+    "recipe.stonecutter.StonecutterScreenMixin",
     "recipe.book.network.ClientPacketListenerMixin",
+    "recipe.book.RecipeBookComponentAccessor",
+    "recipe.stonecutter.StonecutterMenuMixin",
+
+    "recipe.book.RecipeCollectionMixin",
+
+    "xpbar.GuiMixin",
+    "xpbar.FontMixin",
+    "xpbar.PlayerMixin",
+    "recipe.book.RecipeButtonMixin",
 
 	"sleep.DeathScreenMixin",
     "sleep.LongerDayCycleClientMixin"
+  ],
+  "server": [
+    "recipe.stonecutter.StonecutterMenuServerMixin",
+    "recipe.smithing.SmithingMenuServerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

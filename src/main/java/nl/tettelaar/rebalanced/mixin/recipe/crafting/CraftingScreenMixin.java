@@ -1,9 +1,12 @@
 package nl.tettelaar.rebalanced.mixin.recipe.crafting;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import nl.tettelaar.rebalanced.mixin.recipe.book.RecipeBookWidgetInvoker;
+import nl.tettelaar.rebalanced.mixin.recipe.book.RecipeBookComponentAccessor;
+import nl.tettelaar.rebalanced.network.NetworkingClient;
 import nl.tettelaar.rebalanced.recipe.interfaces.CraftingMenuInterface;
 import nl.tettelaar.rebalanced.recipe.interfaces.RecipeBookInterface;
 import nl.tettelaar.rebalanced.recipe.interfaces.ResultContainerInterface;
@@ -39,18 +42,26 @@ public abstract class CraftingScreenMixin extends AbstractContainerScreen<Crafti
         super(handler, inventory, title);
     }
 
+    @Inject(method = "<init>", at = @At("RETURN"))
+    public void init(CraftingMenu craftingMenu, Inventory inventory, Component title, CallbackInfo ci) {
+        FriendlyByteBuf buf = PacketByteBufs.create();
+        buf.writeBoolean(inventory.player.getLevel().getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING));
+        NetworkingClient.doLimitedCrafting = true;
+        ClientPlayNetworking.send(NetworkingClient.DO_LIMITEDCRAFTING_ID, buf);
+    }
+
     @Inject(method = "renderBg", at = @At("RETURN"), cancellable = true)
     protected void renderBg(PoseStack poseStack, float delta, int mouseX, int mouseY, CallbackInfo ci) {
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
-        Minecraft client = ((RecipeBookWidgetInvoker)recipeBookComponent).getMinecraft();
+        Minecraft client = ((RecipeBookComponentAccessor)recipeBookComponent).getMinecraft();
         CraftingContainer input = ((CraftingMenuInvoker)this.menu).getCraftSlots();
         Optional<CraftingRecipe> recipe = client.level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, input, client.level);
-        if (recipe.isPresent() && !input.isEmpty() && !((RecipeBookWidgetInvoker)recipeBookComponent).getBook().contains(recipe.get()) && ((RecipeBookWidgetInvoker)recipeBookComponent).getMinecraft().level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING)) {
+        if (recipe.isPresent() && !input.isEmpty() && !((RecipeBookComponentAccessor)recipeBookComponent).getBook().contains(recipe.get()) && NetworkingClient.doLimitedCrafting) {
             ResultContainerInterface resultContainer = ((ResultContainerInterface)((CraftingMenuInterface)this.menu).getResultContainer());
             if (!minecraft.player.isCreative()) {
-                Optional<Integer> XPCost = resultContainer.getXPCost();
-                if (XPCost.isPresent() && ((RecipeBookInterface)((RecipeBookWidgetInvoker)recipeBookComponent).getBook()).isDiscovered(recipe.get())) {
+                Optional<Integer> XPCost = resultContainer.getXPCost(true);
+                if (XPCost.isPresent() && ((RecipeBookInterface)((RecipeBookComponentAccessor)recipeBookComponent).getBook()).isDiscovered(recipe.get())) {
                     Component component = new TranslatableComponent("container.unlock.cost", XPCost.get());
                     if (RecipeUtil.isUnlockable(minecraft.player, XPCost.get(), recipe.get())) {
                         CraftingScreen.fill(poseStack, this.leftPos + 90 - 2, y + 60 - 2, this.leftPos + 92 + this.font.width(component), y + 60 + 10, 0x4F000000);

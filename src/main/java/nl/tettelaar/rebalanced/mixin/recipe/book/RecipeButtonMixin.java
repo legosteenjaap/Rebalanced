@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mixin(RecipeButton.class)
 public abstract class RecipeButtonMixin extends AbstractWidget {
@@ -40,12 +41,15 @@ public abstract class RecipeButtonMixin extends AbstractWidget {
         Recipe<?> recipe = this.getOrderedRecipes().get(currentIndex);
         Minecraft minecraft = Minecraft.getInstance();
         if (((RecipeBookInterface)(Object)book).isDiscovered(recipe) && !minecraft.player.isCreative()) {
-            boolean enoughXP = minecraft.player.experienceLevel >= RecipeAPI.getItemXPCost(recipe.getResultItem().getItem()).get();
-            RenderSystem.depthFunc(0x207);
-            RenderSystem.enableTexture();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, RECIPE_BOOK_LOCATION);
-            this.blit(poseStack, this.x + 13, this.y + 13, enoughXP ? 0 : 10, 247, 9, 9);
+            Optional<Integer> XPCost = RecipeAPI.getItemXPCost(recipe.getResultItem().getItem());
+            if (XPCost.isPresent()) {
+                boolean enoughXP = minecraft.player.experienceLevel >= XPCost.get();
+                RenderSystem.depthFunc(0x207);
+                RenderSystem.enableTexture();
+                RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                RenderSystem.setShaderTexture(0, RECIPE_BOOK_LOCATION);
+                this.blit(poseStack, this.x + 13, this.y + 13, enoughXP ? 0 : 10, 247, 9, 9);
+            }
         }
     }
 

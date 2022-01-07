@@ -1,10 +1,7 @@
 package nl.tettelaar.rebalanced.mixin.recipe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
 import net.minecraft.client.Minecraft;
@@ -22,32 +19,47 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import nl.tettelaar.rebalanced.api.RecipeAPI;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerAdvancementManager.class)
 public class AdvancementManagerMixin {
 
-	@Inject(method = "lambda$apply$0", at = @At("HEAD"))
-	private void removeAdvancements(Map<ResourceLocation, JsonElement> map, ResourceLocation resourceLocation, JsonElement jsonElemen, CallbackInfo ci) {
-		JsonElement rewards = null;
-		try {
-			rewards = map.get(resourceLocation).getAsJsonObject().get("rewards");
-		} catch (NullPointerException e) {
+	@Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancements/AdvancementList;add(Ljava/util/Map;)V"))
+	private void removeAdvancements(AdvancementList advancementList, Map<ResourceLocation, Advancement.Builder> map) {
+		HashMap<ResourceLocation, Advancement.Builder> hashMap = Maps.newHashMap(map);
 
-		}
-		if (rewards != null && rewards.isJsonObject()) {
-			JsonElement recipes = rewards.getAsJsonObject().get("recipes");
-			if (recipes != null && recipes.isJsonArray()) {
-				Iterator<JsonElement> iterator = recipes.getAsJsonArray().iterator();
-				while (iterator.hasNext()) {
-					JsonElement recipe = iterator.next();
-					ResourceLocation id = new ResourceLocation(recipe.getAsString());
-					List<ResourceLocation> removedRecipes = RecipeAPI.getRemovedRecipeAdvancements();
-					if (removedRecipes != null && removedRecipes.contains(id)) {
-						map.remove(id);
+		List<ResourceLocation> advancements = new ArrayList<ResourceLocation>(hashMap.keySet());
+		for (ResourceLocation idAdvancement : advancements) {
+			JsonElement rewards = null;
+			try {
+				rewards = hashMap.get(idAdvancement).serializeToJson().get("rewards");
+			} catch (NullPointerException e) {
+
+			}
+			if (rewards != null && rewards.isJsonObject()) {
+				JsonElement recipes = rewards.getAsJsonObject().get("recipes");
+				if (recipes != null && recipes.isJsonArray()) {
+					Iterator<JsonElement> iterator = recipes.getAsJsonArray().iterator();
+					while (iterator.hasNext()) {
+						JsonElement recipeJSON = iterator.next();
+						ResourceLocation id = new ResourceLocation(recipeJSON.getAsString());
+						List<ResourceLocation> removedRecipes = RecipeAPI.getRemovedRecipeAdvancements();
+						List<ResourceLocation> discoverableRecipes = RecipeAPI.getDiscoverableRecipes(RecipeAPI.recipeManager);
+						if (!RecipeAPI.updatedWithRecipeManager) throw new AssertionError();
+						if (discoverableRecipes != null && discoverableRecipes.contains(id)) {
+							AdvancementRewardsInterface advancementRewardsInterface = ((AdvancementRewardsInterface)((AdvancementBuilderAccessor)map.get(idAdvancement)).getRewards());
+							if (!advancementRewardsInterface.hasRecipeStatus()) {
+								advancementRewardsInterface.setRecipeStatus(RecipeStatus.DISCOVERED);
+							}
+						} else if (removedRecipes != null && removedRecipes.contains(id)) {
+							hashMap.remove(idAdvancement);
+						}
 					}
 				}
 			}
 		}
+		advancementList.add(hashMap);
 	}
+
 }

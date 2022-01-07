@@ -44,18 +44,18 @@ public class RecipeManagerMixin {
 		HashMap<ResourceLocation, Recipe<? extends Container>> blockRecipes = new HashMap<>();
 
 		
-		for (Tuple<ResourceLocation, Item> entry : RecipeAPI.getBlockRecipeList()) {
-			blockRecipes.put(entry.getA(), new BlockRecipe(entry.getA(), new ItemStack(entry.getB())));
+		for (ResourceLocation entry : RecipeAPI.getBlockRecipeList().keySet()) {
+			blockRecipes.put(entry, new BlockRecipe(entry, new ItemStack(RecipeAPI.getBlockRecipeList().get(entry))));
 		}
 		newRecipes.put(Recipes.BLOCK, blockRecipes);
 		this.recipes = newRecipes;
-
+		if (!RecipeAPI.updatedWithRecipeManager)RecipeAPI.updateWithRecipeManager((RecipeManager)(Object)this);
 	}
 
 	@ModifyVariable(method = "apply", at = @At("STORE"), ordinal = 0)
 	private ImmutableMap.Builder<ResourceLocation, Recipe<?>> addBlockRecipes(ImmutableMap.Builder<ResourceLocation, Recipe<?>> builder) {
-		for (Tuple<ResourceLocation, Item> entry : RecipeAPI.getBlockRecipeList()) {
-			builder.put(entry.getA(), new BlockRecipe(entry.getA(), new ItemStack(entry.getB())));
+		for (ResourceLocation entry : RecipeAPI.getBlockRecipeList().keySet()) {
+			builder.put(entry, new BlockRecipe(entry, new ItemStack(RecipeAPI.getBlockRecipeList().get(entry))));
 		}
 		return builder;
 	}

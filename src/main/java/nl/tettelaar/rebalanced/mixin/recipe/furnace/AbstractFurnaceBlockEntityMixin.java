@@ -56,7 +56,7 @@ public abstract class AbstractFurnaceBlockEntityMixin extends BaseContainerBlock
 
     //KINDA STOOPID HACK
 
-    @Redirect(method = "serverTick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;isLit()Z", ordinal = 3))
+    @Redirect(method = "serverTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;isLit()Z", ordinal = 3))
     private static boolean stopUnownedRecipeBurning1(AbstractFurnaceBlockEntity abstractFurnaceBlockEntity) {
         ServerPlayer player = ((ServerPlayer)((FurnaceBlockEntityInterface)abstractFurnaceBlockEntity).getOwner());
 
@@ -70,7 +70,7 @@ public abstract class AbstractFurnaceBlockEntityMixin extends BaseContainerBlock
         return true;
     }
 
-    @Redirect(method = "serverTick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;isLit()Z", ordinal = 5))
+    @Redirect(method = "serverTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;isLit()Z", ordinal = 5))
     private static boolean stopUnownedRecipeBurning2(AbstractFurnaceBlockEntity abstractFurnaceBlockEntity) {
         ServerPlayer player = ((ServerPlayer)((FurnaceBlockEntityInterface)abstractFurnaceBlockEntity).getOwner());
 

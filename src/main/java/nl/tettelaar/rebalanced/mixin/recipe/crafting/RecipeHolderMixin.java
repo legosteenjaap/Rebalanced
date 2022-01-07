@@ -33,7 +33,7 @@ interface RecipeHolderMixin {
     default public int addOtherRecipes(Player player, Collection<Recipe<?>> collection) {
         Recipe<?> recipe = collection.stream().collect(Collectors.toList()).get(0);
         Item unlockedItem = recipe.getResultItem().getItem();
-        if (RecipeAPI.isDiscoverable(recipe)) {
+        if (RecipeAPI.isDiscoverable(recipe) && !player.level.isClientSide) {
             return player.awardRecipes(RecipeAPI.getRecipesWithDiscoverableItem(unlockedItem.getDefaultInstance(), player.getServer().getRecipeManager()));
         } else {
             return player.awardRecipes(collection);

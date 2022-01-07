@@ -18,6 +18,8 @@ public class NetworkingServer {
 	public static final ResourceLocation RETURN_PLAYER_HAS_SPAWNPOINT_ID = new ResourceLocation(modid, "return_player_has_spawnpoint");
 	public static final ResourceLocation RETURN_DO_LIMITEDCRAFTING_ID = new ResourceLocation(modid, "return_do_limitedcrafting");
 	public static final ResourceLocation FURNACE_RECIPE = new ResourceLocation(modid, "furnace_recipe");
+	public static final ResourceLocation FURNACE_POS = new ResourceLocation(modid, "furnace_pos");
+
 
 	public static void init () {
 		ServerPlayNetworking.registerGlobalReceiver(NetworkingClient.PLAYER_HAS_SPAWNPOINT_ID, (server, player, handler, packet, packetSender) -> {

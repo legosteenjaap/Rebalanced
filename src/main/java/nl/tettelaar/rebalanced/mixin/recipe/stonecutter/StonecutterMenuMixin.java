@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(StonecutterMenu.class)
-public class StonecutterScreenHandlerMixin {
+public class StonecutterMenuMixin {
 
 	@Shadow
 	private List<StonecutterRecipe> recipes;
@@ -49,13 +49,14 @@ public class StonecutterScreenHandlerMixin {
 	@Unique
 	private Player player;
 
+	@Inject(method = "<init>", at = @At("RETURN"))
+	public void init(int i, Inventory inventory, CallbackInfo ci) {
+		player = inventory.player;
+	}
+
 	@Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At("RETURN"))
-	private void init(int syncId, Inventory playerInventory, final ContainerLevelAccess context, CallbackInfo ci) {
-		this.player = playerInventory.player;
-		FriendlyByteBuf buf = PacketByteBufs.create();
-		buf.writeBoolean(player.getLevel().getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING));
-		NetworkingClient.doLimitedCrafting = true;
-		ClientPlayNetworking.send(NetworkingClient.DO_LIMITEDCRAFTING_ID, buf);
+	public void init(int i, Inventory inventory, final ContainerLevelAccess containerLevelAccess, CallbackInfo ci) {
+		player = inventory.player;
 	}
 
 	@Inject(method = "setupRecipeList", at = @At("HEAD"), cancellable = true)
@@ -67,7 +68,7 @@ public class StonecutterScreenHandlerMixin {
 			ArrayList<StonecutterRecipe> recipes = new ArrayList<StonecutterRecipe>(this.level.getRecipeManager().getRecipesFor(RecipeType.STONECUTTING, input, this.level));
 			ArrayList<StonecutterRecipe> trueRecipes = new ArrayList<>();
 			for (StonecutterRecipe recipe : recipes) {
-				if ((level.isClientSide() && ((((LocalPlayer) player).getRecipeBook().contains(recipe) || !NetworkingClient.doLimitedCrafting)) || (!level.isClientSide &&(((ServerPlayer)player).getRecipeBook().contains(recipe) || !level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING))))) {
+				if ((!level.isClientSide &&(((ServerPlayer)player).getRecipeBook().contains(recipe) || !level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING))) || (level.isClientSide() && ((((LocalPlayer) player).getRecipeBook().contains(recipe) || !NetworkingClient.doLimitedCrafting)))) {
 					trueRecipes.add(recipe);
 				}
 			}

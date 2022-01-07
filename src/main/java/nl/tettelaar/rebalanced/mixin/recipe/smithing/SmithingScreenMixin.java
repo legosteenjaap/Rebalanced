@@ -2,20 +2,30 @@ package nl.tettelaar.rebalanced.mixin.recipe.smithing;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.screens.inventory.AnvilScreen;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
 import net.minecraft.client.gui.screens.inventory.SmithingScreen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AnvilMenu;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ItemCombinerMenu;
+import net.minecraft.world.inventory.SmithingMenu;
+import net.minecraft.world.level.GameRules;
+import nl.tettelaar.rebalanced.network.NetworkingClient;
+import nl.tettelaar.rebalanced.recipe.interfaces.RecipeBookInterface;
+import nl.tettelaar.rebalanced.recipe.interfaces.ResultContainerInterface;
 import nl.tettelaar.rebalanced.recipe.interfaces.SmithingMenuInterface;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -31,6 +41,18 @@ public class SmithingScreenMixin <T extends ItemCombinerMenu> extends ItemCombin
 
     public SmithingScreenMixin(T itemCombinerMenu, Inventory inventory, Component component, ResourceLocation resourceLocation) {
         super(itemCombinerMenu, inventory, component, resourceLocation);
+    }
+
+    @Unique
+    Player player;
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    public void init(SmithingMenu smithingMenu, Inventory inventory, Component component, CallbackInfo ci) {
+        this.player = inventory.player;
+        FriendlyByteBuf buf = PacketByteBufs.create();
+        buf.writeBoolean(inventory.player.getLevel().getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING));
+        NetworkingClient.doLimitedCrafting = true;
+        ClientPlayNetworking.send(NetworkingClient.DO_LIMITEDCRAFTING_ID, buf);
     }
 
     @Inject(method = "renderLabels", at = @At("RETURN"), cancellable = true)
@@ -50,8 +72,11 @@ public class SmithingScreenMixin <T extends ItemCombinerMenu> extends ItemCombin
                 RenderSystem.setShaderTexture(0, ANVIL_LOCATION);
                 int x = this.imageWidth - 63 - this.font.width(component) / 2;
             int y = 69;
-            AnvilScreen.fill(poseStack, x - 2, 67, x + this.font.width(component) + 2, 79, 0x4F000000);
-            this.font.drawShadow(poseStack, component, (float)x, 69.0f, color);
+            ResultContainerInterface resultContainerInterface = (ResultContainerInterface)((ItemCombinerMenuAccessor)this.menu).getResultSlots();
+            if (((RecipeBookInterface)((LocalPlayer)player).getRecipeBook()).isDiscovered(resultContainerInterface.getUsedRecipe())) {
+                AnvilScreen.fill(poseStack, x - 2, 67, x + this.font.width(component) + 2, 79, 0x4F000000);
+                this.font.drawShadow(poseStack, component, (float) x, 69.0f, color);
+            }
         }
 
 

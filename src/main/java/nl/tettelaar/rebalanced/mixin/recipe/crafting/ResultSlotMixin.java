@@ -35,11 +35,11 @@ public class ResultSlotMixin extends Slot {
     @Override
     public boolean mayPickup(Player player) {
         ResultContainerInterface resultContainer = ((ResultContainerInterface)this.container);
-        Optional<Integer> XPCost = resultContainer.getXPCost();
+        Optional<Integer> XPCost = resultContainer.getXPCost(player.level.isClientSide);
         Optional<CraftingRecipe> recipe = player.level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftSlots, player.level);
         boolean isUnlockable;
         if (XPCost.isPresent()) {
-            if (player instanceof ServerPlayer) {
+            if (!player.level.isClientSide) {
                 isUnlockable = RecipeUtil.isUnlockable((ServerPlayer) player, XPCost.get(), recipe.get());
             } else {
                 isUnlockable = RecipeUtil.isUnlockable((LocalPlayer) player, XPCost.get(), recipe.get());
@@ -56,11 +56,11 @@ public class ResultSlotMixin extends Slot {
     @Inject(method = "onTake", at = @At("HEAD"), cancellable = true)
     public void onTake(Player player, ItemStack itemStack, CallbackInfo ci) {
         ResultContainerInterface resultContainer = ((ResultContainerInterface) this.container);
-        Optional<Integer> XPCost = resultContainer.getXPCost();
+        Optional<Integer> XPCost = resultContainer.getXPCost(false);
         Optional<CraftingRecipe> recipe = player.level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftSlots, player.level);
         if (player instanceof ServerPlayer && !player.isCreative() && !resultContainer.isRecipeUnlocked() && (XPCost.isPresent() && recipe.isPresent() && RecipeUtil.isUnlockable((ServerPlayer) player, XPCost.get(), recipe.get()))) {
             ServerPlayer serverPlayer = (ServerPlayer) player;
-            serverPlayer.setExperienceLevels(serverPlayer.experienceLevel - resultContainer.getXPCost().get());
+            serverPlayer.setExperienceLevels(serverPlayer.experienceLevel - resultContainer.getXPCost(false).get());
         }
     }
 

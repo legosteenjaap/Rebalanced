@@ -1,9 +1,11 @@
 package nl.tettelaar.rebalanced.api;
 
+import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
@@ -22,12 +24,39 @@ public class RecipeAPI {
 
 	private static List<ResourceLocation> removedRecipeAdvancements = new ArrayList<>();
 	private static ArrayList<Tuple<List<List<ResourceLocation>>, List<ResourceLocation>>> knowledgeBooksLootTable = new ArrayList<>();
+	private static ArrayList<Tuple<List<Item>, List<ResourceLocation>>> knowledgeBooksItemLootTable = new ArrayList<>();
 	private static HashMap<VillagerProfession, HashMap<Integer, List<Tuple<TradeOffers.Factory, Float>>>> KnowledgeBooksVillagerTrades = new HashMap<>();
-	private static List<Tuple<ResourceLocation, Item>> blockRecipeList = new ArrayList<>();
+	private static Map<ResourceLocation, Item> blockRecipeList = new HashMap<>();
 	private static HashMap<ResourceLocation, List<ResourceLocation>> requiredRecipesMap = new HashMap<>();
 	private static List<Tuple<TradeOffers.Factory, Float>> wanderingTraderKnowledgeBooks = new ArrayList<>();
 	private static HashMap<Item, Integer> ItemXPCost = new HashMap<>();
+	private static HashMap<ResourceLocation, Integer> RecipeXPCost = new HashMap<>();
 	private static ArrayList<ResourceLocation> ExcludedDiscoverableRecipes = new ArrayList<>();
+
+	public static boolean updatedWithRecipeManager = false;
+	public static RecipeManager recipeManager = null;
+	public static void updateWithRecipeManager(RecipeManager recipeManager) {
+		for (ResourceLocation id : RecipeXPCost.keySet()) {
+			Optional<? extends Recipe<?>> recipe = recipeManager.byKey(id);
+			if (recipe.isPresent()) setItemXPCost(recipe.get().getResultItem().getItem(), RecipeXPCost.get(id));
+		}
+		for (Tuple<List<Item>, List<ResourceLocation>> entry : knowledgeBooksItemLootTable) {
+			for (Item item : entry.getA()) {
+				for (Recipe<?> recipe : getRecipesWithItem(item.getDefaultInstance(), recipeManager)) {
+					registerKnowledgeBook(Arrays.asList(recipe.getId().toString()), entry.getB().stream().map(resourceLocation -> {
+						return resourceLocation.toString();
+					}).collect(Collectors.toList()), 1);
+				}
+			}
+		}
+		for (Item item : ItemXPCost.keySet()) {
+			removedRecipeAdvancements.addAll(getRecipesWithItem(item.getDefaultInstance(), recipeManager).stream().map((recipe) -> {
+				return recipe.getId();
+			}).collect(Collectors.toList()));
+		}
+		updatedWithRecipeManager = true;
+		RecipeAPI.recipeManager = recipeManager;
+	}
 
 	public static void registerWanderingTraderKnowledgeBookID(List<List<ResourceLocation>> recipes, int minPrice, int maxPrice, float chance) {
 		wanderingTraderKnowledgeBooks.add(new Tuple<TradeOffers.Factory, Float>(new KnowledgeBookTrade(minPrice, maxPrice, recipes), chance));
@@ -63,7 +92,7 @@ public class RecipeAPI {
 	}
 
 	public static void registerBlockRecipe(ResourceLocation name, Item displayItem) {
-		blockRecipeList.add(new Tuple<>(name, displayItem));
+		blockRecipeList.put(name, displayItem);
 	}
 
 	public static void setItemXPCost(Item item, int cost) {
@@ -73,6 +102,12 @@ public class RecipeAPI {
 	public static void setItemsXPCost(List<Item> items, int cost) {
 		for (Item item : items) {
 			ItemXPCost.put(item, cost);
+		}
+	}
+
+	public static void setRecipeXPCost(List<String> recipes, int cost) {
+		for (String recipe : recipes) {
+			RecipeXPCost.put(new ResourceLocation(recipe), cost);
 		}
 	}
 
@@ -102,12 +137,19 @@ public class RecipeAPI {
 		}
 
 		for (String loottable : loottables) {
-			loottablesID.add(new ResourceLocation(loottable));
+			loottablesID.add(new ResourceLocation("chests/" + loottable));
 		}
 
 		for (int i = 0; i < weight; i++) {
 			registerKnowledgeBookID(recipesID, loottablesID);
 		}
+	}
+
+	public static void registerKnowledgeBookItem(List<Item> items, List<String> loottables, int weight) {
+
+		knowledgeBooksItemLootTable.add(new Tuple<List<Item>, List<ResourceLocation>>(items, loottables.stream().map((string) -> {
+			return new ResourceLocation("chests/" + string);
+		}).collect(Collectors.toList())));
 	}
 
 	private static void registerKnowledgeBookID(List<List<ResourceLocation>> recipes, int minPrice, int maxPrice, float chance, VillagerProfession villager, int level) {
@@ -170,12 +212,16 @@ public class RecipeAPI {
 		return null;
 	}
 
-	public static List<Tuple<ResourceLocation, Item>> getBlockRecipeList() {
+	public static Map<ResourceLocation, Item> getBlockRecipeList() {
 		return blockRecipeList;
 	}
 
 	public static Optional<Integer> getItemXPCost(Item item) {
 		return Optional.ofNullable(ItemXPCost.get(item));
+	}
+
+	public static boolean hasXPCost(Item item) {
+		return getItemXPCost(item).isPresent();
 	}
 
 	public static List<ResourceLocation> getDiscoverableRecipes(RecipeManager recipeManager) {
@@ -187,14 +233,12 @@ public class RecipeAPI {
 		return discoverableRecipes;
 	}
 
-	public static List<Recipe<?>> getDiscoverableRecipesWithItem(ItemStack item, RecipeManager recipeManager) {
-		ArrayList<ResourceLocation> recipes = (ArrayList<ResourceLocation>) getDiscoverableRecipes(recipeManager);
-		new ArrayList<>(recipes).forEach((resourceLocation) -> {
-			if (recipeManager.byKey(resourceLocation).get().getResultItem().getItem().equals(item.getItem()))recipes.remove(resourceLocation);
+	public static List<Recipe<?>> getRecipesWithItem(ItemStack item, RecipeManager recipeManager) {
+		ArrayList<Recipe<?>> recipes = (ArrayList<Recipe<?>>) recipeManager.getRecipes().stream().collect(Collectors.toList());
+		recipeManager.getRecipes().stream().forEach((recipe) -> {
+			if (!recipe.getResultItem().getItem().equals(item.getItem())) recipes.remove(recipe);
 		});
-		return recipes.stream().map((resourceLocation) -> {
-			return recipeManager.byKey(resourceLocation).get();
-		}).collect(Collectors.toList());
+		return recipes;
 	}
 
 	public static Collection<Recipe<?>> getRecipesWithDiscoverableItem(ItemStack item, RecipeManager recipeManager) {
