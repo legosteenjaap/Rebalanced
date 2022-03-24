@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
@@ -84,7 +85,7 @@ public abstract class 	PanicGoalMixin extends Goal {
 				if (entity instanceof Animal) {
 					try {
 						Animal animalEntity = (Animal) entity;
-					if (animalEntity.getLastHurtByMob() == null) {
+					if (animalEntity.getLastHurtByMob() == null && !(animalEntity instanceof Bee)) {
 						animalEntity.setLastHurtByMob(this.mob.getLastHurtByMob());
 					}
 					} catch (ClassCastException e) {

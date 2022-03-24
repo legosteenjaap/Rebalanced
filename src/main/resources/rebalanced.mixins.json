@@ -6,6 +6,9 @@
   "mixins": [
     //"worldgen.NoiseSamplerMixin",
     "worldgen.NoiseDataMixin",
+    "worldgen.StructureFeatureConfigurationMixin",
+    //"worldgen.ConfiguredWorldCarverMixin",
+    //"worldgen.NoiseChunkMixin",
     //"worldgen.TerrainShaperMixin",
     //"worldgen.NoiseGeneratorSettingsMixin",
     //"worldgen.DimensionTypeMixin",

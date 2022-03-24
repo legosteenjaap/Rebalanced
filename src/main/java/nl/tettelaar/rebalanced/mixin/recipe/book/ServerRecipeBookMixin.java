@@ -61,6 +61,11 @@ public class ServerRecipeBookMixin extends RecipeBook implements ServerRecipeBoo
         serverPlayer.connection.send(packet);
     }
 
+    @Inject(method = "sendRecipes", at = @At("HEAD"), cancellable = true)
+    private void sendRecipesMixin(ClientboundRecipePacket.State state, ServerPlayer serverPlayer, List<ResourceLocation> list, CallbackInfo ci) {
+        if (serverPlayer.connection == null) ci.cancel();
+    }
+
 
 
     @Shadow
@@ -86,8 +91,12 @@ public class ServerRecipeBookMixin extends RecipeBook implements ServerRecipeBoo
         }
         ClientboundRecipePacketInterface packet = (ClientboundRecipePacketInterface) (Object)new ClientboundRecipePacket(ClientboundRecipePacket.State.ADD, recipes, recipes, this.getBookSettings());
         packet.setIsDiscover();
-        player.connection.send((ClientboundRecipePacket)packet);
-        return discoveredRecipes;
+        if (player.connection != null) {
+            player.connection.send((ClientboundRecipePacket) packet);
+            return discoveredRecipes;
+        } else {
+            return 0;
+        }
     }
 
     @Redirect(method = "removeRecipes", at = @At(value = "INVOKE", target = "Ljava/util/Set;contains(Ljava/lang/Object;)Z"))

@@ -22,7 +22,11 @@ public class TerrainShaperMixin {
         return f * 4.0f;
     }
 
-    @ModifyVariable(method = "overworld", at = @At("STORE"), ordinal = 0)
+    @ModifyConstant(method = "overworld", constant = @Constant(floatValue = -1.02f))
+    private static float injected(float value) {
+        return -0.7f;
+    }
+    /*@ModifyVariable(method = "overworld", at = @At("STORE"), ordinal = 0)
     private static ToFloatFunction<Float> modifyOffset(ToFloatFunction<Float> function) {
         if (function.equals(NO_TRANSFORM)) {
             return TerrainShaperMixin::getModifiedOffset;
@@ -46,6 +50,6 @@ public class TerrainShaperMixin {
             return TerrainShaperMixin::getModifiedJaggedness;
         }
         return function;
-    }
+    }*/
 
 }

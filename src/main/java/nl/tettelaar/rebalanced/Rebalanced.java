@@ -9,7 +9,7 @@ import nl.tettelaar.rebalanced.network.NetworkingServer;
 public class Rebalanced implements ModInitializer {
 	public static final String modid = "rebalanced";
 
-	public static final int timeMultiplier = 1;
+	public static final int timeMultiplier = 3;
 
 	@Override
 	public void onInitialize() {

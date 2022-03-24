@@ -38,7 +38,8 @@ public class DoBiomeModifications {
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.WOLF);
 		});
 
-		BiomeModifications.create(new ResourceLocation(modid, "seagrass_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.excludeByKey(Biomes.SNOWY_TAIGA).and(BiomeSelectors.categories(Biome.BiomeCategory.PLAINS, Biome.BiomeCategory.JUNGLE, Biome.BiomeCategory.EXTREME_HILLS, Biome.BiomeCategory.FOREST, Biome.BiomeCategory.SWAMP, Biome.BiomeCategory.TAIGA)), (s) -> {
+		BiomeModifications.create(new ResourceLocation(modid, "seagrass_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.foundInOverworld(), (s) -> {
+			s.getGenerationSettings().removeBuiltInFeature(AquaticPlacements.SEAGRASS_SIMPLE);
 			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEAGRASS_SIMPLE);
 		});
 

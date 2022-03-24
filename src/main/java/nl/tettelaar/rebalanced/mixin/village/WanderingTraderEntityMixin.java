@@ -55,7 +55,7 @@ public abstract class WanderingTraderEntityMixin extends AbstractVillager {
 	
 	protected void fillRecipesFromPool(MerchantOffers tradeOfferList, TradeOffers.Factory[] pool, int count) {
 		Set<Integer> set = Sets.newHashSet();
-		if (pool.length > count) {
+		if (pool.length > count && pool.length > 0) {
 			while (set.size() < count) {
 				set.add(this.random.nextInt(pool.length));
 			}
@@ -83,7 +83,7 @@ public abstract class WanderingTraderEntityMixin extends AbstractVillager {
 		
 		List<Tuple<TradeOffers.Factory, Float>> knowledgeBookTrades = RecipeAPI.getWanderingTraderBooks();
 
-		if (knowledgeBookTrades != null) {
+		if (knowledgeBookTrades != null && knowledgeBookTrades.size() > 0) {
 			Tuple<TradeOffers.Factory, Float> knowledgeBookTrade = knowledgeBookTrades.get(this.random.nextInt(knowledgeBookTrades.size()));
 			Factory factory = knowledgeBookTrade.getA();
 			MerchantOffer tradeOffer = factory.create(this, this.random);

@@ -32,6 +32,7 @@ public class RecipeAPI {
 	private static HashMap<Item, Integer> ItemXPCost = new HashMap<>();
 	private static HashMap<ResourceLocation, Integer> RecipeXPCost = new HashMap<>();
 	private static ArrayList<ResourceLocation> ExcludedDiscoverableRecipes = new ArrayList<>();
+	private static HashMap<Item, List<Item>> AutomaticRecipeAdvancements = new HashMap<>();
 
 	public static boolean updatedWithRecipeManager = false;
 	public static RecipeManager recipeManager = null;
@@ -187,6 +188,10 @@ public class RecipeAPI {
 		}
 	}
 
+	public static void setAutomaticRecipeAdvancement(Item unlockItem, List<Item> ResultItems) {
+		AutomaticRecipeAdvancements.put(unlockItem, ResultItems);
+	}
+
 	public static List<Tuple<TradeOffers.Factory, Float>> getWanderingTraderBooks() {
 		return wanderingTraderKnowledgeBooks;
 	}
@@ -249,6 +254,19 @@ public class RecipeAPI {
 			}
 		}
 		return recipes;
+	}
+
+	public static HashMap<Item, List<Item>> getAutomaticRecipeAdvancements () {
+		return AutomaticRecipeAdvancements;
+	}
+
+	public static boolean needsRecipeAdvancement(Item item) {
+		for (List<Item> items : AutomaticRecipeAdvancements.values()) {
+			for (Item itemEntry : items) {
+				if (item.equals(itemEntry)) return true;
+			}
+		}
+		return false;
 	}
 
 	public static boolean isDiscoverable (Recipe recipe) {

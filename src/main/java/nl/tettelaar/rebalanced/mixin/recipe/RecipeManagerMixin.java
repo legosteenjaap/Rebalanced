@@ -42,7 +42,6 @@ public class RecipeManagerMixin {
 		HashMap<RecipeType<?>, Map<ResourceLocation, Recipe<?>>> newRecipes = new HashMap<>(this.recipes);
 
 		HashMap<ResourceLocation, Recipe<? extends Container>> blockRecipes = new HashMap<>();
-
 		
 		for (ResourceLocation entry : RecipeAPI.getBlockRecipeList().keySet()) {
 			blockRecipes.put(entry, new BlockRecipe(entry, new ItemStack(RecipeAPI.getBlockRecipeList().get(entry))));

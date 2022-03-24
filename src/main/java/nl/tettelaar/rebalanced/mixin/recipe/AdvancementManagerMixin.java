@@ -2,16 +2,33 @@ package nl.tettelaar.rebalanced.mixin.recipe;
 
 import java.util.*;
 
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementList;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import net.minecraft.advancements.*;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.storage.loot.PredicateManager;
+import nl.tettelaar.rebalanced.Rebalanced;
 import nl.tettelaar.rebalanced.recipe.interfaces.AdvancementRewardsInterface;
 import nl.tettelaar.rebalanced.recipe.RecipeStatus;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -25,7 +42,49 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerAdvancementManager.class)
 public class AdvancementManagerMixin {
 
-	@Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancements/AdvancementList;add(Ljava/util/Map;)V"))
+	@Shadow private AdvancementList advancements = new AdvancementList();
+
+	@Shadow @Final
+	private PredicateManager predicateManager;
+
+	/*@Redirect(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Maps;newHashMap()Ljava/util/HashMap;"))
+	private HashMap<ResourceLocation, Advancement.Builder> injected() {
+
+	}*/
+
+	@Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At("RETURN"), cancellable = true)
+	protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resourceManager, ProfilerFiller profilerFiller, CallbackInfo ci) {
+		HashMap<ResourceLocation, Advancement.Builder> newAdvancements = Maps.newHashMap();
+		Advancement.Builder root = AdvancementBuilderAccessor.initBuilder();
+		for (Recipe<?> recipe : RecipeAPI.recipeManager.getRecipes()) {
+			if (RecipeAPI.needsRecipeAdvancement(recipe.getResultItem().getItem()) && !RecipeAPI.getRemovedRecipeAdvancements().contains(recipe.getId())) {
+				ResourceLocation advancementID = new ResourceLocation(recipe.getId().getNamespace(), "recipes/" + recipe.getResultItem().getItem().getItemCategory().getRecipeFolderName() + "/" + recipe.getId().getPath());
+				Advancement.Builder builder = AdvancementBuilderAccessor.initBuilder();
+				AdvancementRewards.Builder rewards = AdvancementRewards.Builder.recipe(recipe.getId());
+				ArrayList<String> criteria = new ArrayList<>();
+				for (Ingredient ingredient : recipe.getIngredients()) {
+					for (ItemStack itemStack : ingredient.getItems()) {
+						ResourceLocation resourceLocation = Registry.ITEM.getKey(itemStack.getItem());
+						if (!criteria.contains("has_" + resourceLocation.getPath())) {
+							JsonObject criterion = new JsonObject();
+							criterion.addProperty("trigger", "minecraft:inventory_changed");
+							criterion.add("conditions", JsonParser.parseString("{\"items\":[{\"items\": [\"" + resourceLocation.toString() + "\"]}]}"));
+							builder.addCriterion("has_" + resourceLocation.getPath(), Criterion.criterionFromJson(criterion, new DeserializationContext(advancementID, this.predicateManager)));
+							criteria.add("has_" + resourceLocation.getPath());
+						}
+					}
+				}
+				builder.parent(new ResourceLocation("minecraft:recipes/root"));
+				builder.rewards(rewards.build());
+				builder.requirements(RequirementsStrategy.OR.createRequirements(criteria));
+				newAdvancements.put(advancementID, builder);
+			}
+		}
+		advancements.add(newAdvancements);
+	}
+
+
+	@Redirect(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancements/AdvancementList;add(Ljava/util/Map;)V"))
 	private void removeAdvancements(AdvancementList advancementList, Map<ResourceLocation, Advancement.Builder> map) {
 		HashMap<ResourceLocation, Advancement.Builder> hashMap = Maps.newHashMap(map);
 
