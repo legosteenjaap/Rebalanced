@@ -6,7 +6,7 @@
   "mixins": [
     //"worldgen.NoiseSamplerMixin",
     "worldgen.NoiseDataMixin",
-    "worldgen.StructureFeatureConfigurationMixin",
+    //"worldgen.StructureFeatureConfigurationMixin",
     //"worldgen.ConfiguredWorldCarverMixin",
     //"worldgen.NoiseChunkMixin",
     //"worldgen.TerrainShaperMixin",
@@ -70,8 +70,6 @@
 	"enchantment.SilkTouchEnchantMixin",
 	"enchantment.InfinityEnchantMixin",
 
-	"foliage.OakSaplingGeneratorMixin",
-
     "ai.AttackGoalMixin",
 	"ai.LivingEntityMixin",
     "ai.MobEntityMixin",
@@ -92,11 +90,7 @@
     "LocalDifficultyMixin",
     "WrittenBookMixin",
     "BeaconBlockEntityMixin",
-    "ReplaceBlockMixin",
     "DisableEndPortalMixin",
-    "BoatEntityMixin",
-    "HorseBaseEntityMixin",
-    "ConnectionMixin"
     //"ItemMixin"
   ],
   "client": [

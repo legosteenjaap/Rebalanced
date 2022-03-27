@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.GameRules;
@@ -21,7 +22,7 @@ import nl.tettelaar.rebalanced.Rebalanced;
 @Mixin(ClientLevel.class)
 public abstract class LongerDayCycleClientMixin extends Level {
 
-	protected LongerDayCycleClientMixin(WritableLevelData properties, ResourceKey<Level> registryRef, DimensionType dimensionType, Supplier<ProfilerFiller> profiler, boolean isClient, boolean debugWorld, long seed) {
+	protected LongerDayCycleClientMixin(WritableLevelData properties, ResourceKey<Level> registryRef, Holder<DimensionType> dimensionType, Supplier<ProfilerFiller> profiler, boolean isClient, boolean debugWorld, long seed) {
 		super(properties, registryRef, dimensionType, profiler, isClient, debugWorld, seed);
 		// TODO Auto-generated constructor stub
 	}

@@ -24,7 +24,7 @@ public class FlintAndSteelMixin extends Item {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Inject(method = "useOnBlock", at = @At("RETURN"))
+	@Inject(method = "useOn", at = @At("RETURN"))
 	public void onPlaced(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
 		if (context.getPlayer() instanceof ServerPlayer && (((ServerPlayer) context.getPlayer()).getRecipeBook().contains(new ResourceLocation("nether_portal")) || !(context.getLevel().getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING)))) {
 			if (isOverworldOrNether(context.getLevel())) {

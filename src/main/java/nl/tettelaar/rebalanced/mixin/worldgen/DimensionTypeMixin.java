@@ -17,6 +17,6 @@ public class DimensionTypeMixin {
     public static final ResourceLocation OVERWORLD_EFFECTS = new ResourceLocation("overworld");
 
     @Shadow @Final @Mutable
-    protected static final DimensionType DEFAULT_OVERWORLD = DimensionType.create(OptionalLong.empty(), true, false, false, true, 1.0, false, false, true, false, true, -64, 1024, 384, BlockTags.INFINIBURN_OVERWORLD.getName(), OVERWORLD_EFFECTS, 0.0f);
+    protected static final DimensionType DEFAULT_OVERWORLD = DimensionType.create(OptionalLong.empty(), true, false, false, true, 1.0, false, false, true, false, true, -64, 1024, 384, BlockTags.INFINIBURN_OVERWORLD, OVERWORLD_EFFECTS, 0.0f);
 
 }

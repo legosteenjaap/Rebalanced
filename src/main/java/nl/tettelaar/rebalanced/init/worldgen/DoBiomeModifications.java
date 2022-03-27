@@ -39,8 +39,8 @@ public class DoBiomeModifications {
 		});
 
 		BiomeModifications.create(new ResourceLocation(modid, "seagrass_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.foundInOverworld(), (s) -> {
-			s.getGenerationSettings().removeBuiltInFeature(AquaticPlacements.SEAGRASS_SIMPLE);
-			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEAGRASS_SIMPLE);
+			s.getGenerationSettings().removeBuiltInFeature(AquaticPlacements.SEAGRASS_SIMPLE.value());
+			s.getGenerationSettings().addBuiltInFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEAGRASS_SIMPLE.value());
 		});
 
 
@@ -67,8 +67,8 @@ public class DoBiomeModifications {
 				});
 
 		BiomeModifications.create(new ResourceLocation(modid, "desert_biome_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.categories(Biome.BiomeCategory.DESERT), (s) -> {
-			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.PATCH_SUGAR_CANE_DESERT);
-			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.PATCH_SUGAR_CANE);
+			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.PATCH_SUGAR_CANE_DESERT.value());
+			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.PATCH_SUGAR_CANE.value());
 		});
 
 		BiomeModifications.create(new ResourceLocation(modid, "savanna_biome_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.categories(Biome.BiomeCategory.SAVANNA), (s) -> {
@@ -77,8 +77,8 @@ public class DoBiomeModifications {
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.COW);
 			s.getSpawnSettings().removeSpawnsOfEntityType(EntityType.LLAMA);
 			s.getSpawnSettings().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
-			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_DEFAULT);
-			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_WARM);
+			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_DEFAULT.value());
+			s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_WARM.value());
 		});
 
 		BiomeModifications.create(new ResourceLocation(modid, "jungle_biome_gen")).add(ModificationPhase.POST_PROCESSING, BiomeSelectors.categories(Biome.BiomeCategory.JUNGLE), (s) -> {
@@ -90,10 +90,10 @@ public class DoBiomeModifications {
 
 
 	public static void snowyBiome(BiomeModificationContext s) {
-		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.PATCH_SUGAR_CANE);
-		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_DEFAULT);
-		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_FLOWER_FOREST);
-		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_PLAINS);
+		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.PATCH_SUGAR_CANE.value());
+		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_DEFAULT.value());
+		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_FLOWER_FOREST.value());
+		s.getGenerationSettings().removeBuiltInFeature(VegetationPlacements.FLOWER_PLAINS.value());
 
 	}
 
